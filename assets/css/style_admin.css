@@ -1,0 +1,89 @@
+
+.column-prgen_confid {
+    width: 15%;
+}
+
+table.docrt_tbl {
+	width: 100%;
+}
+
+.docrt_tbl th{
+	width: 25%;
+}
+
+.docrt_tbl input, .docrt_tbl textarea {
+	width: 80%;
+}
+
+.docrt_pemohon_box {
+	display: block;
+}
+.docrt_pemohon_box input[disabled=disabled],.docrt_pemohon_box select[disabled=disabled],.docrt_pemohon_box textarea[disabled=disabled] {
+    background-color: #E9EAEA;
+}
+.docrt_pemohon_box .d-hide {
+	display: none;
+}
+.docrt_pemohon_box.d-hide {
+	display: none;
+}
+
+.docrt_pemohon_box .headform-label {
+	color: #C9C9C9;
+	font-weight: 700;
+}
+
+.docrt_pemohon_box.docrt_tbl_pindah {
+	overflow: auto;
+	font-size: 12px;
+	background-color: #EEEEEE;
+}
+.docrt_pemohon_box.docrt_tbl_pindah input, .docrt_pemohon_box.docrt_tbl_pindah select{
+	height: 25px;
+    font-size: 12px;
+    width: 100%;
+    padding: 0;
+}
+tr.strip/*:nth-child(odd)*/ {
+	background-color: #ECECEC;
+    color: #8F8F8F;
+    font-weight: 700;
+    text-transform: capitalize;
+}
+tr.strip td {
+	padding: 3px;
+}
+/*PENGIKUT*/
+.docrt_pemohon_box.docrt_tbl_pindah select.pengikut_jk {
+	width: 35px;
+}
+/*.docrt_pemohon_box.docrt_tbl_pindah input.pengikut_pend {
+	width: 40px;
+}*/
+/*.docrt_pemohon_box.docrt_tbl_pindah input.pengikut_ket {
+	width: 50px;
+}*/
+.docrt_pemohon_box.docrt_tbl_pindah input.pengikut_tgl {
+	width: 120px;
+}
+.docrt_pemohon_box.docrt_tbl_pindah input.pengikut_nama {
+	width: 190px;
+}
+
+/*HIDDING ADMIN LIST*/
+/*preview*/
+.submitbox #preview-action,
+.submitbox .misc-pub-section.misc-pub-post-status,
+.submitbox .misc-pub-section.misc-pub-visibility,
+#suratdiv #taxonomy-surat,
+label[for=suratdiv-hide],
+#bulk-action-selector-top option[value=edit].hide-if-no-js,
+#bulk-action-selector-bottom option[value=edit].hide-if-no-js
+{
+	display: none;
+}
+/*LAGACY ADMIN ALTER*/
+#adminmenuwrap .logo-overlay, #adminmenuwrap:before, .folded #adminmenuwrap:before {
+    height: 90px!important;
+    background-position: 0px 12px!important;
+}
