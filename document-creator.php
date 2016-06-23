@@ -6,7 +6,7 @@ Description: Make Document From Template
 Version: 0.0.1
 Author: Dharmawan Sukma Hardi
 Author URI: -
-License: GPLv2 or later
+License: GPLv2 or laterss
 Text Domain:
 */
 
