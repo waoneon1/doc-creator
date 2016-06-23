@@ -49,11 +49,14 @@ include 'docrt_pdf_template.php';
 $pdf = new pdf(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 $post_tr = get_the_terms ($_GET['pid'],'surat' );
 
+// kondisi kusus saat skem dan skel
 if ($post_tr[0]->slug == 'skem' || $post_tr[0]->slug == 'skel') {
     docrt_get_content_pdf_skem_skel($pdf, $_GET['pid'], $post_tr);
 } else {
     docrt_get_header_pdf($pdf,$_GET['pid'], $post_tr);
     docrt_get_content_pdf($pdf, $_GET['pid'], $post_tr);
+
+    // kondisi kusus saat skp
     if ($post_tr[0]->slug == 'skp') {
         $post_tr[0]->slug = 'skai';
         $post_tr[0]->name = 'surat keterangan adat istiadat';
@@ -207,18 +210,20 @@ function docrt_content_by_type($param,$meta,$post_term,$pdf='') {
     }
 }
 
-function docrt_pdf_footer($meta,$postID,$type,$hspace='60',$nopelapor=true,$w1 = '35%',$w2 = '30%',$w3 = '38%') {
+// footer tandatangan in general
+function docrt_pdf_footer($meta,$postID,$type,$hspace='60',$nopelapor=true,$w1 = '30%',$w2 = '30%',$w3 = '43%') {
      // Yang menandatangani dokumen
+
     if ($meta['docrt_jenis_ttd'][0] == 'lurah') {
         $ttd_jabatan = 'LURAH SAWOJAJAR';
         $ttd_nama = 'J.A. BAYU WIDJAYA, S.Sos, M.Si';
         $ttd_nip = 'NIP. 19710731 199203 1 003';
-    } elseif ($meta['docrt_jenis_ttd'][0] == 'wakil') {
+    } elseif ($meta['docrt_jenis_ttd'][0] == 'seklur') {
         $ttd_jabatan = 'LURAH SAWOJAJAR<br/><span style="font-size:11px;">Sekretaris</span>';
         $ttd_nama = 'ADI ANDRIANTO. P, SH.M.Hum';
         $ttd_nip = 'NIP. 19740730 200312 1 005';
     } else {
-        $ttd_jabatan = '';
+        $ttd_jabatan = $meta['docrt_jenis_ttd'][0];
         $ttd_nama = '';
         $ttd_nip = '';
     }
@@ -263,6 +268,8 @@ function docrt_pdf_footer($meta,$postID,$type,$hspace='60',$nopelapor=true,$w1 =
 
     return $tbl;
 }
+
+// no surat here
 function docrt_no_surat($type,$meta,$postID) {
 
     $data['sku']    = '563/'.$meta['docrt_sku_id'][0].'/'.'35.73.03.1008/'.get_the_date('Y',$postID) ;

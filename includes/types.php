@@ -10,7 +10,7 @@ function docrt_register_custom_post_types() {
         'labels' => array(
             'name' => __( 'Buat Document', 'docrt'),
             'singular_name' => __( 'Documents', 'docrt' ),
-            'add_new' => __( 'Add New' ),
+            'add_new' => __( 'Buat Surat' ),
             'add_new_item' => __( 'Add New Document', 'docrt' ),
             'edit' => __( 'Edit', 'docrt' ),
             'edit_item' => __( 'Edit Document', 'docrt' ),
@@ -38,6 +38,7 @@ function docrt_register_custom_post_types() {
         'capability_type' => 'docrt',
         'map_meta_cap' => true
     ));
+
 }
 add_action('init', 'docrt_register_custom_post_types');
 

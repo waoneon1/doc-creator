@@ -27,6 +27,7 @@ function docrt_plugin_basename() {
 }
 
 include_once __DIR__ . '/includes/types.php';
+include_once __DIR__ . '/includes/types-perangkat.php';
 
 function docrt_include_admin() {
     if (is_admin()) {
