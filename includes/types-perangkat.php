@@ -8,7 +8,7 @@ function docrt_cpt_perangkat() {
     // RT/RW custom post type
     register_post_type('docrt-perangkat', array(
         'labels' => array(
-            'name' => __( 'Perangkat Desa', 'docrt'),
+            'name' => __( 'List RT', 'docrt'),
             'singular_name' => __( 'Perangkat Desa', 'docrt' ),
             'add_new' => __( 'Tambah Baru' ),
             'add_new_item' => __( 'Tambah Perangkat Desa', 'docrt' ),
@@ -39,6 +39,107 @@ function docrt_cpt_perangkat() {
 }
 add_action('init', 'docrt_cpt_perangkat');
 
+function hide_add_new_custom_type()
+{
+    global $submenu, $menu;
+
+    $menu[22][0] = 'Admin Tools';
+    unset($submenu['edit.php?post_type=docrt-perangkat'][10]);
+
+}
+add_action('admin_menu', 'hide_add_new_custom_type');
+
+/**
+ * Adds a submenu page under a custom post type parent.
+ */
+add_action('admin_menu', 'docrt_report_page');
+function docrt_report_page() {
+    add_submenu_page(
+        'edit.php?post_type=docrt-perangkat',
+        'Laporan',
+        'Laporan',
+        'read',
+        'docrt-report',
+        'docrt_report_page_callback'
+    );
+}
+
+/**
+ * Display callback for the submenu page.
+ */
+function docrt_report_page_callback() {
+    global $post;
+    //docrt_report_page_func();
+    ?>
+    <div class="wrap">
+        <h1>Laporan</h1>
+        <form name="post" action="edit.php?post_type=docrt-perangkat&page=docrt-report" method="post" id="post" autocomplete="off">
+        <?php printf('<input type="hidden" name="docrt_nonce_report" value="%s" />', wp_create_nonce(plugin_basename(__FILE__))); ?>
+        <?php echo date("Y-m-1", strtotime('NOW')); ?>
+        <?php echo date("Y-m-d", time()); ?>
+        <table class="wp-list-table widefat fixed striped pages laporan-tbl">
+            <tbody>
+                <tr>
+                    <td width="150"><strong>Jenis Surat</strong></td>
+                    <td width="20"> : </td>
+                    <td>
+                    <select name="docrt_report[jenis_surat]">
+                        <?php foreach (docrt_get_all_term() as $key => $v) {
+                            echo '<option value="'.$v->slug.'" >'.$v->name.'</option>';
+                        } ?>
+
+                    </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Sesudah Tanggal : </strong></td>
+                    <td> : </td>
+                    <td><input name="docrt_report[date_after]" type="date" class="docrt_inputs" id="docrt_perangkat_nama" value="<?php echo date("Y-m-d", strtotime('first day of this month')) ?>" /></td>
+                </tr>
+                <tr>
+                    <td><strong>Sebelum Tanggal</strong></td>
+                    <td> : </td>
+                    <td><input name="docrt_report[date_before]" type="date" class="docrt_inputs" id="docrt_perangkat_nama" value="<?php echo date("Y-m-d", time()) ?>" /></td>
+                </tr>
+                <tr>
+                    <td><input name="docrt_submit_report" type="submit" class="button button-primary button-large" id="make_report" value="Buat Laporan"></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+        </form>
+    </div>
+    <?php
+}
+
+add_action('wp_loaded', 'docrt_report_page_func', 40);
+function docrt_report_page_func() {
+
+    //   verify the nonce
+    if ( !isset($_POST['docrt_nonce_report']) || !wp_verify_nonce( $_POST['docrt_nonce_report'], plugin_basename(__FILE__) ) ) return;
+    //  don't try to save the data under autosave, ajax, or future post.
+    if ( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE ) return;
+    if ( defined('DOING_AJAX') && DOING_AJAX ) return;
+    if ( defined('DOING_CRON') && DOING_CRON ) return;
+
+    //  is the user allowed to edit the URL?
+    if ( ! current_user_can( 'edit_posts' ) || $_GET['post_type'] != 'docrt-perangkat' || $_GET['page'] != 'docrt-report' )
+        return;
+
+    $jenis_surat = $_POST['docrt_report']['jenis_surat'];
+    $date_after = $_POST['docrt_report']['date_after'];
+    $date_before = $_POST['docrt_report']['date_before'];
+
+    if ($date_after > $date_before) {
+       return;
+    } else {
+        wp_redirect(docrt_plugin_url() . '/includes/docrt_report_pdf_create.php?jenis_surat='.$jenis_surat.'&date_after='.$date_after.'&date_before='.$date_before);
+    }
+
+    exit;
+}
+
 /* * * * * * * * * * * * * * * *
  *    META BOX docrt-perangkat  *
  * * * * * * * * * * * * * * * */
@@ -56,12 +157,17 @@ function docrt_perangkat_desa_box() {
             <tr align="left">
                 <th><label class="diy-label" for="docrt_perangkat_nama">Nama</label></th>
                 <td> : </td>
-                <td><input name="docrt_perangkat[nama]" type="text" class="docrt_inputs" id="docrt_perangkat_nama" value="'.$meta['nama'].'" /></td>
+                <td><input name="docrt_perangkat[nama]" type="text" class="docrt_inputs" id="docrt_perangkat_nama" value="'.@$meta['nama'].'" /></td>
             </tr>
             <tr align="left">
                 <th><label class="diy-label" for="docrt_perangkat_rt">RT</label></th>
                 <td> : </td>
-                <td><input name="docrt_perangkat[RT]" type="text" class="docrt_inputs" id="docrt_perangkat_rt" value="'.$meta['RT'].'" /></td>
+                <td><input name="docrt_perangkat[RT]" type="text" class="docrt_inputs" id="docrt_perangkat_rt" value="'.@$meta['RT'].'" /></td>
+            </tr>
+            <tr align="left">
+                <th><label class="diy-label" for="docrt_perangkat_rw">RW</label></th>
+                <td> : </td>
+                <td><input name="docrt_perangkat[RW]" type="text" class="docrt_inputs" id="docrt_perangkat_rw" value="'.@$meta['RW'].'" /></td>
             </tr>';
         echo '</tbody>';
     echo '</table>';

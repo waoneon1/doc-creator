@@ -5,6 +5,7 @@
 
 table.docrt_tbl {
 	width: 100%;
+	display: inline-table;
 }
 
 .docrt_tbl th{
@@ -68,6 +69,12 @@ tr.strip td {
 }
 .docrt_pemohon_box.docrt_tbl_pindah input.pengikut_nama {
 	width: 190px;
+}
+
+/*LAPORAN TABLE*/
+.laporan-tbl td {
+	padding-left: 20px!important;
+    vertical-align: middle!important;
 }
 
 /*HIDDING ADMIN LIST*/
