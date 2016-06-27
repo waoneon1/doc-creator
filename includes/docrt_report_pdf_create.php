@@ -7,54 +7,92 @@ global $wpdb, $post;
 class MYPDF extends TCPDF {
 
     // Load table data from file
-    public function LoadData($file) {
-        // Read file lines
-        $lines = file($file);
-        $data = array();
-        foreach($lines as $line) {
-            $data[] = explode(';', chop($line));
+    public function LoadData($data, $mode = '',  $td = 'td') {
+        // Read data lines
+        if ($mode == 'number') {
+            foreach ($data as $key => $value) {
+                $key_val = $key + 1;
+                $return .= '<'.$td .'>'.$key_val.'</'.$td .'>';
+            }
+            return $return;
         }
-        return $data;
+
+        foreach ($data as $key => $value) {
+            if (is_array($value)) {
+                $attr = ' ';
+                foreach ($value as $key => $attrb) {
+                    if ($key != 'title') {
+                        $attr .= $key.' = "'.$attrb.'" ';
+                    }
+                }
+                $return .= '<'.$td .$attr.'>'.$value['title'].'</'.$td .'>';
+            } else {
+                $return .= '<'.$td .'>'.$value.'</'.$td .'>';
+            }
+        }
+        return $return;
     }
 
-    // Colored table
-    public function ColoredTable($header,$data) {
-        // Colors, line width and bold font
-        $this->SetFillColor(255, 0, 0);
-        $this->SetTextColor(255);
-        $this->SetDrawColor(128, 0, 0);
-        $this->SetLineWidth(0.3);
-        $this->SetFont('', 'B');
-        // Header
-        $w = array(10, 10, 10, 10, 10, 10, 10, 10, 10, 10);
-        $num_headers = count($header);
-        for($i = 0; $i < $num_headers; ++$i) {
-            $this->Cell($w[$i], 7, $header[$i], 1, 0, 'C', 1);
+    public function prepareData($post_data) {
+        foreach ($post_data as $key => $postval) {
+            $post_term = get_the_terms ($postval->ID,'surat');
+            $meta = get_post_meta( $postval->ID);
+
+            $prepare_data[$key][0] = array(
+                'title' => $key + 1,
+                'align' => 'center',
+            );
+            $prepare_data[$key][1] = date_i18n( 'j F Y', strtotime($postval->post_date));
+            $prepare_data[$key][2] = $this->docrt_no_surat($post_term[0]->slug,$meta,$postval->ID);
+            $prepare_data[$key][3] = $meta['docrt_form_nama'][0];
+            $prepare_data[$key][4] = $meta['docrt_form_umur'][0];
+            $prepare_data[$key][5] = $meta['docrt_form_agama'][0];
+            $prepare_data[$key][6] = $meta['docrt_form_pekerjaan'][0];
+            $prepare_data[$key][7] = $meta['docrt_form_sperkawinan'][0];
+            $prepare_data[$key][8] = $meta['docrt_form_alamat'][0];
+            $prepare_data[$key][9] = $meta['docrt_form_keperluan'][0];
+            $prepare_data[$key][10] = 'Blm tau diisi apa';
         }
-        $this->Ln();
-        // Color and font restoration
-        $this->SetFillColor(224, 235, 255);
-        $this->SetTextColor(0);
-        $this->SetFont('');
-        // Data
-        $fill = 0;
-        foreach($data as $row) {
-            $this->Cell(30 , 6, $row[0], 'LR', 0, 'L', $fill);
-            $this->Cell(30 , 6, $row[1], 'LR', 0, 'L', $fill);
-            $this->Cell(30 , 6, $row[2], 'LR', 0, 'R', $fill);
-            $this->Cell(30 , 6, $row[3], 'LR', 0, 'R', $fill);
-            $this->Cell(30 , 6, $row[4], 'LR', 0, 'R', $fill);
-            $this->Cell(30 , 6, $row[5], 'LR', 0, 'R', $fill);
-            $this->Cell(30 , 6, $row[6], 'LR', 0, 'R', $fill);
-            $this->Cell(30 , 6, $row[7], 'LR', 0, 'R', $fill);
-            $this->Cell(30 , 6, $row[8], 'LR', 0, 'R', $fill);
-            $this->Cell(30 , 6, $row[9], 'LR', 0, 'R', $fill);
-            $this->Cell(30 , 6, $row[10], 'LR', 0, 'R', $fill);
-            $this->Ln();
-            $fill=!$fill;
-        }
-        $this->Cell(array_sum($w), 0, '', 'T');
+        return $prepare_data;
     }
+
+    public function judul($teks1/*, $teks2, $teks3, $teks4, $teks5*/){
+        $this->Cell(10);
+        $this->SetFont('helvetica','B','10');
+        $this->Cell(0,5,$teks1,0,1,'C');
+/*        $this->Cell(10);
+        $this->Cell(0,5,$teks2,0,1,'C');
+        $this->Cell(10);
+        $this->SetFont('timesB','B','18');
+        $this->Cell(0,5,$teks3,0,1,'C');
+        $this->Cell(10);
+        $this->SetFont('timesI','I','11');
+        $this->Cell(0,5,$teks4,0,1,'C');
+        $this->Cell(10);
+        $this->Cell(0,8,$teks5,0,1,'C');*/
+    }
+
+    private function docrt_no_surat($type,$meta,$postID) {
+
+        $data['sku']    = '563/'.$meta['docrt_sku_id'][0].'/'.'35.73.03.1008/'.get_the_date('Y',$postID) ;
+        $data['skdu']   = '563/'.$meta['docrt_skdu_id'][0].'/'.'35.73.03.1008/'.get_the_date('Y',$postID) ;
+        $data['skd']    = '563/'.$meta['docrt_skd_id'][0].'/'.'35.73.03.1008/'.get_the_date('Y',$postID) ;
+        $data['skik']   = '435/'.$meta['docrt_skik_id'][0].'/'.'35.73.03.1008/'.get_the_date('Y',$postID) ;
+        $data['skck']   = '331/'.$meta['docrt_skck_id'][0].'/'.'35.73.03.1008/'.get_the_date('Y',$postID) ;
+        $data['skp']    = '475/'.$meta['docrt_skp_id'][0].'/'.'35.73.03.1008/'.get_the_date('Y',$postID) ;
+        $data['sktm']   = '581/'.$meta['docrt_sktm_id'][0].'/'.'35.73.03.1008/'.get_the_date('Y',$postID) ;
+        $data['skbpm']  = '474/'.$meta['docrt_skbpm_id'][0].'/'.'35.73.03.1008/'.get_the_date('Y',$postID) ;
+        $data['skel']   = '474.1/'.$meta['docrt_skel_id'][0].'/'.'35.73.03.1008/V/'.get_the_date('Y',$postID) ;
+        $data['skem']   = '474.3/'.$meta['docrt_skem_id'][0].'/'.'35.73.03.1008/V/'.get_the_date('Y',$postID) ;
+        $data['kk']     = $meta['docrt_kk_id'][0].'/'.get_the_date('Y',$postID) ;
+        $data['ktp']    = $meta['docrt_ktp_id'][0].'/'.get_the_date('Y',$postID) ;
+        $data['skai']   = '331/'.$meta['docrt_skp_id'][0].'/'.'35.73.03.1008/V/'.get_the_date('Y',$postID) ;
+        return $data[$type];
+    }
+
+
+
+
 }
 
 //get post from db
@@ -79,36 +117,75 @@ $query = new WP_Query( $args );
 
 // post data
 $post_data = $query->posts;
-//print_r($post_data); exit;
+
 
 // create new PDF document
 $pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
 // set document information
-
+$pdf->setPrintHeader(false);
+$pdf->setPrintFooter(false);
 // ---------------------------------------------------------
-
-// set font
-$pdf->SetFont('helvetica', '', 12);
-
 // add a page
 $pdf->AddPage('L', 'F4');
 
+$pdf->judul('Laporan "'.strtoupper($_GET['jenis_surat']).'" Periode '.date_i18n( 'j F Y', strtotime($_GET['date_after'])).' s/d '.date_i18n( 'j F Y', strtotime($_GET['date_before'])));
+$pdf->SetFont('helvetica', '', 10);
 // column titles
 
-$header = array('No','Tanggal','Nomor Register','Nama','Umur','Agama','Pekerjaan','Status','Alamat','Keperluan','Keterangan');
+$header = array(
+    array(
+        'title' => 'No',
+        'width' => '25',
+    ),
+    'Tanggal','Nomor Register',
+    array(
+        'title' => 'Nama',
+        'width' => '120',
+    ),
+    array(
+        'title' => 'Umur',
+        'width' => '35',
+    ),
+    'Agama','Pekerjaan',
+    array(
+        'title' => 'Status',
+        'width' => '50',
+    ),
+    array(
+        'title' => 'Alamat',
+        'width' => '130',
+    ),
+    array(
+        'title' => 'Keperluan',
+        'width' => '122',
+    ),
+    'Keterangan'
+);
 
-// data loading
-$data = array('No','Tanggal','Nomor Register','Nama','Umur','Agama','Pekerjaan','Status','Alamat','Keperluan','Keterangan');
 
-// print colored table
-$pdf->ColoredTable($header, $data);
+$tbl = '
+<table border="1" cellpadding="2" cellspacing="0" align="center">
+    <tr nobr="true">';
+        $tbl .= $pdf->LoadData($header, '', 'th');
+        $tbl .= '
+    </tr>
+    <tr>';
+        $tbl .= $pdf->LoadData($header,'number');
+        $tbl .= '
+    </tr>';
+    foreach ($pdf->prepareData($post_data) as $key => $value) {
 
+        $tbl .= '<tr align="left">';
+            $tbl .= $pdf->LoadData($value);
+        $tbl .= '</tr>';
+    }
+$tbl .= '</table>';
 // ---------------------------------------------------------
 
 // close and output PDF document
-$pdf->Output('example_011.pdf', 'I');
-
+$pdf->writeHTML($tbl, true, false, false, false, '');
+$pdf->Output('example_048.pdf', 'I');
 //============================================================+
 // END OF FILE
 //============================================================+

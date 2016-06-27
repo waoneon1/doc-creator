@@ -54,6 +54,13 @@ tr.strip/*:nth-child(odd)*/ {
 tr.strip td {
 	padding: 3px;
 }
+
+/*BUTTON*/
+.button-fullwidth {
+	margin-top: 10px!important;
+    text-align: center;
+    width: 100%;
+}
 /*PENGIKUT*/
 .docrt_pemohon_box.docrt_tbl_pindah select.pengikut_jk {
 	width: 35px;

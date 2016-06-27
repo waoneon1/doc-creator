@@ -73,10 +73,9 @@ function docrt_report_page_callback() {
     ?>
     <div class="wrap">
         <h1>Laporan</h1>
-        <form name="post" action="edit.php?post_type=docrt-perangkat&page=docrt-report" method="post" id="post" autocomplete="off">
+        <form name="post" action="edit.php?post_type=docrt-perangkat&page=docrt-report" method="post" id="post" autocomplete="off" target="_blank">
         <?php printf('<input type="hidden" name="docrt_nonce_report" value="%s" />', wp_create_nonce(plugin_basename(__FILE__))); ?>
-        <?php echo date("Y-m-1", strtotime('NOW')); ?>
-        <?php echo date("Y-m-d", time()); ?>
+
         <table class="wp-list-table widefat fixed striped pages laporan-tbl">
             <tbody>
                 <tr>

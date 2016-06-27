@@ -33,7 +33,7 @@ function docrt_skdu_content($param, $meta, $post_term) {
             </p></td>
         </tr>
         <tr>
-            <td width="100%" colspan="3"><p align="justify">'.$space.'Surat keterangan ini beralku 6(Enam) bulan terhitung sejak surat dikeluarkan.
+            <td width="100%" colspan="3"><p align="justify">'.$space.'Surat keterangan ini berlaku 6(Enam) bulan terhitung sejak surat dikeluarkan.
             </p></td>
         </tr>
         <tr>

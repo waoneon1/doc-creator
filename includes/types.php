@@ -84,7 +84,7 @@ function docrt_register_metaboxes() {
     add_meta_box( 'docrt_pemohon',__( 'Data Pemohon', 'docrt' ), 'docrt_pemohon_box', 'docrt-document', 'normal', 'default');
     add_meta_box( 'docrt_type_surat', __( 'Tipe Surat', 'docrt' ), 'docrt_type_surat_box', 'docrt-document', 'side', 'low' );
     add_meta_box( 'docrt_ttd', __( 'Tanda Tangan', 'docrt' ), 'docrt_ttd_box', 'docrt-document', 'side', 'low' );
-    add_meta_box( 'docrt_buat_pdf', __( 'Buat PDF', 'docrt' ), 'docrt_buat_pdf_box', 'docrt-document', 'side', 'low' );
+    //add_meta_box( 'docrt_buat_pdf', __( 'Buat PDF', 'docrt' ), 'docrt_buat_pdf_box', 'docrt-document', 'side', 'low' );
 }
 
 function docrt_get_all_term($tax = 'surat') {
@@ -151,9 +151,7 @@ function docrt_ttd_box($post) {
     }
     echo '</table>';
 }
-function docrt_buat_pdf_box($post) {
-    echo '<a href="'.docrt_plugin_url() .'/includes/docrt_pdf_create.php?pid='.$post->ID.'" class="button button-primary button-large" target="_blank">Buat PDF</a>';
-}
+
 // END METABOX +++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 // SAVE METABOX

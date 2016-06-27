@@ -56,23 +56,14 @@ function bbox_event_table_content( $column_name, $post_id ) {
 }
 
 /*****************************************************************************************
-* Only display author`s own post
+* button Buat PDF di publish metabox
 * docrt-document
 *****************************************************************************************/
-/*function docrt_posts_for_current_author($query) {
-    global $pagenow;
-    $current_screen = get_current_screen();
-    if ( $current_screen->post_type == 'docrt-document' ) {
-
-        if( 'edit.php' != $pagenow || !$query->is_admin )
-            return $query;
-
-        if( !current_user_can( 'edit_others_posts' ) ) {
-            global $user_ID;
-            $query->set('author', $user_ID );
-        }
-        return $query;
+add_action( 'post_submitbox_misc_actions', 'article_or_box' );
+add_action( 'save_post', 'save_article_or_box' );
+function article_or_box() {
+    global $post;
+    if (get_post_type($post) == 'docrt-document') {
+         echo '<a href="'.docrt_plugin_url() .'/includes/docrt_pdf_create.php?pid='.$post->ID.'" class="button button-primary button-large button-fullwidth" target="_blank">Buat PDF</a>';
     }
-
 }
-add_filter('pre_get_posts', 'docrt_posts_for_current_author');*/
