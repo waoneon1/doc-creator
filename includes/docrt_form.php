@@ -2,10 +2,6 @@
 $meta = get_post_meta( $post->ID);
 $docrt_get_all_term = docrt_get_all_term();
 
-/*echo $meta['docrt_sku_id'][0];
-echo " string ";
-echo get_option('docrt_sku');
-echo $sku_id;*/
 echo '<table class="docrt_pemohon_box docrt_tbl docrt_tp_sku">';
     foreach ($docrt_get_all_term as $key => $t) {
         if (isset($meta['docrt_'.$t->slug.'_id'][0])) {

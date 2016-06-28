@@ -252,27 +252,27 @@ function docrt_pdf_template_form($type,$meta,$postID) {
             'Berlaku Hingga' => date_i18n( 'j F Y', strtotime($meta['docrt_form_tgl_berlaku'][0])),
         ),
     );
-    $data['skai'] = array(
-        'a_skai' => array(
-            'Nama' => $meta['docrt_form_nama'][0],
-            'Jenis Kelamin' => $meta['docrt_form_jk'][0],
-            'Tempat Tanggal Lahir' => $meta['docrt_form_ttl'][0],
-            'Kebangsaan/Suku' => $meta['docrt_form_kebangsaan'][0],
-            'Agama' => $meta['docrt_form_agama'][0],
-            'Status Perkawinan' => $meta['docrt_form_sperkawinan'][0],
-            'Nomor KK' => $meta['docrt_form_nokk'][0],
-            'Nomor Register' => docrt_no_surat($type,$meta,$postID),
-            'Nomor KTP' => $meta['docrt_form_nonik'][0],
-            'Pekerjaan' => $meta['docrt_form_pekerjaan'][0],
-            'Alamat' => $meta['docrt_form_alamat'][0],
-            'Pendidikan' => $meta['docrt_form_pendidikan'][0],
-            'Keperluan' => $meta['docrt_form_keperluan'][0],
-            'Tujuan' => $meta['docrt_form_tujuan'][0],
+    // $data['skai'] = array(
+    //     'a_skai' => array(
+    //         'Nama' => $meta['docrt_form_nama'][0],
+    //         'Jenis Kelamin' => $meta['docrt_form_jk'][0],
+    //         'Tempat Tanggal Lahir' => $meta['docrt_form_ttl'][0],
+    //         'Kebangsaan/Suku' => $meta['docrt_form_kebangsaan'][0],
+    //         'Agama' => $meta['docrt_form_agama'][0],
+    //         'Status Perkawinan' => $meta['docrt_form_sperkawinan'][0],
+    //         'Nomor KK' => $meta['docrt_form_nokk'][0],
+    //         'Nomor Register' => docrt_no_surat($type,$meta,$postID),
+    //         'Nomor KTP' => $meta['docrt_form_nonik'][0],
+    //         'Pekerjaan' => $meta['docrt_form_pekerjaan'][0],
+    //         'Alamat' => $meta['docrt_form_alamat'][0],
+    //         'Pendidikan' => $meta['docrt_form_pendidikan'][0],
+    //         'Keperluan' => $meta['docrt_form_keperluan'][0],
+    //         'Tujuan' => $meta['docrt_form_tujuan'][0],
 
-            'Berlaku Tanggal' => date_i18n( 'j F Y', strtotime($meta['docrt_form_tgl_berlaku'][0])),
-            'Keterangan RT No.' => $meta['docrt_form_ketRT'][0],
-        )
-    );
+    //         'Berlaku Tanggal' => date_i18n( 'j F Y', strtotime($meta['docrt_form_tgl_berlaku'][0])),
+    //         'Keterangan RT No.' => $meta['docrt_form_ketRT'][0],
+    //     )
+    // );
 
     // altering skp and skai
 
