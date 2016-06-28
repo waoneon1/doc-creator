@@ -33,6 +33,7 @@ function docrt_pdf_template_form($type,$meta,$postID) {
         'b' => array(
             'docrt_form_alamat_usaha' => $meta['docrt_form_alamat_usaha'][0],
             'docrt_form_ketRT' => $meta['docrt_form_ketRT'][0],
+            'docrt_form_rtrw_usaha' => $meta['docrt_form_rtrw_usaha'][0],
             'docrt_form_tgl' => date_i18n( 'j F Y', strtotime($meta['docrt_form_tgl'][0])),
             'docrt_form_keperluan' => $meta['docrt_form_keperluan'][0],
             'docrt_form_ket_usaha' => $meta['docrt_form_ket_usaha'][0],

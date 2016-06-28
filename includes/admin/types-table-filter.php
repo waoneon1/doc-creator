@@ -22,7 +22,10 @@ add_filter('page_row_actions', 'docrt_remove_view_link', 10, 2);
 
 function docrt_create_pdf($actions, $page_object)
 {
-   $actions['create_pdf'] = '<a href="'.docrt_plugin_url() .'/includes/docrt_pdf_create.php?pid='.$page_object->ID.'" class="create_pdf" target="_blank">' . __('Buat PDF') . '</a>';
+    global $post;
+    if (get_post_type($post) == 'docrt-document') {
+        $actions['create_pdf'] = '<a href="'.docrt_plugin_url() .'/includes/docrt_pdf_create.php?pid='.$page_object->ID.'" class="create_pdf" target="_blank">' . __('Buat PDF') . '</a>';
+    }
 
    return $actions;
 }
@@ -60,10 +63,55 @@ function bbox_event_table_content( $column_name, $post_id ) {
 * docrt-document
 *****************************************************************************************/
 add_action( 'post_submitbox_misc_actions', 'article_or_box' );
-add_action( 'save_post', 'save_article_or_box' );
 function article_or_box() {
     global $post;
     if (get_post_type($post) == 'docrt-document') {
          echo '<a href="'.docrt_plugin_url() .'/includes/docrt_pdf_create.php?pid='.$post->ID.'" class="button button-primary button-large button-fullwidth" target="_blank">Buat PDF</a>';
     }
 }
+/*****************************************************************************************
+* Hide Add New Sub menu dan Rename Submenu
+* docrt-document
+*****************************************************************************************/
+/*function docrt_document_rename()
+{
+    global $submenu, $menu;
+
+    $menu[22][0] = 'Admin Tools';
+
+}
+add_action('admin_menu', 'hide_add_new_custom_type');*/
+
+/*****************************************************************************************
+* Title Default Untuk custom post type docrt-perangkat
+* docrt-perangkat
+*****************************************************************************************/
+add_filter('wp_insert_post_data', 'docrt_change_title');
+function docrt_change_title($data)
+{
+    if('docrt-perangkat' != $data['post_type'])
+        return $data;
+
+    $post = $_POST;
+
+    $data['post_title'] = $_POST['docrt_perangkat']['jabatan'].' '.$_POST['docrt_perangkat']['no_jabatan'].' - '.$_POST['docrt_perangkat']['nama'];
+
+    return $data;
+}
+
+/*****************************************************************************************
+* Hide Add New Sub menu dan Rename Perangkat
+* docrt-perangkat
+*****************************************************************************************/
+function hide_add_new_custom_type()
+{
+    global $submenu, $menu;
+
+    $submenu['edit.php?post_type=docrt-document'][5][0] = 'List Document';
+
+    $menu[22][0] = 'Admin Tools';
+    unset($submenu['edit.php?post_type=docrt-perangkat'][10]);
+
+}
+add_action('admin_menu', 'hide_add_new_custom_type');
+

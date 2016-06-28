@@ -193,7 +193,7 @@ echo '<table class="docrt_pemohon_box docrt_tbl docrt_tp_sku">';
         <td><textarea rows="3" name="docrt_form_alamat" class="docrt_inputs" id="docrt_form_alamat">'.$meta['docrt_form_alamat'][0].'</textarea>
         </td>
     </tr>
-     <tr align="left" class="docrt_form_rtrw_tr docrt_form">
+    <tr align="left" class="docrt_form_rtrw_tr docrt_form">
         <th><label class="diy-label" for="docrt_form_rtrw">RT / RW</label></th>
         <td> : </td>
         <td><input name="docrt_form_rtrw" type="text" class="docrt_inputs" id="docrt_form_rtrw" value="'.$meta['docrt_form_rtrw'][0].'"/></td>
@@ -342,6 +342,11 @@ echo '<table class="docrt_pemohon_box docrt_tbl docrt_tp_sku">';
         <th><label class="diy-label" for="docrt_form_alamat_usaha">Alamat Usaha</label></th>
         <td> : </td>
         <td><input name="docrt_form_alamat_usaha" type="text" class="docrt_inputs" id="docrt_form_alamat_usaha" value="'.$meta['docrt_form_alamat_usaha'][0].'"/></td>
+    </tr>
+    <tr align="left" class="docrt_form_rtrw_usaha_tr docrt_form">
+        <th><label class="diy-label" for="docrt_form_rtrw_usaha">RT / RW</label></th>
+        <td> : </td>
+        <td><input name="docrt_form_rtrw_usaha" type="text" class="docrt_inputs" id="docrt_form_rtrw_usaha" value="'.$meta['docrt_form_rtrw_usaha'][0].'"/></td>
     </tr>
     <tr align="left" class="docrt_form_ket_usaha_tr docrt_form">
         <th><label class="diy-label" for="docrt_form_ket_usaha">Keterangan Usaha</label></th>

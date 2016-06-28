@@ -10,7 +10,7 @@ function docrt_register_custom_post_types() {
         'labels' => array(
             'name' => __( 'Buat Document', 'docrt'),
             'singular_name' => __( 'Documents', 'docrt' ),
-            'add_new' => __( 'Buat Surat' ),
+            'add_new' => __( 'Buat Document' ),
             'add_new_item' => __( 'Add New Document', 'docrt' ),
             'edit' => __( 'Edit', 'docrt' ),
             'edit_item' => __( 'Edit Document', 'docrt' ),
@@ -48,6 +48,10 @@ add_action( 'init', 'docrt_doc_taxonomies', 0 );
 // create two taxonomies, genres and writers for the post type "book"
 function docrt_doc_taxonomies() {
     // Add new taxonomy, make it hierarchical (like categories)
+    $show_ui = false;
+    if (current_user_can('manage_options'))
+        $show_ui = true;
+
     $labels = array(
         'name'              => _x( 'Jenis Surat', 'taxonomy general name' ),
         'singular_name'     => _x( 'Surat', 'taxonomy singular name' ),
@@ -65,7 +69,7 @@ function docrt_doc_taxonomies() {
     $args = array(
         'hierarchical'      => true,
         'labels'            => $labels,
-        'show_ui'           => false,
+        'show_ui'           => $show_ui,
         'show_admin_column' => true,
         'query_var'         => true,
         'rewrite'           => array( 'slug' => 'surat' ),
@@ -113,7 +117,9 @@ function docrt_type_surat_box($post) {
       'orderby' => 'name',
       'order' => 'ASC'
     );
-
+    $type_surat_allow = array(
+        'kk','ktp','skel','skem','skbpm','skck','skd','skdu','skik','skp','sktm','sku'
+    );
     $tax_terms = get_terms($taxonomy,$term_args);
     $post_term = get_the_terms ($post->ID,$taxonomy );
 
@@ -125,11 +131,13 @@ function docrt_type_surat_box($post) {
             </tr>';
     } else {
         foreach ($tax_terms as $key => $v) {
-            $checked = ($post_term[0]->term_id == $v->term_id) ? 'checked' : '';
-            echo '<tr align="left" class="strip">
-                <th><input type="radio" name="tax_input[surat][]" value="'.$v->term_id.'" data-typesurat="'.$v->slug.'" '.$checked.' required></th>
-                <td>'.$v->name.'</td>
-            </tr>';
+            if (in_array($v->slug, $type_surat_allow)) {
+                $checked = ($post_term[0]->term_id == $v->term_id) ? 'checked' : '';
+                echo '<tr align="left" class="strip">
+                    <th><input type="radio" name="tax_input[surat][]" value="'.$v->term_id.'" data-typesurat="'.$v->slug.'" '.$checked.' required></th>
+                    <td>'.$v->name.'</td>
+                </tr>';
+            }
         }
     }
     echo '</table>';
@@ -234,6 +242,7 @@ function docrt_get_form_surat($type_surat = 'sku') {
             'docrt_form_hubungan',
             'docrt_form_nama_usaha',
             'docrt_form_alamat_usaha',
+            'docrt_form_rtrw_usaha',
             'docrt_form_nama_noinduk_lembaga',
             'docrt_form_noinduk_lembaga',
             'docrt_form_nama_lembaga',

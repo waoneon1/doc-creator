@@ -39,29 +39,21 @@ function docrt_cpt_perangkat() {
 }
 add_action('init', 'docrt_cpt_perangkat');
 
-function hide_add_new_custom_type()
-{
-    global $submenu, $menu;
-
-    $menu[22][0] = 'Admin Tools';
-    unset($submenu['edit.php?post_type=docrt-perangkat'][10]);
-
-}
-add_action('admin_menu', 'hide_add_new_custom_type');
-
 /**
  * Adds a submenu page under a custom post type parent.
  */
 add_action('admin_menu', 'docrt_report_page');
 function docrt_report_page() {
-    add_submenu_page(
-        'edit.php?post_type=docrt-perangkat',
-        'Laporan',
-        'Laporan',
-        'read',
-        'docrt-report',
-        'docrt_report_page_callback'
-    );
+    if (current_user_can('manage_options')) {
+         add_submenu_page(
+            'edit.php?post_type=docrt-perangkat',
+            'Laporan',
+            'Laporan',
+            'read',
+            'docrt-report',
+            'docrt_report_page_callback'
+        );
+    }
 }
 
 /**
@@ -154,19 +146,67 @@ function docrt_perangkat_desa_box() {
         echo '<tbody class="">';
             echo '
             <tr align="left">
-                <th><label class="diy-label" for="docrt_perangkat_nama">Nama</label></th>
+                <th><label class="diy-label" for="docrt_perangkat_nama">Nama Lengkap</label></th>
                 <td> : </td>
                 <td><input name="docrt_perangkat[nama]" type="text" class="docrt_inputs" id="docrt_perangkat_nama" value="'.@$meta['nama'].'" /></td>
             </tr>
             <tr align="left">
-                <th><label class="diy-label" for="docrt_perangkat_rt">RT</label></th>
+                <th><label class="diy-label" for="docrt_perangkat_tl">Tanggal Lahir</label></th>
                 <td> : </td>
-                <td><input name="docrt_perangkat[RT]" type="text" class="docrt_inputs" id="docrt_perangkat_rt" value="'.@$meta['RT'].'" /></td>
+                <td><input name="docrt_perangkat[tl]" type="date" class="docrt_inputs" id="docrt_perangkat_tl" value="'.@$meta['tl'].'" /></td>
             </tr>
             <tr align="left">
-                <th><label class="diy-label" for="docrt_perangkat_rw">RW</label></th>
+                <th><label class="diy-label" for="docrt_perangkat_umur">Umur</label></th>
                 <td> : </td>
-                <td><input name="docrt_perangkat[RW]" type="text" class="docrt_inputs" id="docrt_perangkat_rw" value="'.@$meta['RW'].'" /></td>
+                <td><input name="docrt_perangkat[umur]" type="number" class="docrt_inputs" id="docrt_perangkat_umur" value="'.@$meta['umur'].'" /></td>
+            </tr>
+            <tr align="left">
+                <th><label class="diy-label" for="docrt_perangkat_pekerjaan">Pekerjaan</label></th>
+                <td> : </td>
+                <td><input name="docrt_perangkat[pekerjaan]" type="text" class="docrt_inputs" id="docrt_perangkat_pekerjaan" value="'.@$meta['pekerjaan'].'" /></td>
+            </tr>
+            <tr align="left">
+                <th><label class="diy-label" for="docrt_perangkat_telepon">Telepon</label></th>
+                <td> : </td>
+                <td><input name="docrt_perangkat[telepon]" type="text" class="docrt_inputs" id="docrt_perangkat_telepon" value="'.@$meta['telepon'].'" /></td>
+            </tr>
+            <tr align="left">
+                <th><label class="diy-label" for="docrt_perangkat_alamat">Alamat</label></th>
+                <td> : </td>
+                <td>
+                    <textarea rows="3" name="docrt_perangkat[alamat]" class="docrt_inputs" id="docrt_perangkat_alamat">'.@$meta['alamat'].'</textarea>.
+                </td>
+            </tr>
+            <tr align="left">
+                <th><label class="diy-label" for="docrt_perangkat_kelurahan"> - Desa/Kelurahan</label></th>
+                <td> : </td>
+                <td><input name="docrt_perangkat[kelurahan]" type="text" class="docrt_inputs" id="docrt_perangkat_kelurahan" value="'.@$meta['kelurahan'].'" /></td>
+            </tr>
+            <tr align="left">
+                <th><label class="diy-label" for="docrt_perangkat_kecamatan"> - Kecamatan</label></th>
+                <td> : </td>
+                <td><input name="docrt_perangkat[kecamatan]" type="text" class="docrt_inputs" id="docrt_perangkat_kecamatan" value="'.@$meta['kecamatan'].'" /></td>
+            </tr>
+            <tr align="left">
+                <th><label class="diy-label" for="docrt_perangkat_kota"> - Kab/Kota</label></th>
+                <td> : </td>
+                <td><input name="docrt_perangkat[kota]" type="text" class="docrt_inputs" id="docrt_perangkat_kota" value="'.@$meta['kota'].'" /></td>
+            </tr>
+            <tr align="left">
+                <th><label class="diy-label" for="docrt_perangkat_provinsi"> - Provinsi</label></th>
+                <td> : </td>
+                <td><input name="docrt_perangkat[provinsi]" type="text" class="docrt_inputs" id="docrt_perangkat_provinsi" value="'.@$meta['provinsi'].'" /></td>
+            </tr>
+            <tr align="left">
+                <th><label class="diy-label" for="docrt_perangkat_jabatan">Jabatan</label></th>
+                <td> : </td>
+                <td>
+                <select class="pengikut_jk" name="docrt_perangkat[jabatan]" id="docrt_perangkat_jabatan" >
+                  <option value="RT" >RT</option>
+                  <option value="RW" '.((@$meta['jabatan'] == 'RW') ? 'selected' : '').'>RW</option>
+                </select>
+                <input name="docrt_perangkat[no_jabatan]" type="text" class="docrt_inputs docrt_side_input" id="docrt_perangkat_no_jabatan" value="'.@$meta['no_jabatan'].'" />
+                </td>
             </tr>';
         echo '</tbody>';
     echo '</table>';

@@ -174,10 +174,22 @@ $tbl = '
         $tbl .= $pdf->LoadData($header,'number');
         $tbl .= '
     </tr>';
-    foreach ($pdf->prepareData($post_data) as $key => $value) {
-
-        $tbl .= '<tr align="left">';
-            $tbl .= $pdf->LoadData($value);
+    if ($pdf->prepareData($post_data)) {
+       foreach ($pdf->prepareData($post_data) as $key => $value) {
+            $tbl .= '<tr align="left">';
+                $tbl .= $pdf->LoadData($value);
+            $tbl .= '</tr>';
+        }
+    } else {
+        $tbl .= '<tr align="center">';
+            $tbl .= $pdf->LoadData(
+                array(
+                    array(
+                        'colspan' => sizeof($header),
+                        'title' => 'Tidak ditemukan pembuatan document pada periode ini.',
+                    )
+                )
+            );
         $tbl .= '</tr>';
     }
 $tbl .= '</table>';

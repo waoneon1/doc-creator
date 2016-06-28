@@ -45,6 +45,11 @@ table.docrt_tbl {
     width: 100%;
     padding: 0;
 }
+.docrt_pemohon_box .docrt_side_input {
+    width: 100px;
+    padding: 7px;
+    margin-left: 4px;
+}
 tr.strip/*:nth-child(odd)*/ {
 	background-color: #ECECEC;
     color: #8F8F8F;

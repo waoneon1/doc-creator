@@ -135,6 +135,7 @@ jQuery(document).ready(function($) {
                 'docrt_form_nama_usaha',
                 'docrt_form_alamat_usaha',
                 'docrt_form_ketRT',
+                'docrt_form_rtrw_usaha',
                 'docrt_form_tgl',
                 'docrt_form_keperluan',
                 'docrt_form_ket_usaha'
