@@ -39,6 +39,13 @@ class pdf extends TCPDF {
         $this->SetLineWidth(0);
         $this->Line(20,41,190,41);
     }
+
+    function garis2(){
+        $this->SetLineWidth(1);
+        $this->Line(15,35,195,35);
+        $this->SetLineWidth(0);
+        $this->Line(15,36,195,36);
+    }
 }
 
 // Prosess =============================================================
@@ -51,23 +58,17 @@ $post_tr = get_the_terms ($_GET['pid'],'surat' );
 
 // kondisi kusus saat skem dan skel
 if ($post_tr[0]->slug == 'skem' || $post_tr[0]->slug == 'skel') {
-    docrt_get_content_pdf_skem_skel($pdf, $_GET['pid'], $post_tr);
+    docrt_get_content_pdf2($pdf, $_GET['pid'], $post_tr);
 
     // kondisi kusus saat skel
     if ($post_tr[0]->slug == 'skel') {
-        $post_tr[0]->slug = 'skkel';
-        $post_tr[0]->name = 'surat keterangan kelahiran';
-        //docrt_get_header_pdf($pdf,$_GET['pid'], $post_tr);
-        docrt_get_content_pdf_skem_skel($pdf, $_GET['pid'], $post_tr, 'skel');
+        docrt_skkel_content($pdf,$_GET['pid'],$post_tr);
     }
-
     // kondisi kusus saat skem
     if ($post_tr[0]->slug == 'skem') {
-        $post_tr[0]->slug = 'skkem';
-        $post_tr[0]->name = 'surat keterangan kematian';
-        //docrt_get_header_pdf($pdf,$_GET['pid'], $post_tr);
-        docrt_get_content_pdf_skem_skel($pdf, $_GET['pid'], $post_tr, 'skel');
+        docrt_skkem_content($pdf,$_GET['pid'],$post_tr);
     }
+
 } else {
     docrt_get_header_pdf($pdf,$_GET['pid'], $post_tr);
     docrt_get_content_pdf($pdf, $_GET['pid'], $post_tr);
@@ -141,14 +142,13 @@ function docrt_get_content_pdf($pdf, $postID, $post_term, $main_doc = '') {
     $tbl = docrt_content_by_type($param,$meta,$post_term);
 
     // footer
-   // $pdf->SetFont('times','','9');
     $tbl .= docrt_pdf_footer($meta,$postID,$post_term[0]->slug);
 
     $pdf->SetCellPadding(0);
     $pdf->writeHTML($tbl, true, false, false, false, '');
 }
 
-function docrt_get_content_pdf_skem_skel($pdf, $postID, $post_term, $main_doc = '') {
+function docrt_get_content_pdf2($pdf, $postID, $post_term, $main_doc = '') {
     $pdf->setPrintHeader(false);
     $pdf->setPrintFooter(false);
 
@@ -161,8 +161,8 @@ function docrt_get_content_pdf_skem_skel($pdf, $postID, $post_term, $main_doc = 
     $pdf->SetMargins(10, 10, 10, true);
 
     if ($post_term[0]->slug == 'skkel' || $post_term[0]->slug == 'skkem') {
-        $pdf->AddPage('P', 'F4');
     } else {
+        // jika bukan skkel dan skkem jadikan landscape soalnya skkel dan skkem harus potrait dan butuh header
         $pdf->AddPage('L', 'F4');
     }
 

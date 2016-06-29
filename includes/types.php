@@ -209,6 +209,7 @@ function pretty_print($data){
     echo "</pre>";
 }
 
+
 function docrt_get_form_surat($type_surat = 'sku') {
     $fields = array(
     'docrt_jenis_ttd',
@@ -238,6 +239,7 @@ function docrt_get_form_surat($type_surat = 'sku') {
     'docrt_form_kota',
     'docrt_form_provinsi',
     'docrt_form_tgl',
+    'docrt_form_tlp',
             'docrt_form_nama_mati',
             'docrt_form_hubungan',
             'docrt_form_nama_usaha',
@@ -269,6 +271,16 @@ function docrt_get_form_surat($type_surat = 'sku') {
         'docrt_form_kebangsaan_ayah',
         'docrt_form_nokk_ayah',
         'docrt_form_nonik_ayah',
+        'docrt_form_nonik_ibu',
+        'docrt_form_pekerjaan_ibu',
+        'docrt_form_tlp_ibu',
+        'docrt_form_alamat_ayah',
+        'docrt_form_pekerjaan_ayah',
+        'docrt_form_tlp_ayah',
+        'docrt_form_anakke',
+        'docrt_form_nonik_bayi',
+        'docrt_form_jk_bayi',
+        'docrt_form_kota_bayi',
 
     );
 
