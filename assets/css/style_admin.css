@@ -15,6 +15,9 @@ table.docrt_tbl {
 .docrt_tbl input, .docrt_tbl textarea {
 	width: 80%;
 }
+.docrt_tbl input.half {
+    width: 39.5%;
+}
 
 .docrt_pemohon_box {
 	display: block;
@@ -58,6 +61,21 @@ tr.strip/*:nth-child(odd)*/ {
 }
 tr.strip td {
 	padding: 3px;
+}
+
+::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+	opacity:  0.5;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+
+   opacity:  0.5;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+
+   opacity:  0.5;
+}
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+	opacity:  0.5;
 }
 
 /*BUTTON*/

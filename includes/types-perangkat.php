@@ -141,6 +141,8 @@ function docrt_register_metaboxes_perangkat() {
 function docrt_perangkat_desa_box() {
     global $post;
     $meta = get_post_meta($post->ID, 'docrt_perangkat', true);
+    $docrt_saksi = docrt_get_saksi_form('',@$meta['jabatan_rw']);
+
     printf( '<input type="hidden" name="docrt_nonce" value="%s" />', wp_create_nonce( plugin_basename(__FILE__) ) );
     echo '<table class="docrt_pemohon_box docrt_tbl docrt_tp_sku">';
         echo '<tbody class="">';
@@ -151,14 +153,14 @@ function docrt_perangkat_desa_box() {
                 <td><input name="docrt_perangkat[nama]" type="text" class="docrt_inputs" id="docrt_perangkat_nama" value="'.@$meta['nama'].'" /></td>
             </tr>
             <tr align="left">
+                <th><label class="diy-label" for="docrt_perangkat_nik">NIK</label></th>
+                <td> : </td>
+                <td><input name="docrt_perangkat[nik]" type="text" class="docrt_inputs" id="docrt_perangkat_nik" value="'.@$meta['nik'].'" /></td>
+            </tr>
+            <tr align="left">
                 <th><label class="diy-label" for="docrt_perangkat_tl">Tanggal Lahir</label></th>
                 <td> : </td>
                 <td><input name="docrt_perangkat[tl]" type="date" class="docrt_inputs" id="docrt_perangkat_tl" value="'.@$meta['tl'].'" /></td>
-            </tr>
-            <tr align="left">
-                <th><label class="diy-label" for="docrt_perangkat_umur">Umur</label></th>
-                <td> : </td>
-                <td><input name="docrt_perangkat[umur]" type="number" class="docrt_inputs" id="docrt_perangkat_umur" value="'.@$meta['umur'].'" /></td>
             </tr>
             <tr align="left">
                 <th><label class="diy-label" for="docrt_perangkat_pekerjaan">Pekerjaan</label></th>
@@ -178,39 +180,43 @@ function docrt_perangkat_desa_box() {
                 </td>
             </tr>
             <tr align="left">
-                <th><label class="diy-label" for="docrt_perangkat_kelurahan"> - Desa/Kelurahan</label></th>
-                <td> : </td>
-                <td><input name="docrt_perangkat[kelurahan]" type="text" class="docrt_inputs" id="docrt_perangkat_kelurahan" value="'.@$meta['kelurahan'].'" /></td>
-            </tr>
-            <tr align="left">
-                <th><label class="diy-label" for="docrt_perangkat_kecamatan"> - Kecamatan</label></th>
-                <td> : </td>
-                <td><input name="docrt_perangkat[kecamatan]" type="text" class="docrt_inputs" id="docrt_perangkat_kecamatan" value="'.@$meta['kecamatan'].'" /></td>
-            </tr>
-            <tr align="left">
-                <th><label class="diy-label" for="docrt_perangkat_kota"> - Kab/Kota</label></th>
-                <td> : </td>
-                <td><input name="docrt_perangkat[kota]" type="text" class="docrt_inputs" id="docrt_perangkat_kota" value="'.@$meta['kota'].'" /></td>
-            </tr>
-            <tr align="left">
-                <th><label class="diy-label" for="docrt_perangkat_provinsi"> - Provinsi</label></th>
-                <td> : </td>
-                <td><input name="docrt_perangkat[provinsi]" type="text" class="docrt_inputs" id="docrt_perangkat_provinsi" value="'.@$meta['provinsi'].'" /></td>
-            </tr>
-            <tr align="left">
                 <th><label class="diy-label" for="docrt_perangkat_jabatan">Jabatan</label></th>
                 <td> : </td>
                 <td>
-                <select class="pengikut_jk" name="docrt_perangkat[jabatan]" id="docrt_perangkat_jabatan" >
+                <select class="docrt_inputs" name="docrt_perangkat[jabatan]" id="docrt_perangkat_jabatan" >
                   <option value="RT" >RT</option>
                   <option value="RW" '.((@$meta['jabatan'] == 'RW') ? 'selected' : '').'>RW</option>
                 </select>
-                <input name="docrt_perangkat[no_jabatan]" type="text" class="docrt_inputs docrt_side_input" id="docrt_perangkat_no_jabatan" value="'.@$meta['no_jabatan'].'" />
+                <input name="docrt_perangkat[no_jabatan]" type="text" class="docrt_inputs half" id="docrt_perangkat_no_jabatan" value="'.@$meta['no_jabatan'].'" />
+
+                <select class="docrt_inputs" name="docrt_perangkat[jabatan_rw]" id="docrt_perangkat_jabatan_rw" >
+                  '.$docrt_saksi['RW'].'
+                </select>
+                <input name="docrt_perangkat[no_jabatan_rw]" type="hidden" id="docrt_perangkat_no_jabatan_rw" value="" />
                 </td>
             </tr>';
         echo '</tbody>';
     echo '</table>';
-
+    /*<tr align="left">
+        <th><label class="diy-label" for="docrt_perangkat_kelurahan"> - Desa/Kelurahan</label></th>
+        <td> : </td>
+        <td><input name="docrt_perangkat[kelurahan]" type="text" class="docrt_inputs" id="docrt_perangkat_kelurahan" value="'.@$meta['kelurahan'].'" /></td>
+    </tr>
+    <tr align="left">
+        <th><label class="diy-label" for="docrt_perangkat_kecamatan"> - Kecamatan</label></th>
+        <td> : </td>
+        <td><input name="docrt_perangkat[kecamatan]" type="text" class="docrt_inputs" id="docrt_perangkat_kecamatan" value="'.@$meta['kecamatan'].'" /></td>
+    </tr>
+    <tr align="left">
+        <th><label class="diy-label" for="docrt_perangkat_kota"> - Kab/Kota</label></th>
+        <td> : </td>
+        <td><input name="docrt_perangkat[kota]" type="text" class="docrt_inputs" id="docrt_perangkat_kota" value="'.@$meta['kota'].'" /></td>
+    </tr>
+    <tr align="left">
+        <th><label class="diy-label" for="docrt_perangkat_provinsi"> - Provinsi</label></th>
+        <td> : </td>
+        <td><input name="docrt_perangkat[provinsi]" type="text" class="docrt_inputs" id="docrt_perangkat_provinsi" value="'.@$meta['provinsi'].'" /></td>
+    </tr>*/
 
 }
 // END METABOX +++++++++++++++++++++++++++++++++++++++++++++++++++++

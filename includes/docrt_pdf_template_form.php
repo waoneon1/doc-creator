@@ -289,10 +289,11 @@ function docrt_pdf_template_form($type,$meta,$postID) {
             'Telepon' => $meta['docrt_form_tlp'][0],
             'Hubungan dengan sibayi' => $meta['docrt_form_hubungan'][0],
         ),
-        'b' => array(
-            'docrt_form_nama' => $meta['docrt_form_nama'][0],
-            'docrt_form_hubungan' => $meta['docrt_form_hubungan'][0],
-             'noreg' => docrt_no_surat($type,$meta,$postID),
+        'other' => array(
+            'kewarganegaraan' => $meta['docrt_form_kebangsaan_ayah'][0],
+            'nokk' => $meta['docrt_form_nokk_ayah'][0],
+            'kepalakeluarga' => $meta['docrt_form_nama_ayah'][0],
+            'noreg' => docrt_no_surat($type,$meta,$postID),
             'Footer1' => docrt_pdf_footer($meta,$postID,$type,30,false,'15%','15%','70%'),
             'Footer2' => docrt_pdf_footer($meta,$postID,$type,30,false,'10%','10%','75%'),
         ),

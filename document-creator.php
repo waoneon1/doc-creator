@@ -31,7 +31,6 @@ include_once __DIR__ . '/includes/types-perangkat.php';
 
 function docrt_include_admin() {
     if (is_admin()) {
-        //docrt_tax_list();
         include_once __DIR__ . '/includes/admin/types-table-filter.php';
         include_once __DIR__ . '/includes/admin/settings.php';
         wp_enqueue_style( 'style-default', docrt_plugin_url() . '/assets/css/style_admin.css' );

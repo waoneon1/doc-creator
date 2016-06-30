@@ -249,6 +249,7 @@ jQuery(document).ready(function($) {
                 'docrt_form_nama_ayah',
                 'docrt_form_penolong_lahir',
                 'docrt_form_tgl',
+                'docrt_form_jam',
                 'docrt_form_jk_bayi',
                 'docrt_form_tempat',
                 'docrt_form_kota_bayi',
@@ -270,6 +271,7 @@ jQuery(document).ready(function($) {
                 'docrt_form_pekerjaan',
                 'docrt_form_alamat',
                 'docrt_form_tlp',
+                'docrt_form_saksi'
             ]
         };
         // 10. data surat kematian ===================================================================================================
@@ -358,6 +360,36 @@ jQuery(document).ready(function($) {
         for (var attrname in obj1) { obj3[attrname] = obj1[attrname]; }
         for (var attrname in obj2) { obj3[attrname] = obj2[attrname]; }
         return obj3;
+    }
+});
+
+jQuery(document).ready(function($) {
+
+    var perangkat_jabatan = $('#docrt_perangkat_jabatan');
+    var rw_option = $('#docrt_perangkat_jabatan_rw');
+    var perangkat_no_jabatan_rw = $('#docrt_perangkat_jabatan_rw');
+    perangkat_jabatan_change();
+    rw_option_change();
+
+    $(perangkat_jabatan).change(function(e) {
+        perangkat_jabatan_change();
+    });
+
+    $(rw_option).change(function(e) {
+        rw_option_change();
+    });
+
+    function perangkat_jabatan_change() {
+        if (perangkat_jabatan.val() == 'RW') {
+            $("#docrt_perangkat_jabatan_rw").addClass('d-hide');
+        } else {
+            $("#docrt_perangkat_jabatan_rw").removeClass('d-hide');
+        }
+    }
+
+    function rw_option_change() {
+        var rw_txt = $("#docrt_perangkat_jabatan_rw option:selected").text();
+        $("#docrt_perangkat_no_jabatan_rw").val(rw_txt);
     }
 });
 

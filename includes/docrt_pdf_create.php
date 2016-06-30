@@ -46,6 +46,28 @@ class pdf extends TCPDF {
         $this->SetLineWidth(0);
         $this->Line(15,36,195,36);
     }
+
+    function get_saksi($ID) {
+        // saksi 1
+        $args = array('p' => $ID, 'post_type' => 'docrt-perangkat');
+        $loop = new WP_Query($args);
+        $post = $loop->post;
+        $meta['saksi1'] = get_post_meta($post->ID, 'docrt_perangkat', true);
+        $meta['saksi1']['image'] = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'full',  false, '' );
+        $meta['saksi1']['date'] = $post->post_date;
+        wp_reset_postdata();
+
+        // saksi 2
+        $args2 = array('p' => $meta['saksi1']['jabatan_rw'] , 'post_type' => 'docrt-perangkat');
+        $loop2 = new WP_Query($args2);
+        $post2 = $loop2->post;
+        $meta['saksi2'] = get_post_meta($post2->ID, 'docrt_perangkat', true);
+        $meta['saksi2']['image'] = wp_get_attachment_image_src( get_post_thumbnail_id($post2->ID), 'full',  false, '' );
+        $meta['saksi2']['date'] = $post->post_date;
+        wp_reset_postdata();
+
+        return $meta;
+    }
 }
 
 // Prosess =============================================================
@@ -278,8 +300,8 @@ function docrt_no_surat($type,$meta,$postID) {
     $data['ktp']    = $meta['docrt_ktp_id'][0].'/'.get_the_date('Y',$postID) ;
     // option
     $data['skai']   = '331/'.$meta['docrt_skp_id'][0].'/'.'35.73.03.1008/V/'.get_the_date('Y',$postID) ;
-    $data['skkel']   = '331/'.$meta['docrt_skp_id'][0].'/'.'35.73.03.1008/V/'.get_the_date('Y',$postID) ;
-    $data['skkem']   = '331/'.$meta['docrt_skp_id'][0].'/'.'35.73.03.1008/V/'.get_the_date('Y',$postID) ;
+    $data['skkel']   = '???/'.$meta['docrt_skel_id'][0].'/'.'35.73.03.1008/V/'.get_the_date('Y',$postID) ;
+    $data['skkem']   = '???/'.$meta['docrt_skem_id'][0].'/'.'35.73.03.1008/V/'.get_the_date('Y',$postID) ;
 
     return $data[$type];
 }

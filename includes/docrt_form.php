@@ -271,7 +271,8 @@ echo '<table class="docrt_pemohon_box docrt_tbl docrt_tp_sku">';
     <tr align="left" class="docrt_form_tgl_tr docrt_form">
         <th><label class="diy-label" for="docrt_form_tgl">Tanggal</label></th>
         <td> : </td>
-        <td><input name="docrt_form_tgl" type="date" class="docrt_inputs" id="docrt_form_tgl" value="'.$meta['docrt_form_tgl'][0].'"/></td>
+        <td><input name="docrt_form_tgl" type="date" class="docrt_inputs half" id="docrt_form_tgl" value="'.$meta['docrt_form_tgl'][0].'"/>
+        <input name="docrt_form_jam" type="text" class="docrt_inputs half" id="docrt_form_jam" value="'.$meta['docrt_form_jam'][0].'" placeholder="12:00"/></td>
     </tr>
     <tr align="left" class="docrt_form_tgl_berlaku_tr docrt_form">
         <th><label class="diy-label" for="docrt_form_tgl_berlaku">Berlaku Tanggal</label></th>
@@ -297,6 +298,17 @@ echo '<table class="docrt_pemohon_box docrt_tbl docrt_tp_sku">';
         <th><label class="diy-label" for="docrt_form_penolong_lahir">Penolong Kelahiran</label></th>
         <td> : </td>
         <td><input name="docrt_form_penolong_lahir" type="text" class="docrt_inputs" id="docrt_form_penolong_lahir" value="'.$meta['docrt_form_penolong_lahir'][0].'" /></td>
+    </tr>';
+
+    // Saksi
+    $docrt_saksi = docrt_get_saksi_form($meta['docrt_form_saksi'][0]);
+    echo '
+    <tr align="left" class="docrt_form_saksi_tr docrt_form">
+        <th><label class="diy-label" for="docrt_form_saksi">Saksi</label></th>
+        <td> : </td>
+        <td><select name="docrt_form_saksi" class="docrt_inputs" id="docrt_form_saksi" >
+            '.$docrt_saksi['RT'].'
+        </select></td>
     </tr>';
     echo '</tbody>';
 
