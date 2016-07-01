@@ -1,174 +1,248 @@
 <?php
-function docrt_skkem_content($param, $meta, $post_term) {
-    $underline = 'style="text-decoration: underline;"';
+function docrt_skkem_content($pdf,$postID, $post_term) {
+    //$term_child = get_term_by('slug','skkel','surat');
+    $meta = get_post_meta($postID);
+
+    $saksi_data = $pdf->get_saksi($meta['docrt_form_saksi'][0]);
+    $data = docrt_pdf_template_form('skkem',$meta,$postID,$saksi_data);
+
+    foreach ($saksi_data as $key => $value) {
+        $param[$key] = array(
+            'NIK' => $value['nik'],
+            'Nama Lengkap' => $value['nama'],
+            'Tanggal Lahir / Umur' => date_i18n( 'j F Y', strtotime($value['tl'])).' / Umur :'.
+            date_diff(date_create($value['tl']), date_create($meta['date'][0]))->y,
+            'Pekerjaan' => $value['pekerjaan'],
+            'Alamat' => $value['alamat'],
+        );
+    }
+
+    if ($meta['docrt_jenis_ttd'][0] == 'lurah') {
+        //$ttd_jabatan = 'LURAH SAWOJAJAR';
+        $ttd_nama = 'J.A. Bayu Widjaya, S.Sos, M.Si';
+        $ttd_nip = 'NIP. 19710731 199203 1 003';
+    } elseif ($meta['docrt_jenis_ttd'][0] == 'seklur') {
+        //$ttd_jabatan = 'LURAH SAWOJAJAR<br/><span style="font-size:11px;">Sekretaris</span>';
+        $ttd_nama = 'Adi Andrianto. P, SH.M.Hum';
+        $ttd_nip = 'NIP. 19740730 200312 1 005';
+    } else {
+        $ttd_jabatan = $meta['docrt_jenis_ttd'][0];
+        $ttd_nama = '';
+        $ttd_nip = '';
+    }
+
+    $pdf->SetMargins(15, 10, 15, true);
+    $pdf->SetAutoPageBreak(TRUE, 0);
+    $pdf->AddPage('P', 'F4');
+    $pdf->setCellHeightRatio(1.3);
+    $pdf->SetFont('helvetica','','10');
+    $tbl = '';
+
+    $tbl = '
+    <table cellspacing="0" cellpadding="1" border="0">
+        <tr>
+          <td colspan="3"><strong>PEMERINTAH KOTA MALANG</strong></td>
+        </tr>
+        <tr>
+           <td width="34%">KECAMATAN</td>
+           <td width="5%"> : </td>
+           <td width="30%">KEDUNGKANDANG</td>
+           <td width="31%" align="right">Kode : F-2.29</td>
+        </tr>
+        <tr>
+           <td width="34%">KELURAHAN</td>
+           <td width="5%"> : </td>
+           <td width="61%">SAWOJAJAR</td>
+        </tr>
+        <tr>
+           <td width="34%">KODE WILAYAH</td>
+           <td width="5%"> : </td>
+           <td width="61%">35730 10</td>
+        </tr>
+    </table>';
+    $pdf->writeHTML($tbl, true, false, false, false, '');
+
+    $pdf->garis2();
+    $pdf->SetFont('helvetica','B','12');
+    //$pdf->Cell(180,5,'',0,1);
+    $pdf->Cell(180,5,'SURAT KETERANGAN KEMATIAN',0,1,'C');
+    $pdf->SetFont('helvetica','','10');
+    $pdf->Cell(0,5,'Nomor : '.$data['other']['noreg'],0,1,'C');
+    $tbl = '';
+
+    $pdf->SetFont('helvetica','','10');
     $tbl .= '
     <table cellspacing="0" cellpadding="1" border="0">
-    <tr>
-    <td width="33%">';  // MAIN TD ===================================================
+        <tr>
+          <td colspan="3">&nbsp;</td>
+        </tr>
+        <tr>
+           <td width="34%">Nama Kepala Keluarga</td>
+           <td width="5%"> : </td>
+           <td width="61%">'.$data['other']['kepalakeluarga'].'</td>
+        </tr>
+        <tr>
+           <td width="34%">Nomor Kartu Keluarga</td>
+           <td width="5%"> : </td>
+           <td width="61%">'.$data['other']['nokk'].'</td>
+        </tr>
+    </table>';
+    $pdf->writeHTML($tbl, true, false, false, false, '');
 
-        // kontent 1
-        $tbl .=
-        '<table cellspacing="0" cellpadding="1" border="0" align="center">
-            <tr><td><strong '.$underline.'>UNTUK KELURAHAN</strong></td></tr>
-            <tr><td>&nbsp;</td></tr>
-            <tr><td><strong '.$underline.'>SURAT KEMATIAN</strong></td></tr>
-            <tr>
-                <td>Nomor : '.$param['b']['noreg'].'</td>
-            </tr>
-            <tr><td>&nbsp;</td></tr>
-            <tr><td>Yang bertandatangan di bawah ini, menerangkan bahwa : </td></tr>
-            <tr><td>&nbsp;</td></tr>
-        </table>';
-
-        $tbl .='<table cellspacing="0" cellpadding="1">';
-        foreach ( $param['a1'] as $key => $value) {
-            if ($key == '-') {
-                $tbl .= '
-                    <tr align="left">
-                       <td colspan="3">'. $value.'</td>
-                    </tr>';
-            } else {
-                $tbl .= '
-                    <tr align="left">
-                       <td width="30%">'. $key.'</td>
-                       <td width="5%"> : </td>
-                       <td width="58%">'. $value.'</td>
-                    </tr>';
-            }
-        }
-        $tbl .='<tr><td>&nbsp;</td></tr>
-        </table>';
-
-        $tbl .=
-        '<table cellspacing="0" cellpadding="1" border="0" align="center">
-            <tr><td>&nbsp;</td></tr>
-            <tr><td>Surat Keterangan ini dibuat atas dasar yang sebenarnya</td></tr>
-            <tr><td>&nbsp;</td></tr>
-        </table>';
-
-        $tbl .=
-        '<table cellspacing="0" cellpadding="1" border="0" align="center">
-            <tr align="left">
-               <td width="38%">Nama yang melaporkan</td>
-               <td width="5%"> : </td>
-               <td width="57%">'.$param['b']['docrt_form_nama'].'</td>
-            </tr>
-            <tr align="left">
-               <td width="38%">Hub. dengan yang mati</td>
-               <td width="5%"> : </td>
-               <td width="57%">'.$param['b']['docrt_form_hubungan'].'</td>
-            </tr>
-            <tr><td>&nbsp;</td></tr>
-        </table>';
-
-        $tbl .= $param['b']['Footer2'];
-        // end kontent 1
-    $tbl .= '</td>';
-    $tbl .= '<td width="34%">'; // MAIN TD ===================================================
-        // kontent 2
-        $tbl .=
-        '<table cellspacing="0" cellpadding="1" border="0" align="center">
-            <tr><td><strong '.$underline.'>UNTUK KECAMATAN</strong></td></tr>
-            <tr><td>&nbsp;</td></tr>
-            <tr><td><strong '.$underline.'>SURAT KEMATIAN</strong></td></tr>
-            <tr>
-                <td>Nomor : '.$param['b']['noreg'].'</td>
-            </tr>
-            <tr><td>&nbsp;</td></tr>
-        </table>';
-        $i = 1;
-
-        $tbl .='<table cellspacing="0" cellpadding="1" style="border:1px solid black;" width="94%" align="center">
-        <tr><td>&nbsp;</td></tr>';
-        foreach ( $param['a'] as $key => $value) {
-        $tbl .= '
-            <tr align="left">
-               <td width="7%">'. $i .'.</td>
-               <td width="33%">'. $key.'</td>
-               <td width="5%"> : </td>
-               <td width="55%">'. $value.'</td>
-            </tr>';
-        $i++;
-        }
-        $tbl .='<tr><td>&nbsp;</td></tr>
-        </table>';
-        $tbl .='<table><tr><td>&nbsp;</td></tr></table>';
-        $tbl .= $param['b']['Footer1'];
-        // end kontent 2
-    $tbl .= '</td>';
-    $tbl .= ' <td width="33%" style="border: 10px solid transparent;">';  // MAIN TD ===================================================
-        // kontent 3
-        $tbl .=
-        '<table cellspacing="0" cellpadding="0" border="0" align="center" width="90%">
-            <tr><td>&nbsp;</td></tr>
-            <tr><td>&nbsp;</td></tr>
-            <tr><td><strong '.$underline.'>UNTUK YANG BERSANGKUTAN</strong></td></tr>
-            <tr><td>&nbsp;</td></tr>
-            <tr><td><strong '.$underline.'>SURAT KEMATIAN</strong></td></tr>
-            <tr>
-                <td>Nomor : '.$param['b']['noreg'].'</td>
-            </tr>
-            <tr><td>&nbsp;</td></tr>
-        </table>';
-        $tbl .=
-        '<table cellspacing="0" cellpadding="0" border="0" width="90%">
-            <tr align="left">
-                <td width="5%"></td>
-                <td width="95%">Yang bertandatangan di bawah ini, menerangkan bahwa : </td>
-            </tr>
-            <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
-        </table>';
-
-        $tbl .='<table cellspacing="0" cellpadding="1" width="90%">';
-        foreach ( $param['a1'] as $key => $value) {
-            if ($key == '-') {
-                $tbl .= '
-                    <tr align="left">
-                       <td width="5%"></td>
-                       <td colspan="3">'. $value.'</td>
-                    </tr>';
-            } else {
-                $tbl .= '
-                    <tr align="left">
-                       <td width="5%"></td>
-                       <td width="30%">'. $key.'</td>
-                       <td width="5%"> : </td>
-                       <td width="58%">'. $value.'</td>
-                    </tr>';
-            }
-        }
-        $tbl .='<tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr>
-        </table>';
-
-        $tbl .=
-        '<table cellspacing="0" cellpadding="1" border="0" align="center" width="90%">
-            <tr align="left">
-                <td width="5%"></td>
-                <td width="40%">Disebabkan karena</td>
-                <td width="5%"> : </td>
-                <td width="55%">'.$param['b']['docrt_form_sebab_kematian'].'</td>
-            </tr>
-        </table>';
-
-        $tbl .=
-        '<table cellspacing="0" cellpadding="1" border="0" align="center" width="90%">
-            <tr><td>&nbsp;</td></tr>
-            <tr align="left">
-                <td width="5%"></td>
-                <td width="95%">Surat Keterangan ini dibuat atas dasar yang sebenarnya</td></tr>
-            <tr><td>&nbsp;</td></tr>
-        </table>';
-
-        $tbl .= $param['b']['Footer2'];
-        $tbl .='<table><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr>
-        </table>';
-        // end kontent 3
-    $tbl .= '</td>';
-
+    $pdf->setCellHeightRatio(1.1);
+    $tbl = '';
+    // BAYI ==================================================================
     $tbl .= '
-    </tr>
+    <table cellspacing="0" cellpadding="1" border="0" style="border:1px solid black;">
+        <tr>
+            <td width="4%"></td>
+            <td width="96%"><strong>Jenazah</strong></td>
+        </tr>';
+        $i = 1;
+        foreach ($data['jenazah']  as $key => $value) {
+            $tbl .= '<tr>
+                <td width="5%">'.$i.'. </td>
+                <td width="30%">'.$key.'</td>
+                <td width="2%"> : </td>
+                <td width="63%">'.$value.'</td>
+            </tr>';
+            $i++;
+        }
+    $tbl .= '
+    </table>';
+    // Ayah =================================================================
+    $tbl .= '
+    <table cellspacing="0" cellpadding="1" border="0" style="border:1px solid black;">
+        <tr>
+           <td width="4%"></td>
+           <td width="96%"><strong>DATA AYAH</strong></td>
+        </tr>';
+        $i = 1;
+        foreach ($data['ayah']  as $key => $value) {
+            $tbl .= '<tr>
+                <td width="5%">'.$i.'. </td>
+                <td width="30%">'.$key.'</td>
+                <td width="2%"> : </td>
+                <td width="63%">'.$value.'</td>
+            </tr>';
+            $i++;
+        }
+    $tbl .= '
+    </table>';
+    // Ibu =================================================================
+    $tbl .= '
+    <table cellspacing="0" cellpadding="1" border="0" style="border:1px solid black;">
+        <tr>
+           <td width="4%"></td>
+           <td width="96%"><strong>DATA IBU</strong></td>
+        </tr>';
+        $i = 1;
+        foreach ($data['ibu']  as $key => $value) {
+            $tbl .= '<tr>
+                <td width="5%">'.$i.'. </td>
+                <td width="30%">'.$key.'</td>
+                <td width="2%"> : </td>
+                <td width="63%">'.$value.'</td>
+            </tr>';
+            $i++;
+        }
+    $tbl .= '
+    </table>';
+    // Pelapor =================================================================
+    $tbl .= '
+    <table cellspacing="0" cellpadding="1" border="0" style="border:1px solid black;">
+        <tr>
+           <td width="4%"></td>
+           <td width="96%"><strong>DATA PELAPOR</strong></td>
+        </tr>';
+        $i = 1;
+        foreach ($data['pelapor']  as $key => $value) {
+            $tbl .= '<tr>
+                <td width="5%">'.$i.'. </td>
+                <td width="30%">'.$key.'</td>
+                <td width="2%"> : </td>
+                <td width="63%">'.$value.'</td>
+            </tr>';
+            $i++;
+        }
+    $tbl .= '
     </table>';
 
-    //print_r($tbl); exit;
-    return $tbl;
+    // Saksi 1 =================================================================
+    $tbl .= '
+    <table cellspacing="0" cellpadding="1" border="0" style="border:1px solid black;">
+        <tr>
+           <td width="4%"></td>
+           <td width="96%"><strong>DATA SAKSI I</strong></td>
+        </tr>';
+        $i = 1;
+        foreach ($param['saksi1']  as $key => $value) {
+            $tbl .= '<tr>
+                <td width="5%">'.$i.'. </td>
+                <td width="30%">'.$key.'</td>
+                <td width="2%"> : </td>
+                <td width="63%">'.$value.'</td>
+            </tr>';
+            $i++;
+        }
+    $tbl .= '
+    </table>';
+    // Saksi II =================================================================
+    $tbl .= '
+    <table cellspacing="0" cellpadding="1" border="0" style="border:1px solid black;">
+        <tr>
+           <td width="4%"></td>
+           <td width="96%"><strong>DATA SAKSI II</strong></td>
+        </tr>';
+        $i = 1;
+        foreach ($param['saksi2']  as $key => $value) {
+            $tbl .= '<tr>
+                <td width="5%">'.$i.'. </td>
+                <td width="30%">'.$key.'</td>
+                <td width="2%"> : </td>
+                <td width="63%">'.$value.'</td>
+            </tr>';
+            $i++;
+        }
+    $tbl .= '
+    </table>';
+    $pdf->writeHTML($tbl, true, false, false, false, '');
+
+    $pdf->SetFont('helvetica','','9');
+    $tbl = '
+    <table cellspacing="0" cellpadding="1" border="0" align="center">
+        <tr>
+            <td width="28%">Mengetahui,</td>
+            <td width="24%">Tanda Tangan</td>
+            <td width="24%">Tanda Tangan</td>
+            <td width="24%">Pelapor</td>
+        </tr>
+        <tr>
+            <td>Lurah,</td>
+            <td>Saksi 1</td>
+            <td>Saksi 2</td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td height="35"></td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td>('.$ttd_nama.')</td>
+            <td>('. $data['pelapor']['Nama Lengkap'].')</td>
+            <td>('. $param['saksi1']['Nama Lengkap'].')</td>
+            <td>('. $param['saksi2']['Nama Lengkap'].')</td>
+        </tr>
+    </table>';
+    $pdf->writeHTML($tbl, true, false, false, false, '');
+
+   $pdf->AddPage('P', 'F4');
+
+   $pdf->Image($saksi_data['saksi1']['image'][0], '', '', '', '', '', '', '', true, 72, 'C', false, false, 1, true, false, true);
+   $pdf->SetXY(0, 100);
+   $pdf->Image($saksi_data['saksi2']['image'][0], '', '', '', '', '', '', '', true, 72, 'C', false, false, 1, true, false, true);
+    //$pdf->Image($saksi_data['saksi2']['image'][0], '', '', '', '', 'JPG', ''/*link*/, ''/*align*/, true, 72, '', false, false, 1, true, false, false);
 }
+//====================================================================================================

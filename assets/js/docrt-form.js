@@ -295,6 +295,28 @@ jQuery(document).ready(function($) {
                 'docrt_form_nonik',
                 'docrt_form_nama',
                 'docrt_form_hubungan',//
+
+                'docrt_form_dilahirkan_pelapor',
+                'docrt_form_dilahirkan2',
+                'docrt_form_dilahirkan3',
+                'docrt_form_nokk_ayah',
+                'docrt_form_nama_ayah',
+                'docrt_form_nama_ibu',
+                'docrt_form_nama_pelapor',
+                'docrt_form_nonik_ayah',
+                'docrt_form_nonik_ibu',
+                'docrt_form_nonik_pelapor',
+                'docrt_form_pekerjaan_ayah',
+                'docrt_form_pekerjaan_ibu',
+                'docrt_form_pekerjaan_pelapor',
+                'docrt_form_alamat_ayah',
+                'docrt_form_alamat_ibu',
+                'docrt_form_alamat_pelapor',
+                'docrt_form_anakke',
+                'docrt_form_jam',
+                'docrt_form_yang_menerangkan',
+                'docrt_form_saksi'
+
             ]
         };
         // 11. kk ===================================================================================================

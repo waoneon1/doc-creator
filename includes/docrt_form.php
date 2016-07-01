@@ -45,9 +45,30 @@ echo '<table class="docrt_pemohon_box docrt_tbl docrt_tp_sku">';
             <label class="diy-label docrt_form_nama_bayi_tr docrt_form" for="docrt_form_hubungan">Hubungan</label></th>
         <td> : </td>
         <td><input name="docrt_form_hubungan" type="text" class="docrt_inputs" id="docrt_form_hubungan" value="'.$meta['docrt_form_hubungan'][0].'" /></td>
+    </tr>
+
+    <tr align="left" class="docrt_form_dilahirkan_pelapor_tr docrt_form">
+        <th><label class="diy-label" for="docrt_form_dilahirkan_pelapor"> - Tanggal Dilahirkan</label></th>
+        <td> : </td>
+        <td><input name="docrt_form_dilahirkan_pelapor" type="date" class="docrt_inputs" id="docrt_form_dilahirkan_pelapor" value="'.$meta['docrt_form_dilahirkan_pelapor'][0].'" /></td>
+    </tr>
+    <tr align="left" class="docrt_form_alamat_pelapor_tr docrt_form">
+        <th><label class="diy-label" for="docrt_form_alamat_pelapor"> - Alamat</label></th>
+        <td> : </td>
+        <td><input name="docrt_form_alamat_pelapor" type="text" class="docrt_inputs" id="docrt_form_alamat_pelapor" value="'.$meta['docrt_form_alamat_pelapor'][0].'"/></td>
+    </tr>
+    <tr align="left" class="docrt_form_nonik_pelapor_tr docrt_form">
+        <th><label class="diy-label" for="docrt_form_nonik_pelapor"> - No NIK</label></th>
+        <td> : </td>
+        <td><input name="docrt_form_nonik_pelapor" type="text" class="docrt_inputs" id="docrt_form_nonik_pelapor" value="'.$meta['docrt_form_nonik_pelapor'][0].'"/></td>
+    </tr>
+    <tr align="left" class="docrt_form_pekerjaan_pelapor_tr docrt_form">
+        <th><label class="diy-label" for="docrt_form_pekerjaan_pelapor"> - Pekarjaan</label></th>
+        <td> : </td>
+        <td><input name="docrt_form_pekerjaan_pelapor" type="text" class="docrt_inputs" id="docrt_form_pekerjaan_pelapor" value="'.$meta['docrt_form_pekerjaan_pelapor'][0].'"/></td>
     </tr>';
 
-    // alter kematian
+     // alter kematian karena banyak jadi data diri/ pelapor yg di alter
     echo '<tbody class="docrt_form_nama_mati_tr docrt_form">
     <tr><td colspan="3">&nbsp;</td></tr>
     <tr align="left">
@@ -192,6 +213,7 @@ echo '<table class="docrt_pemohon_box docrt_tbl docrt_tp_sku">';
     </tr>';
     echo '</tbody>';
 
+
      // alter Kelahiran
     echo '<tbody class="docrt_form_nama_bayi_tr docrt_form">
     <tr><td colspan="3">&nbsp;</td></tr>
@@ -294,6 +316,11 @@ echo '<table class="docrt_pemohon_box docrt_tbl docrt_tp_sku">';
         <td> : </td>
         <td><input name="docrt_form_sebab_kematian" type="text" class="docrt_inputs" id="docrt_form_sebab_kematian" value="'.$meta['docrt_form_sebab_kematian'][0].'"/></td>
     </tr>
+    <tr align="left" class="docrt_form_yang_menerangkan_tr docrt_form">
+        <th><label class="diy-label" for="docrt_form_yang_menerangkan">Yang Menerangkan</label></th>
+        <td> : </td>
+        <td><input name="docrt_form_yang_menerangkan" type="text" class="docrt_inputs" id="docrt_form_yang_menerangkan" value="'.$meta['docrt_form_yang_menerangkan'][0].'"/></td>
+    </tr>
     <tr align="left" class="docrt_form_penolong_lahir_tr docrt_form">
         <th><label class="diy-label" for="docrt_form_penolong_lahir">Penolong Kelahiran</label></th>
         <td> : </td>
@@ -307,6 +334,7 @@ echo '<table class="docrt_pemohon_box docrt_tbl docrt_tp_sku">';
         <th><label class="diy-label" for="docrt_form_saksi">Saksi</label></th>
         <td> : </td>
         <td><select name="docrt_form_saksi" class="docrt_inputs" id="docrt_form_saksi" >
+            <option value="0">-</option>
             '.$docrt_saksi['RT'].'
         </select></td>
     </tr>';
@@ -319,8 +347,6 @@ echo '<table class="docrt_pemohon_box docrt_tbl docrt_tp_sku">';
         <th colspan="3"><label class="headform-label">Data Ayah dan Ibu Bayi</label></th>
     </tr>
     <tr><td colspan="3"><hr/></td></tr></tbody>
-
-
         <tr align="left" class="docrt_form_nama_ibu_tr docrt_form">
             <th><label class="diy-label" for="docrt_form_nama_ibu">Nama Ibu</label></th>
             <td> : </td>

@@ -283,6 +283,13 @@ function docrt_get_form_surat($type_surat = 'sku') {
         'docrt_form_nonik_bayi',
         'docrt_form_jk_bayi',
         'docrt_form_kota_bayi',
+        // kusus kematian
+        'docrt_form_nama_pelapor',
+        'docrt_form_nonik_pelapor',
+        'docrt_form_pekerjaan_pelapor',
+        'docrt_form_alamat_pelapor',
+        'docrt_form_dilahirkan_pelapor',
+        'docrt_form_yang_menerangkan',
 
     );
 
