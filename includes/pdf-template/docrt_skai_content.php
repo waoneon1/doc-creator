@@ -26,7 +26,7 @@ function docrt_skai_content($param, $meta, $post_term) {
            <td width="30%">Menerangkan Bahwa</td>
            <td width="5%"> </td>
            <td width="5%">1.</td>
-           <td width="60%"><p align="justify">Orang tersebut benar-baner penduduk Kelurahan Sawojajar Kecamatan Kedungkandang Kota Malang.</p></td>
+           <td width="60%"><p align="justify">Orang tersebut benar-benar penduduk Kelurahan Sawojajar Kecamatan Kedungkandang Kota Malang.</p></td>
         </tr>
         <tr>
            <td width="30%"> </td>

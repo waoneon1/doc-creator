@@ -135,6 +135,7 @@ jQuery(document).ready(function($) {
                 'docrt_form_nama_usaha',
                 'docrt_form_alamat_usaha',
                 'docrt_form_ketRT',
+                'docrt_form_rtrw_usaha',
                 'docrt_form_tgl',
                 'docrt_form_keperluan',
                 'docrt_form_ket_usaha'
@@ -237,18 +238,21 @@ jQuery(document).ready(function($) {
         data.skel ={
             'surat' : [
                 'docrt_form_nama_bayi',
+                'docrt_form_nonik_bayi',
                 'docrt_form_dilahirkan1',
                 'docrt_form_dilahirkan2',
                 'docrt_form_dilahirkan3',
                 'docrt_form_kelahiran',
                 'docrt_form_kembarke',
+                'docrt_form_anakke',
                 'docrt_form_nama_ibu',
                 'docrt_form_nama_ayah',
                 'docrt_form_penolong_lahir',
                 'docrt_form_tgl',
-                'docrt_form_jk',
+                'docrt_form_jam',
+                'docrt_form_jk_bayi',
                 'docrt_form_tempat',
-                'docrt_form_kota',
+                'docrt_form_kota_bayi',
                 'docrt_form_alamat_ibu',
                 'docrt_form_kebangsaan_ibu',
                 'docrt_form_kebangsaan_ayah',
@@ -256,6 +260,18 @@ jQuery(document).ready(function($) {
                 'docrt_form_nonik_ayah',
                 'docrt_form_nama',
                 'docrt_form_hubungan',
+                'docrt_form_nonik_ibu',
+                'docrt_form_pekerjaan_ibu',
+                'docrt_form_tlp_ibu',
+                'docrt_form_alamat_ayah',
+                'docrt_form_pekerjaan_ayah',
+                'docrt_form_tlp_ayah',
+                'docrt_form_umur',
+                'docrt_form_nonik',
+                'docrt_form_pekerjaan',
+                'docrt_form_alamat',
+                'docrt_form_tlp',
+                'docrt_form_saksi'
             ]
         };
         // 10. data surat kematian ===================================================================================================
@@ -279,6 +295,28 @@ jQuery(document).ready(function($) {
                 'docrt_form_nonik',
                 'docrt_form_nama',
                 'docrt_form_hubungan',//
+
+                'docrt_form_dilahirkan_pelapor',
+                'docrt_form_dilahirkan2',
+                'docrt_form_dilahirkan3',
+                'docrt_form_nokk_ayah',
+                'docrt_form_nama_ayah',
+                'docrt_form_nama_ibu',
+                'docrt_form_nama_pelapor',
+                'docrt_form_nonik_ayah',
+                'docrt_form_nonik_ibu',
+                'docrt_form_nonik_pelapor',
+                'docrt_form_pekerjaan_ayah',
+                'docrt_form_pekerjaan_ibu',
+                'docrt_form_pekerjaan_pelapor',
+                'docrt_form_alamat_ayah',
+                'docrt_form_alamat_ibu',
+                'docrt_form_alamat_pelapor',
+                'docrt_form_anakke',
+                'docrt_form_jam',
+                'docrt_form_yang_menerangkan',
+                'docrt_form_saksi'
+
             ]
         };
         // 11. kk ===================================================================================================
@@ -344,6 +382,36 @@ jQuery(document).ready(function($) {
         for (var attrname in obj1) { obj3[attrname] = obj1[attrname]; }
         for (var attrname in obj2) { obj3[attrname] = obj2[attrname]; }
         return obj3;
+    }
+});
+
+jQuery(document).ready(function($) {
+
+    var perangkat_jabatan = $('#docrt_perangkat_jabatan');
+    var rw_option = $('#docrt_perangkat_jabatan_rw');
+    var perangkat_no_jabatan_rw = $('#docrt_perangkat_jabatan_rw');
+    perangkat_jabatan_change();
+    rw_option_change();
+
+    $(perangkat_jabatan).change(function(e) {
+        perangkat_jabatan_change();
+    });
+
+    $(rw_option).change(function(e) {
+        rw_option_change();
+    });
+
+    function perangkat_jabatan_change() {
+        if (perangkat_jabatan.val() == 'RW') {
+            $("#docrt_perangkat_jabatan_rw").addClass('d-hide');
+        } else {
+            $("#docrt_perangkat_jabatan_rw").removeClass('d-hide');
+        }
+    }
+
+    function rw_option_change() {
+        var rw_txt = $("#docrt_perangkat_jabatan_rw option:selected").text();
+        $("#docrt_perangkat_no_jabatan_rw").val(rw_txt);
     }
 });
 

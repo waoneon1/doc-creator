@@ -39,6 +39,35 @@ class pdf extends TCPDF {
         $this->SetLineWidth(0);
         $this->Line(20,41,190,41);
     }
+
+    function garis2(){
+        $this->SetLineWidth(1);
+        $this->Line(15,35,195,35);
+        $this->SetLineWidth(0);
+        $this->Line(15,36,195,36);
+    }
+
+    function get_saksi($ID) {
+        // saksi 1
+        $args = array('p' => $ID, 'post_type' => 'docrt-perangkat');
+        $loop = new WP_Query($args);
+        $post = $loop->post;
+        $meta['saksi1'] = get_post_meta($post->ID, 'docrt_perangkat', true);
+        $meta['saksi1']['image'] = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'full',  false, '' );
+        $meta['saksi1']['date'] = $post->post_date;
+        wp_reset_postdata();
+
+        // saksi 2
+        $args2 = array('p' => $meta['saksi1']['jabatan_rw'] , 'post_type' => 'docrt-perangkat');
+        $loop2 = new WP_Query($args2);
+        $post2 = $loop2->post;
+        $meta['saksi2'] = get_post_meta($post2->ID, 'docrt_perangkat', true);
+        $meta['saksi2']['image'] = wp_get_attachment_image_src( get_post_thumbnail_id($post2->ID), 'full',  false, '' );
+        $meta['saksi2']['date'] = $post->post_date;
+        wp_reset_postdata();
+
+        return $meta;
+    }
 }
 
 // Prosess =============================================================
@@ -51,18 +80,29 @@ $post_tr = get_the_terms ($_GET['pid'],'surat' );
 
 // kondisi kusus saat skem dan skel
 if ($post_tr[0]->slug == 'skem' || $post_tr[0]->slug == 'skel') {
-    docrt_get_content_pdf_skem_skel($pdf, $_GET['pid'], $post_tr);
+    docrt_get_content_pdf2($pdf, $_GET['pid'], $post_tr);
+
+    // kondisi kusus saat skel
+    if ($post_tr[0]->slug == 'skel') {
+        docrt_skkel_content($pdf,$_GET['pid'],$post_tr);
+    }
+    // kondisi kusus saat skem
+    if ($post_tr[0]->slug == 'skem') {
+        docrt_skkem_content($pdf,$_GET['pid'],$post_tr);
+    }
+
 } else {
     docrt_get_header_pdf($pdf,$_GET['pid'], $post_tr);
     docrt_get_content_pdf($pdf, $_GET['pid'], $post_tr);
 
-    // kondisi kusus saat skp
+    // kondisi kusus saat skp wawan
     if ($post_tr[0]->slug == 'skp') {
         $post_tr[0]->slug = 'skai';
         $post_tr[0]->name = 'surat keterangan adat istiadat';
         docrt_get_header_pdf($pdf,$_GET['pid'], $post_tr);
         docrt_get_content_pdf($pdf, $_GET['pid'], $post_tr, 'skp');
     }
+
 }
 
 $pdf->Output($post_tr[0]->name.time().'.pdf','I');
@@ -124,14 +164,13 @@ function docrt_get_content_pdf($pdf, $postID, $post_term, $main_doc = '') {
     $tbl = docrt_content_by_type($param,$meta,$post_term);
 
     // footer
-   // $pdf->SetFont('times','','9');
     $tbl .= docrt_pdf_footer($meta,$postID,$post_term[0]->slug);
 
     $pdf->SetCellPadding(0);
     $pdf->writeHTML($tbl, true, false, false, false, '');
 }
 
-function docrt_get_content_pdf_skem_skel($pdf, $postID, $post_term) {
+function docrt_get_content_pdf2($pdf, $postID, $post_term, $main_doc = '') {
     $pdf->setPrintHeader(false);
     $pdf->setPrintFooter(false);
 
@@ -141,13 +180,15 @@ function docrt_get_content_pdf_skem_skel($pdf, $postID, $post_term) {
         $pdf->setCellHeightRatio(1.2);
     }
 
-
     $pdf->SetMargins(10, 10, 10, true);
 
-    $pdf->AddPage('L', 'F4');
+    if ($post_term[0]->slug == 'skkel' || $post_term[0]->slug == 'skkem') {
+    } else {
+        // jika bukan skkel dan skkem jadikan landscape soalnya skkel dan skkem harus potrait dan butuh header
+        $pdf->AddPage('L', 'F4');
+    }
 
     $meta = get_post_meta($postID);
-
 
     // <p> space margin ilangin
     $tagvs = array('p' => array(0 => array('h' => 0, 'n' => 0), 1 => array('h' => 0, 'n'=> 0)));
@@ -159,8 +200,16 @@ function docrt_get_content_pdf_skem_skel($pdf, $postID, $post_term) {
     } elseif ($post_term[0]->slug == 'skem') {
         $pdf->SetFont('times','','11');
     }
-    $param = docrt_pdf_template_form($post_term[0]->slug,$meta,$postID);
+
+    if ($main_doc === '') {
+        $param = docrt_pdf_template_form($post_term[0]->slug,$meta,$postID);
+    } else {
+        $param = docrt_pdf_template_form($main_doc,$meta,$postID);
+    }
+
+    //$param = docrt_pdf_template_form($post_term[0]->slug,$meta,$postID);
     $tbl = docrt_content_by_type($param,$meta,$post_term,$pdf);
+
 
     $pdf->SetCellPadding(0);
     $pdf->writeHTML($tbl, true, false, false, false, '');
@@ -168,46 +217,11 @@ function docrt_get_content_pdf_skem_skel($pdf, $postID, $post_term) {
 
 function docrt_content_by_type($param,$meta,$post_term,$pdf='') {
     $slug = $post_term[0]->slug;
-    if ($slug == 'sku') {
-        return docrt_sku_content($param,$meta,$post_term);
-
-    } elseif ($slug == 'skdu') {
-        return docrt_skdu_content($param,$meta,$post_term);
-
-    } elseif ($slug == 'skd') {
-        return docrt_skd_content($param,$meta,$post_term);
-
-    } elseif ($slug == 'skik') {
-        return docrt_skik_content($param,$meta,$post_term);
-
-    } elseif ($slug == 'skck') {
-        return docrt_skck_content($param,$meta,$post_term);
-
-    } elseif ($slug == 'skp') {
-        return docrt_skp_content($param,$meta,$post_term);;
-
-    } elseif ($slug == 'sktm') {
-        return docrt_sktm_content($param,$meta,$post_term);
-
-    } elseif ($slug == 'skbpm') {
-        return docrt_skbpm_content($param,$meta,$post_term);
-
-    } elseif ($slug == 'skel') {
-        return docrt_skel_content($param,$meta,$post_term);
-
-    } elseif ($slug == 'skem') {
-        return docrt_skem_content($param,$meta,$post_term);
-
-    } elseif ($slug == 'kk') {
-        return docrt_kk_content($param,$meta,$post_term);
-
-    } elseif ($slug == 'ktp') {
-        return docrt_ktp_content($param,$meta,$post_term);
-
-    } elseif ($slug == 'skai') {
-        return docrt_skai_content($param,$meta,$post_term);
-
-    }
+   /* print_r($param);
+    print_r($meta);
+    print_r($post_term);
+    print_r('docrt_'.$slug.'_content');exit;*/
+    return call_user_func_array('docrt_'.$slug.'_content', array($param,$meta,$post_term));
 }
 
 // footer tandatangan in general
@@ -284,8 +298,52 @@ function docrt_no_surat($type,$meta,$postID) {
     $data['skem']   = '474.3/'.$meta['docrt_skem_id'][0].'/'.'35.73.03.1008/V/'.get_the_date('Y',$postID) ;
     $data['kk']     = $meta['docrt_kk_id'][0].'/'.get_the_date('Y',$postID) ;
     $data['ktp']    = $meta['docrt_ktp_id'][0].'/'.get_the_date('Y',$postID) ;
+    // option
     $data['skai']   = '331/'.$meta['docrt_skp_id'][0].'/'.'35.73.03.1008/V/'.get_the_date('Y',$postID) ;
+    $data['skkel']   = '???/'.$meta['docrt_skel_id'][0].'/'.'35.73.03.1008/V/'.get_the_date('Y',$postID) ;
+    $data['skkem']   = '???/'.$meta['docrt_skem_id'][0].'/'.'35.73.03.1008/V/'.get_the_date('Y',$postID) ;
 
     return $data[$type];
 }
 
+
+/*if ($slug == 'sku') {
+        return docrt_sku_content($param,$meta,$post_term);
+
+    } elseif ($slug == 'skdu') {
+        return docrt_skdu_content($param,$meta,$post_term);
+
+    } elseif ($slug == 'skd') {
+        return docrt_skd_content($param,$meta,$post_term);
+
+    } elseif ($slug == 'skik') {
+        return docrt_skik_content($param,$meta,$post_term);
+
+    } elseif ($slug == 'skck') {
+        return docrt_skck_content($param,$meta,$post_term);
+
+    } elseif ($slug == 'skp') {
+        return docrt_skp_content($param,$meta,$post_term);;
+
+    } elseif ($slug == 'sktm') {
+        return docrt_sktm_content($param,$meta,$post_term);
+
+    } elseif ($slug == 'skbpm') {
+        return docrt_skbpm_content($param,$meta,$post_term);
+
+    } elseif ($slug == 'skel') {
+        return docrt_skel_content($param,$meta,$post_term);
+
+    } elseif ($slug == 'skem') {
+        return docrt_skem_content($param,$meta,$post_term);
+
+    } elseif ($slug == 'kk') {
+        return docrt_kk_content($param,$meta,$post_term);
+
+    } elseif ($slug == 'ktp') {
+        return docrt_ktp_content($param,$meta,$post_term);
+
+    } elseif ($slug == 'skai') {
+        return docrt_skai_content($param,$meta,$post_term);
+
+    }*/

@@ -1,5 +1,6 @@
 <?php
 function docrt_pdf_template_form($type,$meta,$postID) {
+
     $data['sku'] = array(
         'Nama' => 'docrt_form_nama',
         'Tempat Tanggal Lahir' => 'docrt_form_ttl',
@@ -33,6 +34,7 @@ function docrt_pdf_template_form($type,$meta,$postID) {
         'b' => array(
             'docrt_form_alamat_usaha' => $meta['docrt_form_alamat_usaha'][0],
             'docrt_form_ketRT' => $meta['docrt_form_ketRT'][0],
+            'docrt_form_rtrw_usaha' => $meta['docrt_form_rtrw_usaha'][0],
             'docrt_form_tgl' => date_i18n( 'j F Y', strtotime($meta['docrt_form_tgl'][0])),
             'docrt_form_keperluan' => $meta['docrt_form_keperluan'][0],
             'docrt_form_ket_usaha' => $meta['docrt_form_ket_usaha'][0],
@@ -251,27 +253,124 @@ function docrt_pdf_template_form($type,$meta,$postID) {
             'Berlaku Hingga' => date_i18n( 'j F Y', strtotime($meta['docrt_form_tgl_berlaku'][0])),
         ),
     );
-    $data['skai'] = array(
-        'a_skai' => array(
-            'Nama' => $meta['docrt_form_nama'][0],
-            'Jenis Kelamin' => $meta['docrt_form_jk'][0],
-            'Tempat Tanggal Lahir' => $meta['docrt_form_ttl'][0],
-            'Kebangsaan/Suku' => $meta['docrt_form_kebangsaan'][0],
-            'Agama' => $meta['docrt_form_agama'][0],
-            'Status Perkawinan' => $meta['docrt_form_sperkawinan'][0],
-            'Nomor KK' => $meta['docrt_form_nokk'][0],
-            'Nomor Register' => docrt_no_surat($type,$meta,$postID),
-            'Nomor KTP' => $meta['docrt_form_nonik'][0],
+    $data['skkel'] = array(
+        'bayi' => array(
+            'Pada Hari' => date_i18n( 'l', strtotime($meta['docrt_form_dilahirkan1'][0])),
+            'Tempat / Tanggal Lahir' => $meta['docrt_form_tempat'][0].' / '.date_i18n( 'j F Y', strtotime($meta['docrt_form_dilahirkan1'][0])),
+            'Pukul' => $meta['docrt_form_jam'][0].' WIB',
+            'Kota Kelahiran' => $meta['docrt_form_kota_bayi'][0],
+            'Penolong Kelahiran' => $meta['docrt_form_penolong_lahir'][0],
+            'Jenis Kelamin' => $meta['docrt_form_jk_bayi'][0],
+            'NIK' => $meta['docrt_form_nonik_bayi'][0],
+            'Nama Lengkap' => strtoupper($meta['docrt_form_nama_bayi'][0]),
+            'Anak Ke' => $meta['docrt_form_anakke'][0],
+        ),
+        'ibu' => array(
+            'Nama Lengkap' => $meta['docrt_form_nama_ibu'][0],
+            'Umur' => date_diff(date_create($meta['docrt_form_dilahirkan2'][0]), date_create($meta['docrt_form_tgl'][0]))->y,
+            'NIK' => $meta['docrt_form_nonik_ibu'][0],
+            'Pekerjaan' => $meta['docrt_form_pekerjaan_ibu'][0],
+            'Alamat' => $meta['docrt_form_alamat_ibu'][0],
+            'Telepon' => $meta['docrt_form_tlp_ibu'][0],
+        ),
+        'ayah' => array(
+            'Nama Lengkap' => $meta['docrt_form_nama_ayah'][0],
+            'Umur' => date_diff(date_create($meta['docrt_form_dilahirkan3'][0]), date_create($meta['docrt_form_tgl'][0]))->y,
+            'NIK' => $meta['docrt_form_nonik_ayah'][0],
+            'Pekerjaan' => $meta['docrt_form_pekerjaan_ayah'][0],
+            'Alamat' => $meta['docrt_form_alamat_ayah'][0],
+            'Telepon' => $meta['docrt_form_tlp_ayah'][0],
+        ),
+        'pelapor' => array(
+            'Nama Lengkap' => $meta['docrt_form_nama'][0],
+            'Umur' => $meta['docrt_form_umur'][0],
+            'NIK' => $meta['docrt_form_nonik'][0],
             'Pekerjaan' => $meta['docrt_form_pekerjaan'][0],
             'Alamat' => $meta['docrt_form_alamat'][0],
-            'Pendidikan' => $meta['docrt_form_pendidikan'][0],
-            'Keperluan' => $meta['docrt_form_keperluan'][0],
-            'Tujuan' => $meta['docrt_form_tujuan'][0],
+            'Telepon' => $meta['docrt_form_tlp'][0],
+            'Hubungan dengan sibayi' => $meta['docrt_form_hubungan'][0],
+        ),
+        'other' => array(
+            'kewarganegaraan' => $meta['docrt_form_kebangsaan_ayah'][0],
+            'nokk' => $meta['docrt_form_nokk_ayah'][0],
+            'kepalakeluarga' => $meta['docrt_form_nama_ayah'][0],
+            'noreg' => docrt_no_surat($type,$meta,$postID),
+            'Footer1' => docrt_pdf_footer($meta,$postID,$type,30,false,'15%','15%','70%'),
+            'Footer2' => docrt_pdf_footer($meta,$postID,$type,30,false,'10%','10%','75%'),
+        ),
 
-            'Berlaku Tanggal' => date_i18n( 'j F Y', strtotime($meta['docrt_form_tgl_berlaku'][0])),
-            'Keterangan RT No.' => $meta['docrt_form_ketRT'][0],
-        )
     );
+
+    $data['skkem'] = array(
+        'jenazah' => array(
+            'NIK' => $meta['docrt_form_nonik'][0],
+            'Nama Lengkap' => $meta['docrt_form_nama_mati'][0],
+            'Jenis kelamin' => $meta['docrt_form_jk'][0],
+            'Tempat / Tanggal Lahir' => $meta['docrt_form_ttl'][0],
+            'Umur' => $meta['docrt_form_umur'][0].' Tahun',
+            'Agama' => $meta['docrt_form_agama'][0],
+            'Pekerjaan' => $meta['docrt_form_pekerjaan'][0],
+            'Alamat' => $meta['docrt_form_alamat'][0],
+            'Anak ke' => $meta['docrt_form_anakke'][0],
+            'Tanggal kematian' => date_i18n( 'j F Y', strtotime($meta['docrt_form_tgl'][0])),
+            'Pukul' => $meta['docrt_form_jam'][0].' WIB',
+            'Sebab kematian' => $meta['docrt_form_sebab_kematian'][0],
+            'Tempat kematian' => $meta['docrt_form_tempat'][0],
+            'Yang menerangkan' => $meta['docrt_form_yang_menerangkan'][0]
+        ),
+        'ibu' => array(
+            'NIK' => $meta['docrt_form_nonik_ibu'][0],
+            'Nama Lengkap' => $meta['docrt_form_nama_ibu'][0],
+            'Tanggal lahir / umur' => date_i18n( 'j F Y', strtotime($meta['docrt_form_dilahirkan2'][0])).' / Umur :'.
+            date_diff(date_create($meta['docrt_form_dilahirkan2'][0]), date_create($meta['docrt_form_tgl'][0]))->y,
+            'Pekerjaan' => $meta['docrt_form_pekerjaan_ibu'][0],
+            'Alamat' => $meta['docrt_form_alamat_ibu'][0],
+        ),
+        'ayah' => array(
+            'NIK' => $meta['docrt_form_nonik_ayah'][0],
+            'Nama Lengkap' => $meta['docrt_form_nama_ayah'][0],
+            'Tanggal lahir / umur' => date_i18n( 'j F Y', strtotime($meta['docrt_form_dilahirkan3'][0])).' / Umur :'.
+            date_diff(date_create($meta['docrt_form_dilahirkan3'][0]), date_create($meta['docrt_form_tgl'][0]))->y,
+            'Pekerjaan' => $meta['docrt_form_pekerjaan_ayah'][0],
+            'Alamat' => $meta['docrt_form_alamat_ayah'][0],
+        ),
+        'pelapor' => array(
+            'NIK' => $meta['docrt_form_nonik_pelapor'][0],
+            'Nama Lengkap' => $meta['docrt_form_nama'][0],
+            'Tanggal lahir / umur' => date_i18n( 'j F Y', strtotime($meta['docrt_form_dilahirkan_pelapor'][0])).' / Umur :'.
+            date_diff(date_create($meta['docrt_form_dilahirkan_pelapor'][0]), date_create($meta['docrt_form_tgl'][0]))->y,
+            'Pekerjaan' => $meta['docrt_form_pekerjaan_pelapor'][0],
+            'Alamat' => $meta['docrt_form_alamat_pelapor'][0]
+        ),
+        'other' => array(
+            'kewarganegaraan' => $meta['docrt_form_kebangsaan_ayah'][0],
+            'nokk' => $meta['docrt_form_nokk_ayah'][0],
+            'kepalakeluarga' => $meta['docrt_form_nama_ayah'][0],
+            'noreg' => docrt_no_surat($type,$meta,$postID),
+        ),
+
+    );
+    // $data['skai'] = array(
+    //     'a_skai' => array(
+    //         'Nama' => $meta['docrt_form_nama'][0],
+    //         'Jenis Kelamin' => $meta['docrt_form_jk'][0],
+    //         'Tempat Tanggal Lahir' => $meta['docrt_form_ttl'][0],
+    //         'Kebangsaan/Suku' => $meta['docrt_form_kebangsaan'][0],
+    //         'Agama' => $meta['docrt_form_agama'][0],
+    //         'Status Perkawinan' => $meta['docrt_form_sperkawinan'][0],
+    //         'Nomor KK' => $meta['docrt_form_nokk'][0],
+    //         'Nomor Register' => docrt_no_surat($type,$meta,$postID),
+    //         'Nomor KTP' => $meta['docrt_form_nonik'][0],
+    //         'Pekerjaan' => $meta['docrt_form_pekerjaan'][0],
+    //         'Alamat' => $meta['docrt_form_alamat'][0],
+    //         'Pendidikan' => $meta['docrt_form_pendidikan'][0],
+    //         'Keperluan' => $meta['docrt_form_keperluan'][0],
+    //         'Tujuan' => $meta['docrt_form_tujuan'][0],
+
+    //         'Berlaku Tanggal' => date_i18n( 'j F Y', strtotime($meta['docrt_form_tgl_berlaku'][0])),
+    //         'Keterangan RT No.' => $meta['docrt_form_ketRT'][0],
+    //     )
+    // );
 
     // altering skp and skai
 

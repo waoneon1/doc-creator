@@ -2,10 +2,6 @@
 $meta = get_post_meta( $post->ID);
 $docrt_get_all_term = docrt_get_all_term();
 
-/*echo $meta['docrt_sku_id'][0];
-echo " string ";
-echo get_option('docrt_sku');
-echo $sku_id;*/
 echo '<table class="docrt_pemohon_box docrt_tbl docrt_tp_sku">';
     foreach ($docrt_get_all_term as $key => $t) {
         if (isset($meta['docrt_'.$t->slug.'_id'][0])) {
@@ -28,6 +24,9 @@ echo '<table class="docrt_pemohon_box docrt_tbl docrt_tp_sku">';
     }
 
     //all form start here
+
+
+
     // Data Diri=====================================================
     echo '<tbody>';
     echo '<tr><td colspan="3">&nbsp;</td></tr>
@@ -46,9 +45,30 @@ echo '<table class="docrt_pemohon_box docrt_tbl docrt_tp_sku">';
             <label class="diy-label docrt_form_nama_bayi_tr docrt_form" for="docrt_form_hubungan">Hubungan</label></th>
         <td> : </td>
         <td><input name="docrt_form_hubungan" type="text" class="docrt_inputs" id="docrt_form_hubungan" value="'.$meta['docrt_form_hubungan'][0].'" /></td>
+    </tr>
+
+    <tr align="left" class="docrt_form_dilahirkan_pelapor_tr docrt_form">
+        <th><label class="diy-label" for="docrt_form_dilahirkan_pelapor"> - Tanggal Dilahirkan</label></th>
+        <td> : </td>
+        <td><input name="docrt_form_dilahirkan_pelapor" type="date" class="docrt_inputs" id="docrt_form_dilahirkan_pelapor" value="'.$meta['docrt_form_dilahirkan_pelapor'][0].'" /></td>
+    </tr>
+    <tr align="left" class="docrt_form_alamat_pelapor_tr docrt_form">
+        <th><label class="diy-label" for="docrt_form_alamat_pelapor"> - Alamat</label></th>
+        <td> : </td>
+        <td><input name="docrt_form_alamat_pelapor" type="text" class="docrt_inputs" id="docrt_form_alamat_pelapor" value="'.$meta['docrt_form_alamat_pelapor'][0].'"/></td>
+    </tr>
+    <tr align="left" class="docrt_form_nonik_pelapor_tr docrt_form">
+        <th><label class="diy-label" for="docrt_form_nonik_pelapor"> - No NIK</label></th>
+        <td> : </td>
+        <td><input name="docrt_form_nonik_pelapor" type="text" class="docrt_inputs" id="docrt_form_nonik_pelapor" value="'.$meta['docrt_form_nonik_pelapor'][0].'"/></td>
+    </tr>
+    <tr align="left" class="docrt_form_pekerjaan_pelapor_tr docrt_form">
+        <th><label class="diy-label" for="docrt_form_pekerjaan_pelapor"> - Pekarjaan</label></th>
+        <td> : </td>
+        <td><input name="docrt_form_pekerjaan_pelapor" type="text" class="docrt_inputs" id="docrt_form_pekerjaan_pelapor" value="'.$meta['docrt_form_pekerjaan_pelapor'][0].'"/></td>
     </tr>';
 
-    // alter kematian
+     // alter kematian karena banyak jadi data diri/ pelapor yg di alter
     echo '<tbody class="docrt_form_nama_mati_tr docrt_form">
     <tr><td colspan="3">&nbsp;</td></tr>
     <tr align="left">
@@ -62,39 +82,6 @@ echo '<table class="docrt_pemohon_box docrt_tbl docrt_tp_sku">';
     </tr>
     <tbody>
     ';
-
-    // alter Kelahiran
-    echo '<tbody class="docrt_form_nama_bayi_tr docrt_form">
-    <tr><td colspan="3">&nbsp;</td></tr>
-    <tr align="left">
-        <th colspan="3"><label class="headform-label">Data Kelahiran</label></th>
-    </tr>
-    <tr><td colspan="3"><hr/></td></tr></tbody>
-    <tr align="left" class="docrt_form_nama_bayi_tr docrt_form">
-        <th><label class="diy-label" for="docrt_form_nama_bayi">Nama Bayi</label></th>
-        <td> : </td>
-        <td><input name="docrt_form_nama_bayi" type="text" class="docrt_inputs" id="docrt_form_nama_bayi" value="'.$meta['docrt_form_nama_bayi'][0].'" /></td>
-    </tr>
-    <tr align="left" class="docrt_form_dilahirkan1_tr docrt_form">
-        <th><label class="diy-label" for="docrt_form_dilahirkan1">Tanggal Dilahirkan</label></th>
-        <td> : </td>
-        <td><input name="docrt_form_dilahirkan1" type="date" class="docrt_inputs" id="docrt_form_dilahirkan1" value="'.$meta['docrt_form_dilahirkan1'][0].'" /></td>
-    </tr>
-    <tr align="left" class="docrt_form_kelahiran_tr docrt_form">
-        <th><label class="diy-label" for="docrt_form_kelahiran">Kelahiran</label></th>
-        <td> : </td>
-        <td><select name="docrt_form_kelahiran" class="docrt_inputs" id="docrt_form_kelahiran" >
-              <option value="Tunggal" >Tunggal</option>
-              <option value="Kembar" '.(($meta['docrt_form_kelahiran'][0] == 'Kembar') ? 'selected' : '').'>Kembar</option>
-            </select>
-        </td>
-    </tr>
-    <tr align="left" class="docrt_form_kembarke_tr docrt_form">
-        <th><label class="diy-label" for="docrt_form_kembarke">Kembar Ke</label></th>
-        <td> : </td>
-        <td><input name="docrt_form_kembarke" type="number" class="docrt_inputs" id="docrt_form_kembarke" value="'.$meta['docrt_form_kembarke'][0].'" /></td>
-    </tr>
-    <tbody>';
 
     // Data Diri Lanjutan..
     echo '<tr align="left" class="docrt_form_ttl_tr docrt_form">
@@ -185,6 +172,7 @@ echo '<table class="docrt_pemohon_box docrt_tbl docrt_tp_sku">';
     </tr>';
     echo '</tbody>';
 
+
     // Alamat=======================================================================
     echo '<tbody>';
     echo '<tr align="left" class="docrt_form_alamat_tr docrt_form">
@@ -193,7 +181,7 @@ echo '<table class="docrt_pemohon_box docrt_tbl docrt_tp_sku">';
         <td><textarea rows="3" name="docrt_form_alamat" class="docrt_inputs" id="docrt_form_alamat">'.$meta['docrt_form_alamat'][0].'</textarea>
         </td>
     </tr>
-     <tr align="left" class="docrt_form_rtrw_tr docrt_form">
+    <tr align="left" class="docrt_form_rtrw_tr docrt_form">
         <th><label class="diy-label" for="docrt_form_rtrw">RT / RW</label></th>
         <td> : </td>
         <td><input name="docrt_form_rtrw" type="text" class="docrt_inputs" id="docrt_form_rtrw" value="'.$meta['docrt_form_rtrw'][0].'"/></td>
@@ -217,8 +205,71 @@ echo '<table class="docrt_pemohon_box docrt_tbl docrt_tp_sku">';
         <th><label class="diy-label" for="docrt_form_provinsi">Provinsi</label></th>
         <td> : </td>
         <td><input name="docrt_form_provinsi" type="text" class="docrt_inputs" id="docrt_form_provinsi" value="'.$meta['docrt_form_provinsi'][0].'"/></td>
+    </tr>
+    <tr align="left" class="docrt_form_tlp_tr docrt_form">
+        <th><label class="diy-label" for="docrt_form_tlp">Telepon</label></th>
+        <td> : </td>
+        <td><input name="docrt_form_tlp" type="text" class="docrt_inputs" id="docrt_form_tlp" value="'.$meta['docrt_form_tlp'][0].'"/></td>
     </tr>';
     echo '</tbody>';
+
+
+     // alter Kelahiran
+    echo '<tbody class="docrt_form_nama_bayi_tr docrt_form">
+    <tr><td colspan="3">&nbsp;</td></tr>
+    <tr align="left">
+        <th colspan="3"><label class="headform-label">Data Kelahiran</label></th>
+    </tr>
+    <tr><td colspan="3"><hr/></td></tr></tbody>
+    <tr align="left" class="docrt_form_nama_bayi_tr docrt_form">
+        <th><label class="diy-label" for="docrt_form_nama_bayi">Nama Bayi</label></th>
+        <td> : </td>
+        <td><input name="docrt_form_nama_bayi" type="text" class="docrt_inputs" id="docrt_form_nama_bayi" value="'.$meta['docrt_form_nama_bayi'][0].'" /></td>
+    </tr>
+    <tr align="left" class="docrt_form_dilahirkan1_tr docrt_form">
+        <th><label class="diy-label" for="docrt_form_dilahirkan1">Tanggal Dilahirkan</label></th>
+        <td> : </td>
+        <td><input name="docrt_form_dilahirkan1" type="date" class="docrt_inputs" id="docrt_form_dilahirkan1" value="'.$meta['docrt_form_dilahirkan1'][0].'" /></td>
+    </tr>
+    <tr align="left" class="docrt_form_nonik_bayi_tr docrt_form">
+        <th><label class="diy-label" for="docrt_form_nonik_bayi">No NIK</label></th>
+        <td> : </td>
+        <td><input name="docrt_form_nonik_bayi" type="text" class="docrt_inputs" id="docrt_form_nonik_bayi" value="'.$meta['docrt_form_nonik_bayi'][0].'" /></td>
+    </tr>
+    <tr align="left" class="docrt_form_anakke_tr docrt_form">
+        <th><label class="diy-label" for="docrt_form_anakke">Anak Ke</label></th>
+        <td> : </td>
+        <td><input name="docrt_form_anakke" type="number" class="docrt_inputs" id="docrt_form_anakke" value="'.$meta['docrt_form_anakke'][0].'" /></td>
+    </tr>
+    <tr align="left" class="docrt_form_kelahiran_tr docrt_form">
+        <th><label class="diy-label" for="docrt_form_kelahiran">Kelahiran</label></th>
+        <td> : </td>
+        <td><select name="docrt_form_kelahiran" class="docrt_inputs" id="docrt_form_kelahiran" >
+              <option value="Tunggal" >Tunggal</option>
+              <option value="Kembar" '.(($meta['docrt_form_kelahiran'][0] == 'Kembar') ? 'selected' : '').'>Kembar</option>
+            </select>
+        </td>
+    </tr>
+    <tr align="left" class="docrt_form_kembarke_tr docrt_form">
+        <th><label class="diy-label" for="docrt_form_kembarke">Kembar Ke</label></th>
+        <td> : </td>
+        <td><input name="docrt_form_kembarke" type="number" class="docrt_inputs" id="docrt_form_kembarke" value="'.$meta['docrt_form_kembarke'][0].'" /></td>
+    </tr>
+    <tr align="left" class="docrt_form_jk_bayi_tr docrt_form">
+        <th><label class="diy-label" for="docrt_form_jk_bayi">Jenis Kelamin</label></th>
+        <td> : </td>
+        <td><select name="docrt_form_jk_bayi" class="docrt_inputs" id="docrt_form_jk_bayi" >
+              <option value="Laki-Laki" >Laki - Laki</option>
+              <option value="Perempuan" '.(($meta['docrt_form_jk_bayi'][0] == 'Perempuan') ? 'selected' : '').'>Perempuan</option>
+            </select>
+        </td>
+    </tr>
+    <tr align="left" class="docrt_form_kota_bayi_tr docrt_form">
+        <th><label class="diy-label" for="docrt_form_kota_bayi">Kota/Kabupaten Kelahiran</label></th>
+        <td> : </td>
+        <td><input name="docrt_form_kota_bayi" type="text" class="docrt_inputs" id="docrt_form_kota_bayi" value="'.$meta['docrt_form_kota_bayi'][0].'"/></td>
+    </tr>
+    <tbody>';
 
     // Keterangan =======================================================================
     echo '<tbody>';
@@ -242,7 +293,8 @@ echo '<table class="docrt_pemohon_box docrt_tbl docrt_tp_sku">';
     <tr align="left" class="docrt_form_tgl_tr docrt_form">
         <th><label class="diy-label" for="docrt_form_tgl">Tanggal</label></th>
         <td> : </td>
-        <td><input name="docrt_form_tgl" type="date" class="docrt_inputs" id="docrt_form_tgl" value="'.$meta['docrt_form_tgl'][0].'"/></td>
+        <td><input name="docrt_form_tgl" type="date" class="docrt_inputs half" id="docrt_form_tgl" value="'.$meta['docrt_form_tgl'][0].'"/>
+        <input name="docrt_form_jam" type="text" class="docrt_inputs half" id="docrt_form_jam" value="'.$meta['docrt_form_jam'][0].'" placeholder="12:00"/></td>
     </tr>
     <tr align="left" class="docrt_form_tgl_berlaku_tr docrt_form">
         <th><label class="diy-label" for="docrt_form_tgl_berlaku">Berlaku Tanggal</label></th>
@@ -264,10 +316,27 @@ echo '<table class="docrt_pemohon_box docrt_tbl docrt_tp_sku">';
         <td> : </td>
         <td><input name="docrt_form_sebab_kematian" type="text" class="docrt_inputs" id="docrt_form_sebab_kematian" value="'.$meta['docrt_form_sebab_kematian'][0].'"/></td>
     </tr>
+    <tr align="left" class="docrt_form_yang_menerangkan_tr docrt_form">
+        <th><label class="diy-label" for="docrt_form_yang_menerangkan">Yang Menerangkan</label></th>
+        <td> : </td>
+        <td><input name="docrt_form_yang_menerangkan" type="text" class="docrt_inputs" id="docrt_form_yang_menerangkan" value="'.$meta['docrt_form_yang_menerangkan'][0].'"/></td>
+    </tr>
     <tr align="left" class="docrt_form_penolong_lahir_tr docrt_form">
         <th><label class="diy-label" for="docrt_form_penolong_lahir">Penolong Kelahiran</label></th>
         <td> : </td>
         <td><input name="docrt_form_penolong_lahir" type="text" class="docrt_inputs" id="docrt_form_penolong_lahir" value="'.$meta['docrt_form_penolong_lahir'][0].'" /></td>
+    </tr>';
+
+    // Saksi
+    $docrt_saksi = docrt_get_saksi_form($meta['docrt_form_saksi'][0]);
+    echo '
+    <tr align="left" class="docrt_form_saksi_tr docrt_form">
+        <th><label class="diy-label" for="docrt_form_saksi">Saksi</label></th>
+        <td> : </td>
+        <td><select name="docrt_form_saksi" class="docrt_inputs" id="docrt_form_saksi" >
+            <option value="0">-</option>
+            '.$docrt_saksi['RT'].'
+        </select></td>
     </tr>';
     echo '</tbody>';
 
@@ -278,51 +347,83 @@ echo '<table class="docrt_pemohon_box docrt_tbl docrt_tp_sku">';
         <th colspan="3"><label class="headform-label">Data Ayah dan Ibu Bayi</label></th>
     </tr>
     <tr><td colspan="3"><hr/></td></tr></tbody>
-    <tr align="left" class="docrt_form_nama_ibu_tr docrt_form">
-        <th><label class="diy-label" for="docrt_form_nama_ibu">Nama Ibu</label></th>
-        <td> : </td>
-        <td><input name="docrt_form_nama_ibu" type="text" class="docrt_inputs" id="docrt_form_nama_ibu" value="'.$meta['docrt_form_nama_ibu'][0].'" /></td>
-    </tr>
-    <tr align="left" class="docrt_form_dilahirkan2_tr docrt_form">
-        <th><label class="diy-label" for="docrt_form_dilahirkan2">Tanggal Dilahirkan</label></th>
-        <td> : </td>
-        <td><input name="docrt_form_dilahirkan2" type="date" class="docrt_inputs" id="docrt_form_dilahirkan2" value="'.$meta['docrt_form_dilahirkan2'][0].'" /></td>
-    </tr>
-    <tr align="left" class="docrt_form_kebangsaan_ibu_tr docrt_form">
-        <th><label class="diy-label" for="docrt_form_kebangsaan_ibu">Kewarganegaraan</label></th>
-        <td> : </td>
-        <td><input name="docrt_form_kebangsaan_ibu" type="text" class="docrt_inputs" id="docrt_form_kebangsaan_ibu" value="'.$meta['docrt_form_kebangsaan_ibu'][0].'"/></td>
-    </tr>
-    <tr align="left" class="docrt_form_alamat_ibu_tr docrt_form">
-        <th><label class="diy-label" for="docrt_form_alamat_ibu">Alamat</label></th>
-        <td> : </td>
-        <td><input name="docrt_form_alamat_ibu" type="text" class="docrt_inputs" id="docrt_form_alamat_ibu" value="'.$meta['docrt_form_alamat_ibu'][0].'"/></td>
-    </tr>
-    <tr align="left" class="docrt_form_nama_ayah_tr docrt_form">
-        <th><label class="diy-label" for="docrt_form_nama_ayah">Nama Ayah</label></th>
-        <td> : </td>
-        <td><input name="docrt_form_nama_ayah" type="text" class="docrt_inputs" id="docrt_form_nama_ayah" value="'.$meta['docrt_form_nama_ayah'][0].'" /></td>
-    </tr>
-    <tr align="left" class="docrt_form_dilahirkan3_tr docrt_form">
-        <th><label class="diy-label" for="docrt_form_dilahirkan3">Tanggal Dilahirkan</label></th>
-        <td> : </td>
-        <td><input name="docrt_form_dilahirkan3" type="date" class="docrt_inputs" id="docrt_form_dilahirkan3" value="'.$meta['docrt_form_dilahirkan3'][0].'" /></td>
-    </tr>
-    <tr align="left" class="docrt_form_kebangsaan_ayah_tr docrt_form">
-        <th><label class="diy-label" for="docrt_form_kebangsaan_ayah">Kewarganegaraan</label></th>
-        <td> : </td>
-        <td><input name="docrt_form_kebangsaan_ayah" type="text" class="docrt_inputs" id="docrt_form_kebangsaan_ayah" value="'.$meta['docrt_form_kebangsaan_ayah'][0].'"/></td>
-    </tr>
-    <tr align="left" class="docrt_form_nokk_ayah_tr docrt_form">
-        <th><label class="diy-label" for="docrt_form_nokk_ayah">No KK</label></th>
-        <td> : </td>
-        <td><input name="docrt_form_nokk_ayah" type="text" class="docrt_inputs" id="docrt_form_nokk_ayah" value="'.$meta['docrt_form_nokk_ayah'][0].'"/></td>
-    </tr>
-    <tr align="left" class="docrt_form_nonik_ayah_tr docrt_form">
-        <th><label class="diy-label" for="docrt_form_nonik_ayah">No NIK</label></th>
-        <td> : </td>
-        <td><input name="docrt_form_nonik_ayah" type="text" class="docrt_inputs" id="docrt_form_nonik_ayah" value="'.$meta['docrt_form_nonik_ayah'][0].'"/></td>
-    </tr>
+        <tr align="left" class="docrt_form_nama_ibu_tr docrt_form">
+            <th><label class="diy-label" for="docrt_form_nama_ibu">Nama Ibu</label></th>
+            <td> : </td>
+            <td><input name="docrt_form_nama_ibu" type="text" class="docrt_inputs" id="docrt_form_nama_ibu" value="'.$meta['docrt_form_nama_ibu'][0].'" /></td>
+        </tr>
+        <tr align="left" class="docrt_form_dilahirkan2_tr docrt_form">
+            <th><label class="diy-label" for="docrt_form_dilahirkan2"> - Tanggal Dilahirkan</label></th>
+            <td> : </td>
+            <td><input name="docrt_form_dilahirkan2" type="date" class="docrt_inputs" id="docrt_form_dilahirkan2" value="'.$meta['docrt_form_dilahirkan2'][0].'" /></td>
+        </tr>
+        <tr align="left" class="docrt_form_kebangsaan_ibu_tr docrt_form">
+            <th><label class="diy-label" for="docrt_form_kebangsaan_ibu"> - Kewarganegaraan</label></th>
+            <td> : </td>
+            <td><input name="docrt_form_kebangsaan_ibu" type="text" class="docrt_inputs" id="docrt_form_kebangsaan_ibu" value="'.$meta['docrt_form_kebangsaan_ibu'][0].'"/></td>
+        </tr>
+        <tr align="left" class="docrt_form_alamat_ibu_tr docrt_form">
+            <th><label class="diy-label" for="docrt_form_alamat_ibu"> - Alamat</label></th>
+            <td> : </td>
+            <td><input name="docrt_form_alamat_ibu" type="text" class="docrt_inputs" id="docrt_form_alamat_ibu" value="'.$meta['docrt_form_alamat_ibu'][0].'"/></td>
+        </tr>
+        <tr align="left" class="docrt_form_nonik_ibu_tr docrt_form">
+            <th><label class="diy-label" for="docrt_form_nonik_ibu"> - No NIK</label></th>
+            <td> : </td>
+            <td><input name="docrt_form_nonik_ibu" type="text" class="docrt_inputs" id="docrt_form_nonik_ibu" value="'.$meta['docrt_form_nonik_ibu'][0].'"/></td>
+        </tr>
+        <tr align="left" class="docrt_form_pekerjaan_ibu_tr docrt_form">
+            <th><label class="diy-label" for="docrt_form_pekerjaan_ibu"> - Pekarjaan</label></th>
+            <td> : </td>
+            <td><input name="docrt_form_pekerjaan_ibu" type="text" class="docrt_inputs" id="docrt_form_pekerjaan_ibu" value="'.$meta['docrt_form_pekerjaan_ibu'][0].'"/></td>
+        </tr>
+        <tr align="left" class="docrt_form_tlp_ibu_tr docrt_form">
+            <th><label class="diy-label" for="docrt_form_tlp_ibu"> - Telepon</label></th>
+            <td> : </td>
+            <td><input name="docrt_form_tlp_ibu" type="text" class="docrt_inputs" id="docrt_form_tlp_ibu" value="'.$meta['docrt_form_tlp_ibu'][0].'"/></td>
+        </tr>
+
+
+        <tr align="left" class="docrt_form_nama_ayah_tr docrt_form">
+            <th><label class="diy-label" for="docrt_form_nama_ayah">Nama Ayah</label></th>
+            <td> : </td>
+            <td><input name="docrt_form_nama_ayah" type="text" class="docrt_inputs" id="docrt_form_nama_ayah" value="'.$meta['docrt_form_nama_ayah'][0].'" /></td>
+        </tr>
+        <tr align="left" class="docrt_form_dilahirkan3_tr docrt_form">
+            <th><label class="diy-label" for="docrt_form_dilahirkan3"> - Tanggal Dilahirkan</label></th>
+            <td> : </td>
+            <td><input name="docrt_form_dilahirkan3" type="date" class="docrt_inputs" id="docrt_form_dilahirkan3" value="'.$meta['docrt_form_dilahirkan3'][0].'" /></td>
+        </tr>
+        <tr align="left" class="docrt_form_kebangsaan_ayah_tr docrt_form">
+            <th><label class="diy-label" for="docrt_form_kebangsaan_ayah"> - Kewarganegaraan</label></th>
+            <td> : </td>
+            <td><input name="docrt_form_kebangsaan_ayah" type="text" class="docrt_inputs" id="docrt_form_kebangsaan_ayah" value="'.$meta['docrt_form_kebangsaan_ayah'][0].'"/></td>
+        </tr>
+        <tr align="left" class="docrt_form_alamat_ayah_tr docrt_form">
+            <th><label class="diy-label" for="docrt_form_alamat_ayah"> - Alamat</label></th>
+            <td> : </td>
+            <td><input name="docrt_form_alamat_ayah" type="text" class="docrt_inputs" id="docrt_form_alamat_ayah" value="'.$meta['docrt_form_alamat_ayah'][0].'"/></td>
+        </tr>
+        <tr align="left" class="docrt_form_nokk_ayah_tr docrt_form">
+            <th><label class="diy-label" for="docrt_form_nokk_ayah"> - No KK</label></th>
+            <td> : </td>
+            <td><input name="docrt_form_nokk_ayah" type="text" class="docrt_inputs" id="docrt_form_nokk_ayah" value="'.$meta['docrt_form_nokk_ayah'][0].'"/></td>
+        </tr>
+        <tr align="left" class="docrt_form_nonik_ayah_tr docrt_form">
+            <th><label class="diy-label" for="docrt_form_nonik_ayah"> - No NIK</label></th>
+            <td> : </td>
+            <td><input name="docrt_form_nonik_ayah" type="text" class="docrt_inputs" id="docrt_form_nonik_ayah" value="'.$meta['docrt_form_nonik_ayah'][0].'"/></td>
+        </tr>
+        <tr align="left" class="docrt_form_pekerjaan_ayah_tr docrt_form">
+            <th><label class="diy-label" for="docrt_form_pekerjaan_ayah"> - Pekarjaan</label></th>
+            <td> : </td>
+            <td><input name="docrt_form_pekerjaan_ayah" type="text" class="docrt_inputs" id="docrt_form_pekerjaan_ayah" value="'.$meta['docrt_form_pekerjaan_ayah'][0].'"/></td>
+        </tr>
+        <tr align="left" class="docrt_form_tlp_ayah_tr docrt_form">
+            <th><label class="diy-label" for="docrt_form_tlp_ayah"> - Telepon</label></th>
+            <td> : </td>
+            <td><input name="docrt_form_tlp_ayah" type="text" class="docrt_inputs" id="docrt_form_tlp_ayah" value="'.$meta['docrt_form_tlp_ayah'][0].'"/></td>
+        </tr>
     <tbody>
     ';
 
@@ -342,6 +443,11 @@ echo '<table class="docrt_pemohon_box docrt_tbl docrt_tp_sku">';
         <th><label class="diy-label" for="docrt_form_alamat_usaha">Alamat Usaha</label></th>
         <td> : </td>
         <td><input name="docrt_form_alamat_usaha" type="text" class="docrt_inputs" id="docrt_form_alamat_usaha" value="'.$meta['docrt_form_alamat_usaha'][0].'"/></td>
+    </tr>
+    <tr align="left" class="docrt_form_rtrw_usaha_tr docrt_form">
+        <th><label class="diy-label" for="docrt_form_rtrw_usaha">RT / RW</label></th>
+        <td> : </td>
+        <td><input name="docrt_form_rtrw_usaha" type="text" class="docrt_inputs" id="docrt_form_rtrw_usaha" value="'.$meta['docrt_form_rtrw_usaha'][0].'"/></td>
     </tr>
     <tr align="left" class="docrt_form_ket_usaha_tr docrt_form">
         <th><label class="diy-label" for="docrt_form_ket_usaha">Keterangan Usaha</label></th>

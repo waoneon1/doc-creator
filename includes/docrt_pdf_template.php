@@ -26,4 +26,8 @@ include 'pdf-template/docrt_kk_content.php';
 include 'pdf-template/docrt_ktp_content.php';
 // 13. skai
 include 'pdf-template/docrt_skai_content.php';
+// 14. skkel
+include 'pdf-template/docrt_skkel_content.php';
+// 15. skkem
+include 'pdf-template/docrt_skkem_content.php';
 

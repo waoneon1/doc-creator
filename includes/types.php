@@ -10,7 +10,7 @@ function docrt_register_custom_post_types() {
         'labels' => array(
             'name' => __( 'Buat Document', 'docrt'),
             'singular_name' => __( 'Documents', 'docrt' ),
-            'add_new' => __( 'Buat Surat' ),
+            'add_new' => __( 'Buat Document' ),
             'add_new_item' => __( 'Add New Document', 'docrt' ),
             'edit' => __( 'Edit', 'docrt' ),
             'edit_item' => __( 'Edit Document', 'docrt' ),
@@ -48,6 +48,10 @@ add_action( 'init', 'docrt_doc_taxonomies', 0 );
 // create two taxonomies, genres and writers for the post type "book"
 function docrt_doc_taxonomies() {
     // Add new taxonomy, make it hierarchical (like categories)
+    $show_ui = false;
+    if (current_user_can('manage_options'))
+        $show_ui = true;
+
     $labels = array(
         'name'              => _x( 'Jenis Surat', 'taxonomy general name' ),
         'singular_name'     => _x( 'Surat', 'taxonomy singular name' ),
@@ -65,7 +69,7 @@ function docrt_doc_taxonomies() {
     $args = array(
         'hierarchical'      => true,
         'labels'            => $labels,
-        'show_ui'           => false,
+        'show_ui'           => $show_ui,
         'show_admin_column' => true,
         'query_var'         => true,
         'rewrite'           => array( 'slug' => 'surat' ),
@@ -113,7 +117,9 @@ function docrt_type_surat_box($post) {
       'orderby' => 'name',
       'order' => 'ASC'
     );
-
+    $type_surat_allow = array(
+        'kk','ktp','skel','skem','skbpm','skck','skd','skdu','skik','skp','sktm','sku'
+    );
     $tax_terms = get_terms($taxonomy,$term_args);
     $post_term = get_the_terms ($post->ID,$taxonomy );
 
@@ -125,11 +131,13 @@ function docrt_type_surat_box($post) {
             </tr>';
     } else {
         foreach ($tax_terms as $key => $v) {
-            $checked = ($post_term[0]->term_id == $v->term_id) ? 'checked' : '';
-            echo '<tr align="left" class="strip">
-                <th><input type="radio" name="tax_input[surat][]" value="'.$v->term_id.'" data-typesurat="'.$v->slug.'" '.$checked.' required></th>
-                <td>'.$v->name.'</td>
-            </tr>';
+            if (in_array($v->slug, $type_surat_allow)) {
+                $checked = ($post_term[0]->term_id == $v->term_id) ? 'checked' : '';
+                echo '<tr align="left" class="strip">
+                    <th><input type="radio" name="tax_input[surat][]" value="'.$v->term_id.'" data-typesurat="'.$v->slug.'" '.$checked.' required></th>
+                    <td>'.$v->name.'</td>
+                </tr>';
+            }
         }
     }
     echo '</table>';
@@ -201,6 +209,7 @@ function pretty_print($data){
     echo "</pre>";
 }
 
+
 function docrt_get_form_surat($type_surat = 'sku') {
     $fields = array(
     'docrt_jenis_ttd',
@@ -230,10 +239,14 @@ function docrt_get_form_surat($type_surat = 'sku') {
     'docrt_form_kota',
     'docrt_form_provinsi',
     'docrt_form_tgl',
+    'docrt_form_jam',
+    'docrt_form_tlp',
+    'docrt_form_saksi',
             'docrt_form_nama_mati',
             'docrt_form_hubungan',
             'docrt_form_nama_usaha',
             'docrt_form_alamat_usaha',
+            'docrt_form_rtrw_usaha',
             'docrt_form_nama_noinduk_lembaga',
             'docrt_form_noinduk_lembaga',
             'docrt_form_nama_lembaga',
@@ -260,6 +273,23 @@ function docrt_get_form_surat($type_surat = 'sku') {
         'docrt_form_kebangsaan_ayah',
         'docrt_form_nokk_ayah',
         'docrt_form_nonik_ayah',
+        'docrt_form_nonik_ibu',
+        'docrt_form_pekerjaan_ibu',
+        'docrt_form_tlp_ibu',
+        'docrt_form_alamat_ayah',
+        'docrt_form_pekerjaan_ayah',
+        'docrt_form_tlp_ayah',
+        'docrt_form_anakke',
+        'docrt_form_nonik_bayi',
+        'docrt_form_jk_bayi',
+        'docrt_form_kota_bayi',
+        // kusus kematian
+        'docrt_form_nama_pelapor',
+        'docrt_form_nonik_pelapor',
+        'docrt_form_pekerjaan_pelapor',
+        'docrt_form_alamat_pelapor',
+        'docrt_form_dilahirkan_pelapor',
+        'docrt_form_yang_menerangkan',
 
     );
 
@@ -279,4 +309,45 @@ function docrt_get_form_surat($type_surat = 'sku') {
         $fields[] = 'docrt_pengikut_keterangan'.$i;
     }
     return $fields;
+}
+
+
+function docrt_get_saksi_form($meta_value1 = '',$meta_value2 = '') {
+    $query_args = array(
+        'post_type'      => 'docrt-perangkat',
+        'post_status'    => 'publish',
+        'orderby'        => 'date',
+    );
+    $posts = new WP_Query( $query_args );
+    $data['RT'] = '';
+    $data['RW'] = '';
+    foreach ($posts->posts as $key => $post) {
+        $meta = get_post_meta($post->ID, 'docrt_perangkat', true);
+        $param[ $meta['jabatan'] ][] = array(
+            'id' => $post->ID,
+            'jabatan' => $meta['jabatan'].' '.$meta['no_jabatan'],
+            'no_jabatan_rw' => $meta['no_jabatan_rw']
+        );
+    }
+
+    foreach ($param as $key => $value) {
+        foreach ($value as $k => $v) {
+            if ($v['id'] == $meta_value1) {
+                $selected = 'selected';
+            } elseif ($v['id'] == $meta_value2) {
+                $selected = 'selected';
+            } else {
+                 $selected = '';
+            }
+
+            if ($key == 'RT') {
+                $data[$key] .= '<option value="'.$v['id'].'" '.$selected.'>'.$v['jabatan'].' / '.$v['no_jabatan_rw'].'</option>';
+            } else {
+                $data[$key] .= '<option value="'.$v['id'].'" '.$selected.'>'.$v['jabatan'].'</option>';
+            }
+
+        }
+    }
+
+    return $data;
 }
