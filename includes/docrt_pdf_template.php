@@ -30,4 +30,7 @@ include 'pdf-template/docrt_skai_content.php';
 include 'pdf-template/docrt_skkel_content.php';
 // 15. skkem
 include 'pdf-template/docrt_skkem_content.php';
+// 15. sk
+include 'pdf-template/docrt_sk_content.php';
+
 

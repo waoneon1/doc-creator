@@ -23,6 +23,7 @@ jQuery(document).ready(function($) {
         var tr_tag = $(".docrt_pemohon_box .docrt_form");
         var type_surat = $(".docrt_type_surat_box input[type='radio']:checked").data('typesurat');
         var data = docrt_form_data(type_surat);
+
         docrt_title_selected(type_surat);
 
         $("input[type='hidden']#docrt_tysrt_form ").val(type_surat);
@@ -45,7 +46,7 @@ jQuery(document).ready(function($) {
             for (var i = 0 ; i < data_theads.length; i++) {
                 data_thead = data_theads[i].split("=>");
                 if (data_thead[0] == 'thead') {
-                    console.log(".docrt_pemohon_box .docrt_"+data_thead[0]+"_"+data_thead[1]);
+
                     $(".docrt_pemohon_box .docrt_"+data_thead[0]+"_"+data_thead[1]).removeClass('d-hide');
                 }
             }
@@ -58,7 +59,7 @@ jQuery(document).ready(function($) {
         $(title_tag).addClass('d-hide');
         $(".docrt_pemohon_box .docrt_form_title .docrt_inputs").attr('disabled', 'disabled');
 
-        //console.log(".docrt_pemohon_box .docrt_"+type_surat+"_id_title");
+
         $(".docrt_pemohon_box .docrt_"+type_surat+"_id_title").removeClass('d-hide');
         $(".docrt_pemohon_box #docrt_"+type_surat+"_id").removeAttr('disabled');
     }
@@ -120,7 +121,7 @@ jQuery(document).ready(function($) {
                 'docrt_form_alamat_usaha'
             ]
         };
-        //console.log(data['sku']['surat']);
+
         // 2. data surat keterangan domisili usaha ===================================================================================================
         data.skdu ={
             'surat' : [
@@ -352,6 +353,26 @@ jQuery(document).ready(function($) {
                 'docrt_form_tgl_berlaku',
             ]
         };
+        // 13. data surat keterangan ===================================================================================================
+        data.sk ={
+            'surat' : [
+                'docrt_form_nama',
+                'docrt_form_ttl',
+                'docrt_form_jk',
+                'docrt_form_agama',
+                'docrt_form_sperkawinan',
+                'docrt_form_nokk',
+                'docrt_form_nonik',
+                'docrt_form_pekerjaan',
+                'docrt_form_alamat',
+                'docrt_form_pendidikan',
+                'docrt_form_keperluan',
+                'docrt_form_tujuan',
+                'docrt_form_tgl_berlaku',
+                'docrt_form_ketRT',
+                'docrt_form_menerangkan_bahwa'
+            ]
+        };
 
         if (type_surat == '')
             return docrt_merge_options(data,docrt_header_data());
@@ -371,6 +392,7 @@ jQuery(document).ready(function($) {
         data.skbpm = {'header' : []};
         data.skel = {'header' : []};
         data.skem = {'header' : []};
+        data.sk = {'header' : []};
 
         if (type_surat == '')
             return data;

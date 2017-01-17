@@ -24,6 +24,10 @@ function docrt_skkel_content($pdf,$postID, $post_term) {
         //$ttd_jabatan = 'LURAH SAWOJAJAR<br/><span style="font-size:11px;">Sekretaris</span>';
         $ttd_nama = 'Adi Andrianto. P, SH.M.Hum';
         $ttd_nip = 'NIP. 19740730 200312 1 005';
+    } elseif ($meta['docrt_jenis_ttd'][0] == 'kasi') {
+        //$ttd_jabatan = 'an: Lurah Sawojajar<br/><span style="font-size:11px;">Kasi Sarana dan Prasarana Umum</span>';
+        $ttd_nama = 'ENDAH KOESOEMANINGTYAS, S.Sos<br/><span style="font-size:11px;">Penata</span>';
+        $ttd_nip = 'NIP. 19690622 199202 2 002';
     } else {
         $ttd_jabatan = $meta['docrt_jenis_ttd'][0];
         $ttd_nama = '';

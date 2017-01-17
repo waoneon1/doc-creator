@@ -236,6 +236,10 @@ function docrt_pdf_footer($meta,$postID,$type,$hspace='60',$nopelapor=true,$w1 =
         $ttd_jabatan = 'LURAH SAWOJAJAR<br/><span style="font-size:11px;">Sekretaris</span>';
         $ttd_nama = 'ADI ANDRIANTO. P, SH.M.Hum';
         $ttd_nip = 'NIP. 19740730 200312 1 005';
+    } elseif ($meta['docrt_jenis_ttd'][0] == 'kasi') {
+        $ttd_jabatan = 'an: LURAH SAWOJAJAR<br/><span style="font-size:11px;">Kasi Sarana dan Prasarana Umum</span>';
+        $ttd_nama = 'ENDAH KOESOEMANINGTYAS, S.Sos<br/><span style="font-size:11px;">Penata</span>';
+        $ttd_nip = 'NIP. 19690622 199202 2 002';
     } else {
         $ttd_jabatan = $meta['docrt_jenis_ttd'][0];
         $ttd_nama = '';
@@ -273,7 +277,7 @@ function docrt_pdf_footer($meta,$postID,$type,$hspace='60',$nopelapor=true,$w1 =
         <tr>
             <td>'.(($nopelapor) ? ucwords($meta['docrt_form_nama'][0]) : '').'</td>
             <td> </td>
-            <td align="'.$align.'"><strong style="text-align: '.$align.'; text-decoration: underline;">'.$ttd_nama.'</strong><br/>
+            <td align="'.$align.'"><strong style="text-align: '.$align.'; text-decoration: underline; font-size:11px">'.$ttd_nama.'</strong><br/>
             '.$ttd_nip.'
             </td>
         </tr>
@@ -303,47 +307,7 @@ function docrt_no_surat($type,$meta,$postID) {
     $data['skkel']   = '???/'.$meta['docrt_skel_id'][0].'/'.'35.73.03.1008/V/'.get_the_date('Y',$postID) ;
     $data['skkem']   = '???/'.$meta['docrt_skem_id'][0].'/'.'35.73.03.1008/V/'.get_the_date('Y',$postID) ;
 
+    $data['sk']     = '474/'.$meta['docrt_sk_id'][0].'/'.'35.73.03.1008/'.get_the_date('Y',$postID) ;
+
     return $data[$type];
 }
-
-
-/*if ($slug == 'sku') {
-        return docrt_sku_content($param,$meta,$post_term);
-
-    } elseif ($slug == 'skdu') {
-        return docrt_skdu_content($param,$meta,$post_term);
-
-    } elseif ($slug == 'skd') {
-        return docrt_skd_content($param,$meta,$post_term);
-
-    } elseif ($slug == 'skik') {
-        return docrt_skik_content($param,$meta,$post_term);
-
-    } elseif ($slug == 'skck') {
-        return docrt_skck_content($param,$meta,$post_term);
-
-    } elseif ($slug == 'skp') {
-        return docrt_skp_content($param,$meta,$post_term);;
-
-    } elseif ($slug == 'sktm') {
-        return docrt_sktm_content($param,$meta,$post_term);
-
-    } elseif ($slug == 'skbpm') {
-        return docrt_skbpm_content($param,$meta,$post_term);
-
-    } elseif ($slug == 'skel') {
-        return docrt_skel_content($param,$meta,$post_term);
-
-    } elseif ($slug == 'skem') {
-        return docrt_skem_content($param,$meta,$post_term);
-
-    } elseif ($slug == 'kk') {
-        return docrt_kk_content($param,$meta,$post_term);
-
-    } elseif ($slug == 'ktp') {
-        return docrt_ktp_content($param,$meta,$post_term);
-
-    } elseif ($slug == 'skai') {
-        return docrt_skai_content($param,$meta,$post_term);
-
-    }*/

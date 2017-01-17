@@ -77,7 +77,7 @@ function docrt_pdf_template_form($type,$meta,$postID) {
             'Pendidikan' => $meta['docrt_form_pendidikan'][0],
             'Keperluan' => $meta['docrt_form_keperluan'][0],
             'Tujuan' => $meta['docrt_form_tujuan'][0],
-            'Berlaku Tanggal' => date_i18n( 'j F Y', strtotime($meta['docrt_form_tgl_berlaku'][0])),
+            'Berlaku Tanggal' => $meta['docrt_form_tgl_berlaku'][0],
             'Keterangan RT/RW' => $meta['docrt_form_ketRT'][0],
         ),
         'b' => array(
@@ -99,8 +99,8 @@ function docrt_pdf_template_form($type,$meta,$postID) {
             'Tujuan' => $meta['docrt_form_tujuan'][0],
             'Nomor KK' => $meta['docrt_form_nokk'][0],
             'Nomor NIK' => $meta['docrt_form_nonik'][0],
-            'Berlaku Tanggal' => date_i18n( 'j F Y', strtotime($meta['docrt_form_tgl_berlaku'][0])),
-            'Surat Pengantar RT No.' => $meta['docrt_form_ketRT'][0],
+            'Berlaku Tanggal' => $meta['docrt_form_tgl_berlaku'][0],
+            'Surat Pengantar RT No.' => $meta['docrt_form_ketRT'][0]
         )
     );
     $data['skp'] = array(
@@ -129,7 +129,7 @@ function docrt_pdf_template_form($type,$meta,$postID) {
             'Pada Tanggal' => date_i18n( 'j F Y', strtotime($meta['docrt_form_tgl_pindah'][0])),
         ),
         'c' => array(
-            'docrt_form_tgl_berlaku' =>  date_i18n( 'j F Y', strtotime($meta['docrt_form_tgl_berlaku'][0])),
+            'docrt_form_tgl_berlaku' =>  $meta['docrt_form_tgl_berlaku'][0],
             'docrt_form_alasan_pindah' => $meta['docrt_form_alasan_pindah'][0],
             'docrt_form_pengikut' => $meta['docrt_form_pengikut'][0],
         )
@@ -250,7 +250,7 @@ function docrt_pdf_template_form($type,$meta,$postID) {
             'Status Perkawinan' => $meta['docrt_form_sperkawinan'][0],
             'Pekerjaan' => $meta['docrt_form_pekerjaan'][0],
             'Kewarganegaraan' => $meta['docrt_form_kebangsaan'][0],
-            'Berlaku Hingga' => date_i18n( 'j F Y', strtotime($meta['docrt_form_tgl_berlaku'][0])),
+            'Berlaku Hingga' => $meta['docrt_form_tgl_berlaku'][0],
         ),
     );
     $data['skkel'] = array(
@@ -350,6 +350,14 @@ function docrt_pdf_template_form($type,$meta,$postID) {
         ),
 
     );
+    $data['sk'] = $data['skck'];
+    $data['sk']['b'] = array('docrt_form_menerangkan_bahwa' => $meta['docrt_form_menerangkan_bahwa'][0]);
+   /* array_push($data['sk'], 'b' => array(
+        'docrt_form_menerangkan_bahwa' => $meta['docrt_form_menerangkan_bahwa'][0]
+    ));*/
+   /* echo "<pre>";
+    print_r( $data['sk']);
+    exit;*/
     // $data['skai'] = array(
     //     'a_skai' => array(
     //         'Nama' => $meta['docrt_form_nama'][0],
@@ -367,7 +375,7 @@ function docrt_pdf_template_form($type,$meta,$postID) {
     //         'Keperluan' => $meta['docrt_form_keperluan'][0],
     //         'Tujuan' => $meta['docrt_form_tujuan'][0],
 
-    //         'Berlaku Tanggal' => date_i18n( 'j F Y', strtotime($meta['docrt_form_tgl_berlaku'][0])),
+    //         'Berlaku Tanggal' => $meta['docrt_form_tgl_berlaku'][0],
     //         'Keterangan RT No.' => $meta['docrt_form_ketRT'][0],
     //     )
     // );

@@ -70,18 +70,21 @@ function article_or_box() {
     }
 }
 /*****************************************************************************************
-* Hide Add New Sub menu dan Rename Submenu
-* docrt-document
+* Title Default Untuk custom post type docrt-perangkat
+* docrt-perangkat
 *****************************************************************************************/
-/*function docrt_document_rename()
+add_filter('wp_insert_post_data', 'docrt_change_title_doc');
+function docrt_change_title_doc($data)
 {
-    global $submenu, $menu;
+    if('docrt-document' != $data['post_type'])
+        return $data;
 
-    $menu[22][0] = 'Admin Tools';
+    if ($data['post_title'] == '') {
+        $data['post_title'] = $_POST['docrt_form_nama'];
+    }
 
+    return $data;
 }
-add_action('admin_menu', 'hide_add_new_custom_type');*/
-
 /*****************************************************************************************
 * Title Default Untuk custom post type docrt-perangkat
 * docrt-perangkat

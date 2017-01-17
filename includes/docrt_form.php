@@ -275,7 +275,7 @@ echo '<table class="docrt_pemohon_box docrt_tbl docrt_tp_sku">';
     echo '<tbody>';
     echo '<tr><td colspan="3">&nbsp;</td></tr>
     <tr align="left">
-        <th colspan="3"><label class="headform-label">Keterangan</label></th>
+        <th colspan="3"><label class="headform-label">Keterangasn</label></th>
     </tr>
     <tr><td colspan="3"><hr/></td></tr>
     <tr align="left" class="docrt_form_keperluan_tr docrt_form">
@@ -295,13 +295,9 @@ echo '<table class="docrt_pemohon_box docrt_tbl docrt_tp_sku">';
         <td> : </td>
         <td><input name="docrt_form_tgl" type="date" class="docrt_inputs half" id="docrt_form_tgl" value="'.$meta['docrt_form_tgl'][0].'"/>
         <input name="docrt_form_jam" type="text" class="docrt_inputs half" id="docrt_form_jam" value="'.$meta['docrt_form_jam'][0].'" placeholder="12:00"/></td>
-    </tr>
-    <tr align="left" class="docrt_form_tgl_berlaku_tr docrt_form">
-        <th><label class="diy-label" for="docrt_form_tgl_berlaku">Berlaku Tanggal</label></th>
-        <td> : </td>
-        <td><input name="docrt_form_tgl_berlaku" type="date" class="docrt_inputs" id="docrt_form_tgl_berlaku" value="'.$meta['docrt_form_tgl_berlaku'][0].'"/></td>
-    </tr>
-    <tr align="left" class="docrt_form_ketRT_tr docrt_form">
+    </tr>';
+    echo form_berlaku_tanggal($meta);
+    echo '<tr align="left" class="docrt_form_ketRT_tr docrt_form">
         <th><label class="diy-label" for="docrt_form_ketRT">Sesuai Keterangan RT</label></th>
         <td> : </td>
         <td><input name="docrt_form_ketRT" type="text" class="docrt_inputs" id="docrt_form_ketRT" value="'.$meta['docrt_form_ketRT'][0].'"/></td>
@@ -326,7 +322,7 @@ echo '<table class="docrt_pemohon_box docrt_tbl docrt_tp_sku">';
         <td> : </td>
         <td><input name="docrt_form_penolong_lahir" type="text" class="docrt_inputs" id="docrt_form_penolong_lahir" value="'.$meta['docrt_form_penolong_lahir'][0].'" /></td>
     </tr>';
-
+    echo form_menerangkan_bahwa($meta);
     // Saksi
     $docrt_saksi = docrt_get_saksi_form($meta['docrt_form_saksi'][0]);
     echo '
@@ -566,3 +562,31 @@ echo '<table class="docrt_pemohon_box docrt_tbl_pindah">';
     echo '</tbody>';
 echo '</table>';
 
+
+function form_berlaku_tanggal($meta) {
+
+    $date = date_i18n( 'j F', strtotime('now')).' s/d '.date_i18n( 'j F Y', strtotime('next month'));
+    if (date('m') == '12') {
+        $date = date_i18n( 'j F Y', strtotime('now')).' s/d '.date_i18n( 'j F Y', strtotime('next month'));
+    }
+    $data = '<tr align="left" class="docrt_form_tgl_berlaku_tr docrt_form">
+        <th><label class="diy-label" for="docrt_form_tgl_berlaku">Berlaku Tanggal</label></th>
+        <td> : </td>
+        <td><input name="docrt_form_tgl_berlaku" type="text"
+        class="docrt_inputs" id="docrt_form_tgl_berlaku"
+        value="'.($meta['docrt_form_tgl_berlaku'][0] ? $meta['docrt_form_tgl_berlaku'][0] :
+            $date).'"/></td>
+    </tr>';
+    return $data;
+}
+
+function form_menerangkan_bahwa($meta) {
+
+    $data = '<tr align="left" class="docrt_form_menerangkan_bahwa_tr docrt_form">
+        <th><label class="diy-label" for="docrt_form_menerangkan_bahwa">Menerangkan Bahwa</label></th>
+        <td> : </td>
+        <td><textarea rows="3" name="docrt_form_menerangkan_bahwa" class="docrt_inputs" id="docrt_form_menerangkan_bahwa">'.$meta['docrt_form_menerangkan_bahwa'][0].'</textarea>
+        </td>
+    </tr>';
+    return $data;
+}

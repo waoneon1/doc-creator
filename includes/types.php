@@ -118,7 +118,7 @@ function docrt_type_surat_box($post) {
       'order' => 'ASC'
     );
     $type_surat_allow = array(
-        'kk','ktp','skel','skem','skbpm','skck','skd','skdu','skik','skp','sktm','sku'
+        'kk','ktp','skel','skem','skbpm','skck','skd','skdu','skik','skp','sktm','sku', 'sk'
     );
     $tax_terms = get_terms($taxonomy,$term_args);
     $post_term = get_the_terms ($post->ID,$taxonomy );
@@ -146,7 +146,9 @@ function docrt_type_surat_box($post) {
 
 function docrt_ttd_box($post) {
     $ttd = array(
-        'Lurah' => 'lurah', 'Seklur' => 'seklur'
+        'Lurah' => 'lurah',
+        'Seklur' => 'seklur',
+        'Kasi' => 'kasi'
     );
     $meta = get_post_meta($post->ID, 'docrt_jenis_ttd', true);
     echo '<table class="docrt_ttd_box">';
@@ -290,6 +292,8 @@ function docrt_get_form_surat($type_surat = 'sku') {
         'docrt_form_alamat_pelapor',
         'docrt_form_dilahirkan_pelapor',
         'docrt_form_yang_menerangkan',
+
+        'docrt_form_menerangkan_bahwa',
 
     );
 

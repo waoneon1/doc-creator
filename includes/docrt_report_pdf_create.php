@@ -34,14 +34,17 @@ class MYPDF extends TCPDF {
     }
 
     public function prepareData($post_data) {
+        $jenis_surat = $_GET['jenis_surat'];
+
         foreach ($post_data as $key => $postval) {
             $post_term = get_the_terms ($postval->ID,'surat');
             $meta = get_post_meta( $postval->ID);
-
+            //print_r($meta); exit();
             $prepare_data[$key][0] = array(
                 'title' => $key + 1,
                 'align' => 'center',
             );
+
             $prepare_data[$key][1] = date_i18n( 'j F Y', strtotime($postval->post_date));
             $prepare_data[$key][2] = $this->docrt_no_surat($post_term[0]->slug,$meta,$postval->ID);
             $prepare_data[$key][3] = $meta['docrt_form_nama'][0];
@@ -51,7 +54,7 @@ class MYPDF extends TCPDF {
             $prepare_data[$key][7] = $meta['docrt_form_sperkawinan'][0];
             $prepare_data[$key][8] = $meta['docrt_form_alamat'][0];
             $prepare_data[$key][9] = $meta['docrt_form_keperluan'][0];
-            $prepare_data[$key][10] = 'Blm tau diisi apa';
+            $prepare_data[$key][10] = $meta['docrt_form_tujuan'][0];
         }
         return $prepare_data;
     }
@@ -87,6 +90,7 @@ class MYPDF extends TCPDF {
         $data['kk']     = $meta['docrt_kk_id'][0].'/'.get_the_date('Y',$postID) ;
         $data['ktp']    = $meta['docrt_ktp_id'][0].'/'.get_the_date('Y',$postID) ;
         $data['skai']   = '331/'.$meta['docrt_skp_id'][0].'/'.'35.73.03.1008/V/'.get_the_date('Y',$postID) ;
+        $data['sk']     = '474/'.$meta['docrt_sk_id'][0].'/'.'35.73.03.1008/'.get_the_date('Y',$postID) ;
         return $data[$type];
     }
 
