@@ -44,7 +44,12 @@ add_action( 'wp_enqueue_scripts', 'docrt_load_scripts' );
 function docrt_load_scripts(){
     wp_enqueue_media();
     wp_enqueue_style( 'style-default', docrt_plugin_url() . '/assets/css/style.css' );
-    wp_localize_script( 'main-js', 'ajax_params',   array( 'ajax_url' => docrt_plugin_url().'/ajax'.'/'));
+    //wp_localize_script( 'main-js', 'ajax_params',   array( 'ajax_url' => docrt_plugin_url().'/ajax'.'/'));
+    // send ajax url
+    wp_localize_script('main-js', 'ajax_params', array(
+        'empty_img_url' => docrt_plugin_url() . '/assets/img/rectangle.png',
+        'ajax_url' => docrt_plugin_url() . '/ajax' . '/'
+    ));
 }
 
 

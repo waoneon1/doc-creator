@@ -1,12 +1,11 @@
 jQuery(document).ready(function($) {
 
     tes_docrt_form_selected();
-    docrt_form_selected();
     docrt_kusus_skp();
     docrt_kusus_skel();
 
     $(".docrt_type_surat_box input:radio").click(function() {
-        docrt_form_selected();
+        tes_docrt_form_selected();
     });
 
     // tambah form pengikut khusus skp
@@ -26,56 +25,11 @@ jQuery(document).ready(function($) {
         var param = docrt_form_data(type_surat);
 
         var data = {
-            'data': param,
-            'post_id': post_id
+            'data': param
         };
-        //console.log(ajax_params);
-        console.log(ajax_url);
-        $.ajax({
-            data: data,
-            type: 'POST',
-            url: ajax_url+'form_creator.php',
-            success: function(data){
-                $('.docrt-master-form tbody').append(data);
-                console.log(data);
-            }
+        var ajax_url = ajax_params.ajax_url + 'configuration.php';
+        return $.post(ajax_url, data, function(response) {
         });
-    }
-
-    function docrt_form_selected() {
-        var form_class = '';
-        var tr_tag = $(".docrt_pemohon_box .docrt_form");
-        var type_surat = $(".docrt_type_surat_box input[type='radio']:checked").data('typesurat');
-        var data = docrt_form_data(type_surat);
-
-        docrt_title_selected(type_surat);
-
-        $("input[type='hidden']#docrt_tysrt_form ").val(type_surat);
-        //$(tr_tag).addClass('d-hide');
-        $(".docrt_pemohon_box .docrt_thead").addClass('d-hide');
-        $(".docrt_pemohon_box .docrt_form .docrt_inputs").attr('disabled', 'disabled');
-
-        // FORM utama
-        var data_surat = data['surat'];
-        if (data_surat) {
-            for (var i = 0 ; i < data_surat.length; i++) {
-                $(".docrt_pemohon_box ."+data_surat[i]+"_tr").removeClass('d-hide');
-                $(".docrt_pemohon_box #"+data_surat[i]).removeAttr('disabled');
-            }
-        }
-        //tHeader
-        var data_theads = data['header'];
-        var data_thead = '';
-        if (data_theads) {
-            for (var i = 0 ; i < data_theads.length; i++) {
-                data_thead = data_theads[i].split("=>");
-                if (data_thead[0] == 'thead') {
-
-                    $(".docrt_pemohon_box .docrt_"+data_thead[0]+"_"+data_thead[1]).removeClass('d-hide');
-                }
-            }
-        }
-
     }
 
     function docrt_title_selected(type_surat) {

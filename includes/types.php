@@ -104,9 +104,19 @@ function docrt_pemohon_box() {
 
     printf( '<input type="hidden" name="docrt_nonce" value="%s" />', wp_create_nonce( plugin_basename(__FILE__) ) );
     echo '<input type="hidden" id="docrt_tysrt_form" name="docrt_type_surat" value="" />' ;
-    echo '<input type="hidden" id="docrt_tysrt_form" name="docrt_type_surat" value="" />' ;
+    echo '<input type="hidden" id="docrt_tysrt_form" name="docrt_type_surat" value="" />' ; ?>
 
-    include "docrt_form.php";
+    <script type="text/javascript">
+        var ajax_url = <?php echo '"'.docrt_plugin_url() . '/ajax' . '/"' ?>;
+        var post_id  = <?php echo $post->ID ?>;
+    </script><?php
+
+    echo '<table class="docrt-master-form docrt_tbl">';
+        echo '<tbody>';
+            //form goes here
+        echo '</tbody>';
+    echo '</table>';
+    //include "docrt_form.php";
 }
 function docrt_type_surat_box($post) {
 
