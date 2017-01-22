@@ -326,7 +326,7 @@ function docrt_get_form_surat($type_surat = 'sku') {
 }
 
 
-function docrt_get_saksi_form($meta_value1 = '',$meta_value2 = '') {
+/*function docrt_get_saksi_form($meta_value1 = '',$meta_value2 = '') {
     $query_args = array(
         'post_type'      => 'docrt-perangkat',
         'post_status'    => 'publish',
@@ -365,3 +365,4 @@ function docrt_get_saksi_form($meta_value1 = '',$meta_value2 = '') {
 
     return $data;
 }
+*/

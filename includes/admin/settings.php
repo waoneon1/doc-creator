@@ -25,7 +25,7 @@ function docrt_list_surat_dashboard_widgets() {
     if ($role == 'top_editor' || $role == 'administrator') {
        wp_add_dashboard_widget(
                  'surat_dashboard_widget',         // Widget slug.
-                 'List Surat',         // Title.
+                 'List Surat <span>show all</span>',         // Title.
                  'list_surat_dashboard_widget_function' // Display function.
         );
 
@@ -41,7 +41,10 @@ add_action( 'wp_dashboard_setup', 'docrt_list_surat_dashboard_widgets' );
 // Dasboard surat
 function list_surat_dashboard_widget_function() {
     $tax = 'surat';
-    $terms = get_terms($tax);
+    $terms = get_terms( array(
+        'taxonomy' => $tax,
+        'hide_empty' => false,
+    ) );
     if ( !empty( $terms ) && !is_wp_error( $terms ) ){
         echo '<ul>';
 
