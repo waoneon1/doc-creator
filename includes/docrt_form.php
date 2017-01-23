@@ -49,11 +49,7 @@ echo '<table class="docrt_pemohon_box docrt_tbl docrt_tp_sku">';
         <th colspan="3"><label class="headform-label">Data Kematian</label></th>
     </tr>
     <tr><td colspan="3"><hr/></td></tr></tbody>
-    <tr align="left" class="docrt_form_nama_mati_tr docrt_form">
-        <th><label class="diy-label" for="docrt_form_nama_mati">Nama</label></th>
-        <td> : </td>
-        <td><input name="docrt_form_nama_mati" type="text" class="docrt_inputs" id="docrt_form_nama_mati" value="'.$meta['docrt_form_nama_mati'][0].'" /></td>
-    </tr>
+        
     <tbody>
     ';
 
@@ -143,70 +139,4 @@ echo '<table class="docrt_pemohon_box docrt_tbl docrt_tp_sku">';
     echo '</tbody>';
 echo '</table>';
 
-echo '<table class="docrt_pemohon_box docrt_tbl_pindah">';
-    echo '<tbody>';
-    echo '
-    <tr align="center">
-        <th></th>
-        <th>Nama</th>
-        <th>JK</th>
-        <th>Tgl. Lahir</th>
-        <th>Status</th>
-        <th>Pendkn</th>
-        <th>No KTP</th>
-        <th>Keterangan</th>
-    </tr>';
 
-    for ($i=1; $i <= 20; $i++) {
-
-        echo '<tr align="center" class="docrt_pengikut docrt_pengikut'.$i.'">
-            <td></td>
-            <td><input name="docrt_pengikut_nama'.$i.'" type="text" id="docrt_pengikut_nama'.$i.'" value="'.$meta['docrt_pengikut_nama'.$i][0].'" class="pengikut_nama"/></td>
-            <td><select class="pengikut_jk" name="docrt_pengikut_jk'.$i.'" id="docrt_pengikut_jk'.$i.'" >
-                  <option value="Laki-Laki" >L</option>
-                  <option value="Perempuan" '.(($meta['docrt_pengikut_jk'.$i][0] == 'Perempuan') ? 'selected' : '').'>P</option>
-                </select>
-            </td>
-            <td><input name="docrt_pengikut_lahir'.$i.'" type="date" id="docrt_pengikut_lahir'.$i.'" value="'.$meta['docrt_pengikut_lahir'.$i][0].'" class="pengikut_tgl"/></td>
-            <td><select class="pengikut_status" name="docrt_pengikut_status'.$i.'" type="text" id="docrt_pengikut_status'.$i.'" >
-                  <option value="Blm Kawin">Blm Kawin</option>
-                  <option value="Kawin" '.(($meta['docrt_pengikut_status'.$i][0] == 'Kawin') ? 'selected' : '').'>Kawin</option>
-                  <option value="Janda/Duda" '.(($meta['docrt_pengikut_status'.$i][0] == 'Janda/Duda') ? 'selected' : '').'>Janda/Duda</option>
-                </select>
-            </td>
-            <td><input name="docrt_pengikut_pendidikan'.$i.'" type="text" id="docrt_pengikut_pendidikan'.$i.'" value="'.$meta['docrt_pengikut_pendidikan'.$i][0].'" class="pengikut_pend"/></td>
-            <td><input name="docrt_pengikut_nik'.$i.'" type="text" id="docrt_pengikut_nik'.$i.'" value="'.$meta['docrt_pengikut_nik'.$i][0].'" class="pengikut_nik"/></td>
-            <td><input name="docrt_pengikut_keterangan'.$i.'" type="text" id="docrt_pengikut_keterangan'.$i.'" value="'.$meta['docrt_pengikut_keterangan'.$i][0].'" class="pengikut_ket"/></td>
-        </tr>';
-    }
-    echo '</tbody>';
-echo '</table>';
-
-
-function form_berlaku_tanggal($meta) {
-
-    $date = date_i18n( 'j F', strtotime('now')).' s/d '.date_i18n( 'j F Y', strtotime('next month'));
-    if (date('m') == '12') {
-        $date = date_i18n( 'j F Y', strtotime('now')).' s/d '.date_i18n( 'j F Y', strtotime('next month'));
-    }
-    $data = '<tr align="left" class="docrt_form_tgl_berlaku_tr docrt_form">
-        <th><label class="diy-label" for="docrt_form_tgl_berlaku">Berlaku Tanggal</label></th>
-        <td> : </td>
-        <td><input name="docrt_form_tgl_berlaku" type="text"
-        class="docrt_inputs" id="docrt_form_tgl_berlaku"
-        value="'.($meta['docrt_form_tgl_berlaku'][0] ? $meta['docrt_form_tgl_berlaku'][0] :
-            $date).'"/></td>
-    </tr>';
-    return $data;
-}
-
-function form_menerangkan_bahwa($meta) {
-
-    $data = '<tr align="left" class="docrt_form_menerangkan_bahwa_tr docrt_form">
-        <th><label class="diy-label" for="docrt_form_menerangkan_bahwa">Menerangkan Bahwa</label></th>
-        <td> : </td>
-        <td><textarea rows="3" name="docrt_form_menerangkan_bahwa" class="docrt_inputs" id="docrt_form_menerangkan_bahwa">'.$meta['docrt_form_menerangkan_bahwa'][0].'</textarea>
-        </td>
-    </tr>';
-    return $data;
-}

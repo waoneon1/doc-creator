@@ -1,24 +1,44 @@
 <?php require_once('../../../../wp-load.php');
 
-print_r($_POST);
+//print_r($_POST);
 $form = $_POST['data']['surat'];
 $post_id = $_POST['post_id'];
 $post_term = get_the_terms ($post_id,'surat' );
 $meta = get_post_meta($post_id);
 
-$return .= '';
-foreach ($form as $key => $value) {
-  if (function_exists($value)) {
-    $return .= call_user_func_array($value, array($meta));
-  } else {
-    $return .= '<tr><td colspan="3">Form <b>'.$value.'</b> Hilang</td></tr>';
+$return_tr = '';
+$return_table = '';
+if ($form) {
+  foreach ($form as $key => $value) {
+    if (strpos($value, '###') === false) {
+
+      if (function_exists($value)) {
+        $return_tr .= call_user_func_array($value, array($meta));
+      } else {
+        $return_tr .= '<tr><td colspan="3">Form <b>'.$value.'</b> Hilang</td></tr>';
+      }
+
+    } else {
+
+      $value_table = explode('###', $value);
+      if (function_exists($value_table[1])) {
+        if ($value_table[0] == 'table') {
+          $return_table .= call_user_func_array($value_table[1], array($meta));
+        } else {
+          $return_tr .= call_user_func_array($value_table[1], array($value_table[2]));
+        }
+      } 
+    }
   }
 }
 
 
-
-echo $return;
-
+echo '<table class="docrt_tbl">';
+  echo '<tbody>';
+      echo $return_tr;
+  echo '</tbody>';
+echo '</table>';
+echo $return_table;
 
 /*=================================================
   Form Function
@@ -227,6 +247,17 @@ function docrt_form_goldarah($meta) {
     </tr>';
   return $data;
 }
+
+function docrt_form_nama_mati($meta) {
+
+  $data = '<tr align="left" class="docrt_form_nama_mati_tr docrt_form">
+        <th><label class="diy-label" for="docrt_form_nama_mati">Namas</label></th>
+        <td> : </td>
+        <td><input name="docrt_form_nama_mati" type="text" class="docrt_inputs" id="docrt_form_nama_mati" value="'.$meta['docrt_form_nama_mati'][0].'" /></td>
+    </tr>';
+  return $data;
+}
+
 
 // Alamat ======================================
 
@@ -826,78 +857,52 @@ function docrt_form_tlp_ayah($meta) {
   return $data;
 }
 
-// Pindah ===========================================================================
-function docrt_form_desa_pindah($meta) {
 
-  $data = '<tr align="left" class="docrt_form_desa_pindah_tr docrt_form">
-    <th><label class="diy-label" for="docrt_form_desa_pindah">Desa</label></th>
-    <td> : </td>
-    <td><input name="docrt_form_desa_pindah" type="text" class="docrt_inputs" id="docrt_form_desa_pindah" value="'.$meta['docrt_form_desa_pindah'][0].'"/></td>
-  </tr>';
+// Pindah Pengikut
+
+function docrt_tbl_pindah($meta) {
+
+  $data = '<table class="docrt_pemohon_box docrt_tbl_pindah">';
+      $data .= '<tbody>';
+      $data .= '
+      <tr align="center">
+          <th></th>
+          <th>Nama</th>
+          <th>JK</th>
+          <th>Tgl. Lahir</th>
+          <th>Status</th>
+          <th>Pendkn</th>
+          <th>No KTP</th>
+          <th>Keterangan</th>
+      </tr>';
+
+      for ($i=1; $i <= 20; $i++) {
+
+          $data .= '<tr align="center" class="docrt_pengikut docrt_pengikut'.$i.'">
+              <td></td>
+              <td><input name="docrt_pengikut_nama'.$i.'" type="text" id="docrt_pengikut_nama'.$i.'" value="'.$meta['docrt_pengikut_nama'.$i][0].'" class="pengikut_nama"/></td>
+              <td><select class="pengikut_jk" name="docrt_pengikut_jk'.$i.'" id="docrt_pengikut_jk'.$i.'" >
+                    <option value="Laki-Laki" >L</option>
+                    <option value="Perempuan" '.(($meta['docrt_pengikut_jk'.$i][0] == 'Perempuan') ? 'selected' : '').'>P</option>
+                  </select>
+              </td>
+              <td><input name="docrt_pengikut_lahir'.$i.'" type="date" id="docrt_pengikut_lahir'.$i.'" value="'.$meta['docrt_pengikut_lahir'.$i][0].'" class="pengikut_tgl"/></td>
+              <td><select class="pengikut_status" name="docrt_pengikut_status'.$i.'" type="text" id="docrt_pengikut_status'.$i.'" >
+                    <option value="Blm Kawin">Blm Kawin</option>
+                    <option value="Kawin" '.(($meta['docrt_pengikut_status'.$i][0] == 'Kawin') ? 'selected' : '').'>Kawin</option>
+                    <option value="Janda/Duda" '.(($meta['docrt_pengikut_status'.$i][0] == 'Janda/Duda') ? 'selected' : '').'>Janda/Duda</option>
+                  </select>
+              </td>
+              <td><input name="docrt_pengikut_pendidikan'.$i.'" type="text" id="docrt_pengikut_pendidikan'.$i.'" value="'.$meta['docrt_pengikut_pendidikan'.$i][0].'" class="pengikut_pend"/></td>
+              <td><input name="docrt_pengikut_nik'.$i.'" type="text" id="docrt_pengikut_nik'.$i.'" value="'.$meta['docrt_pengikut_nik'.$i][0].'" class="pengikut_nik"/></td>
+              <td><input name="docrt_pengikut_keterangan'.$i.'" type="text" id="docrt_pengikut_keterangan'.$i.'" value="'.$meta['docrt_pengikut_keterangan'.$i][0].'" class="pengikut_ket"/></td>
+          </tr>';
+      }
+      $data .= '</tbody>';
+  $data .= '</table>';
+
   return $data;
 }
-
-function docrt_form_kecamatan_pindah($meta) {
-
-  $data = '<tr align="left" class="docrt_form_kecamatan_pindah_tr docrt_form">
-    <th><label class="diy-label" for="docrt_form_kecamatan_pindah">Kecamatan</label></th>
-    <td> : </td>
-    <td><input name="docrt_form_kecamatan_pindah" type="text" class="docrt_inputs" id="docrt_form_kecamatan_pindah" value="'.$meta['docrt_form_kecamatan_pindah'][0].'"/></td>
-  </tr>';
-  return $data;
-}
-
-function docrt_form_kabkota_pindah($meta) {
-
-  $data = '<tr align="left" class="docrt_form_kabkota_pindah_tr docrt_form">
-    <th><label class="diy-label" for="docrt_form_kabkota_pindah">Kab/Kota</label></th>
-    <td> : </td>
-    <td><input name="docrt_form_kabkota_pindah" type="text" class="docrt_inputs" id="docrt_form_kabkota_pindah" value="'.$meta['docrt_form_kabkota_pindah'][0].'"/></td>
-  </tr>';
-  return $data;
-}
-
-function docrt_form_provinsi_pindah($meta) {
-
-  $data = '<tr align="left" class="docrt_form_provinsi_pindah_tr docrt_form">
-    <th><label class="diy-label" for="docrt_form_provinsi_pindah">Provinsi</label></th>
-    <td> : </td>
-    <td><input name="docrt_form_provinsi_pindah" type="text" class="docrt_inputs" id="docrt_form_provinsi_pindah" value="'.$meta['docrt_form_provinsi_pindah'][0].'"/></td>
-  </tr>';
-  return $data;
-}
-
-function docrt_form_tgl_pindah($meta) {
-
-  $data = '<tr align="left" class="docrt_form_tgl_pindah_tr docrt_form">
-    <th><label class="diy-label" for="docrt_form_tgl_pindah">Tanggal Pindah</label></th>
-    <td> : </td>
-    <td><input name="docrt_form_tgl_pindah" type="date" class="docrt_inputs" id="docrt_form_tgl_pindah" value="'.$meta['docrt_form_tgl_pindah'][0].'"/></td>
-  </tr>';
-  return $data;
-}
-
-function docrt_form_alasan_pindah($meta) {
-
-  $data = '<tr align="left" class="docrt_form_alasan_pindah_tr docrt_form">
-    <th><label class="diy-label" for="docrt_form_alasan_pindah">Alasan Pindah</label></th>
-    <td> : </td>
-    <td><textarea rows="2" name="docrt_form_alasan_pindah" class="docrt_inputs" id="docrt_form_alasan_pindah">'.$meta['docrt_form_alasan_pindah'][0].'</textarea></td>
-  </tr>';
-  return $data;
-}
-
-function docrt_form_pengikut($meta) {
-
-  $data = '<tr align="left" class="docrt_form_pengikut_tr docrt_form">
-    <th><label class="diy-label" for="docrt_form_pengikut">Jml Pengikut</label></th>
-    <td> : </td>
-    <td><input name="docrt_form_pengikut" type="number" class="docrt_inputs" id="docrt_form_pengikut" value="'.$meta['docrt_form_pengikut'][0].'" max="20" min="0"/></td>
-  </tr>';
-  return $data;
-}
-
-
 
 
 
@@ -910,6 +915,14 @@ function docrt_form_pengikut($meta) {
 
 
 //  not the form ================================================================================================
+function docrt_get_group_title($string) {
+  return '<tr><td colspan="3">&nbsp;</td></tr>
+    <tr align="left">
+        <th colspan="3"><label class="headform-label">'.$string.'</label></th>
+    </tr>
+    <tr><td colspan="3"><hr/></td></tr>';
+}
+
 function docrt_get_saksi_form($meta_value1 = '',$meta_value2 = '') {
     $query_args = array(
         'post_type'      => 'docrt-perangkat',

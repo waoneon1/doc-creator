@@ -111,11 +111,8 @@ function docrt_pemohon_box() {
         var post_id  = <?php echo $post->ID ?>;
     </script><?php
 
-    echo '<table class="docrt-master-form docrt_tbl">';
-        echo '<tbody>';
-            //form goes here
-        echo '</tbody>';
-    echo '</table>';
+    // all form goes here
+    echo '<div class="docrt-master-form"></div>';
     //include "docrt_form.php";
 }
 function docrt_type_surat_box($post) {

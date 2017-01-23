@@ -1,16 +1,19 @@
 jQuery(document).ready(function($) {
 
     tes_docrt_form_selected();
-    docrt_form_selected();
-    docrt_kusus_skp();
-    docrt_kusus_skel();
+    //docrt_form_selected();
+    //docrt_kusus_skp();
+    //docrt_kusus_skel();
 
     $(".docrt_type_surat_box input:radio").click(function() {
-        docrt_form_selected();
+        console.log('click');
+        // docrt_form_selected();
+        tes_docrt_form_selected();
     });
 
     // tambah form pengikut khusus skp
     $("#docrt_form_pengikut").change(function(e) {
+        console.log('clicks');
         docrt_kusus_skp();
     });
 
@@ -24,7 +27,7 @@ jQuery(document).ready(function($) {
         var tr_tag = $(".docrt_pemohon_box .docrt_form");
         var type_surat = $(".docrt_type_surat_box input[type='radio']:checked").data('typesurat');
         var param = docrt_form_data(type_surat);
-
+        $('.docrt-master-form').html('');
         var data = {
             'data': param,
             'post_id': post_id
@@ -36,8 +39,8 @@ jQuery(document).ready(function($) {
             type: 'POST',
             url: ajax_url+'form_creator.php',
             success: function(data){
-                $('.docrt-master-form tbody').append(data);
-                console.log(data);
+                $('.docrt-master-form').append(data);
+                //console.log(data);
             }
         });
     }
@@ -243,6 +246,7 @@ jQuery(document).ready(function($) {
                 'docrt_form_keperluan',
                 'docrt_form_tujuan',
                 //{pindah ke}
+                'title###docrt_get_group_title###Pindah Ke',
                 'docrt_form_desa_pindah',
                 'docrt_form_kecamatan_pindah',
                 'docrt_form_kabkota_pindah',
@@ -252,6 +256,7 @@ jQuery(document).ready(function($) {
                 'docrt_form_alasan_pindah',
                 'docrt_form_pengikut',
                 //{yaitu}
+                'table###docrt_tbl_pindah'
                 // -no, nama, jk, tgl lahir, st perkawinan, pendidikan, noktp, keterangan(suami istri anak ortu keluarga lain)
             ]
         };
