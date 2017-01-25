@@ -49,7 +49,7 @@ echo '<table class="docrt_pemohon_box docrt_tbl docrt_tp_sku">';
         <th colspan="3"><label class="headform-label">Data Kematian</label></th>
     </tr>
     <tr><td colspan="3"><hr/></td></tr></tbody>
-        
+
     <tbody>
     ';
 

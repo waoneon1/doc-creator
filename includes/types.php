@@ -102,9 +102,7 @@ function docrt_pemohon_box() {
     global $post;
     $post_term = get_the_terms ($post->ID,'surat' );
 
-    printf( '<input type="hidden" name="docrt_nonce" value="%s" />', wp_create_nonce( plugin_basename(__FILE__) ) );
-    echo '<input type="hidden" id="docrt_tysrt_form" name="docrt_type_surat" value="" />' ;
-    echo '<input type="hidden" id="docrt_tysrt_form" name="docrt_type_surat" value="" />' ; ?>
+    printf( '<input type="hidden" name="docrt_nonce" value="%s" />', wp_create_nonce( plugin_basename(__FILE__) ) );   ?>
 
     <script type="text/javascript">
         var ajax_url = <?php echo '"'.docrt_plugin_url() . '/ajax' . '/"' ?>;
