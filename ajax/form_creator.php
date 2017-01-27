@@ -945,13 +945,19 @@ function docrt_doc_title_nosurat($meta, $type_surat) {
   }
 
   // form id & title
+  $readonly = 'readonly';
+  if ($type_surat == 'sk' 
+    || $type_surat == 'sktm' 
+    || $type_surat == 'skbpm') {
+    $readonly = '';
+  }
   $data .=  '<tbody><tr>
       <td colspan="3"><h4>'.ucwords($tag->name).'</h4></td>
   </tr>
   <tr align="left">
       <th><label class="diy-label" for="docrt_'.$type_surat.'_id">No Surat</label></th>
       <td> : </td>
-      <td><input name="docrt_'.$type_surat.'_id" type="text" class="docrt_inputs" id="docrt_'.$type_surat.'_id" value="'.$suratid.'" readonly/></td>
+      <td><input name="docrt_'.$type_surat.'_id" type="number" class="docrt_inputs" id="docrt_'.$type_surat.'_id" value="'.$suratid.'" '.$readonly.'/></td>
   </tr></tbody>';
 
   return $data;

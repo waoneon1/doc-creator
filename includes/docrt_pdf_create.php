@@ -227,7 +227,7 @@ function docrt_content_by_type($param,$meta,$post_term,$pdf='') {
 // footer tandatangan in general
 function docrt_pdf_footer($meta,$postID,$type,$hspace='60',$nopelapor=true,$w1 = '30%',$w2 = '30%',$w3 = '43%') {
      // Yang menandatangani dokumen
-
+    $kasi = '';
     if ($meta['docrt_jenis_ttd'][0] == 'lurah') {
         $ttd_jabatan = 'LURAH SAWOJAJAR';
         $ttd_nama = 'J.A. BAYU WIDJAYA, S.Sos, M.Si';
@@ -237,9 +237,10 @@ function docrt_pdf_footer($meta,$postID,$type,$hspace='60',$nopelapor=true,$w1 =
         $ttd_nama = 'ADI ANDRIANTO. P, SH.M.Hum';
         $ttd_nip = 'NIP. 19740730 200312 1 005';
     } elseif ($meta['docrt_jenis_ttd'][0] == 'kasi') {
-        $ttd_jabatan = 'an: LURAH SAWOJAJAR<br/><span style="font-size:11px;">Kasi Sarana dan Prasarana Umum</span>';
-        $ttd_nama = 'ENDAH KOESOEMANINGTYAS, S.Sos<br/><span style="font-size:11px;">Penata</span>';
-        $ttd_nip = 'NIP. 19690622 199202 2 002';
+        $ttd_jabatan = 'an: LURAH SAWOJAJAR<br/><span style="font-size:11px;">Kasi Pemerintahan, Ketentraman dan Ketertiban Umum</span>';
+        $ttd_nama = 'AMAN SANTOSO';
+        $kasi = '<span style="font-size:11px;">Penata</span><br/>';
+        $ttd_nip = 'NIP. 19610928 199111 1 001';
     } else {
         $ttd_jabatan = $meta['docrt_jenis_ttd'][0];
         $ttd_nama = '';
@@ -277,7 +278,7 @@ function docrt_pdf_footer($meta,$postID,$type,$hspace='60',$nopelapor=true,$w1 =
         <tr>
             <td>'.(($nopelapor) ? ucwords($meta['docrt_form_nama'][0]) : '').'</td>
             <td> </td>
-            <td align="'.$align.'"><strong style="text-align: '.$align.'; text-decoration: underline; font-size:11px">'.$ttd_nama.'</strong><br/>
+            <td align="'.$align.'"><strong style="text-align: '.$align.'; text-decoration: underline; font-size:11px">'.$ttd_nama.'</strong><br/>'.$kasi .'
             '.$ttd_nip.'
             </td>
         </tr>

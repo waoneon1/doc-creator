@@ -32,7 +32,7 @@ function docrt_skbpm_content($param, $meta, $post_term) {
            <td width="30%"> </td>
            <td width="5%"> </td>
            <td width="5%">2.</td>
-           <td width="60%"><p align="justify">Orang tersebut diatas benar-benar belum pernah menikah ( Belum Kawin ).</p>
+           <td width="60%"><p align="justify">Menurut keterangan yang bersangkutan serta berdasarkan database kependudukan, orang tersebut diatas benar-benar belum pernah menikah ( Belum Kawin ).</p>
            </td>
         </tr>
     </table>';
