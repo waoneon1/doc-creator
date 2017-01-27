@@ -201,7 +201,9 @@ function docrt_form_nonik($meta, $type_surat) {
   $data = '<tr align="left" class="docrt_form_nonik_tr docrt_form">
         <th><label class="diy-label" for="docrt_form_nonik">No NIK</label></th>
         <td> : </td>
-        <td><input name="docrt_form_nonik" type="text" class="docrt_inputs" id="docrt_form_nonik" value="'.$meta['docrt_form_nonik'][0].'"/></td>
+        <td><input name="docrt_form_nonik" type="text" class="docrt_inputs" id="docrt_form_nonik" value="'.$meta['docrt_form_nonik'][0].'"/>
+          <button class="nik_api_button">tes</button>
+        </td>
     </tr>';
   return $data;
 }

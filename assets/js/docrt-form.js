@@ -21,6 +21,13 @@ jQuery(document).ready(function($) {
         docrt_kusus_skel();
     });
 
+    //  form kembar khusus skel
+    $(document).on("click", ".nik_api_button", function (e) { //vpc-options
+        e.preventDefault();
+        if (true) {}
+        docrt_api_ktp();
+    });
+
     function tes_docrt_form_selected() {
         var form_class = '';
         var tr_tag = $(".docrt_pemohon_box .docrt_form");
@@ -33,7 +40,7 @@ jQuery(document).ready(function($) {
             'type_surat': type_surat
         };
         //console.log(ajax_params);
-        console.log(ajax_url);
+        //console.log(ajax_url);
         $.ajax({
             data: data,
             type: 'POST',
@@ -45,50 +52,30 @@ jQuery(document).ready(function($) {
         });
     }
 
-    function docrt_form_selected() {
-        var form_class = '';
-        var tr_tag = $(".docrt_pemohon_box .docrt_form");
+    function docrt_api_ktp() {
+        var param = docrt_form_data(type_surat);
         var type_surat = $(".docrt_type_surat_box input[type='radio']:checked").data('typesurat');
-        var data = docrt_form_data(type_surat);
 
-        docrt_title_selected(type_surat);
-
-        $("input[type='hidden']#docrt_tysrt_form ").val(type_surat);
-        //$(tr_tag).addClass('d-hide');
-        $(".docrt_pemohon_box .docrt_thead").addClass('d-hide');
-        $(".docrt_pemohon_box .docrt_form .docrt_inputs").attr('disabled', 'disabled');
-
-        // FORM utama
-        var data_surat = data['surat'];
-        if (data_surat) {
-            for (var i = 0 ; i < data_surat.length; i++) {
-                $(".docrt_pemohon_box ."+data_surat[i]+"_tr").removeClass('d-hide');
-                $(".docrt_pemohon_box #"+data_surat[i]).removeAttr('disabled');
-            }
-        }
-        //tHeader
-        var data_theads = data['header'];
-        var data_thead = '';
-        if (data_theads) {
-            for (var i = 0 ; i < data_theads.length; i++) {
-                data_thead = data_theads[i].split("=>");
-                if (data_thead[0] == 'thead') {
-
-                    $(".docrt_pemohon_box .docrt_"+data_thead[0]+"_"+data_thead[1]).removeClass('d-hide');
+        var data = {
+            'data': param,
+            'post_id': post_id,
+            'type_surat': type_surat
+        };
+        $.ajax({
+            data: data,
+            type: 'POST',
+            url: ajax_url+'api.php',
+            success: function(data){
+                var obj = jQuery.parseJSON(data);
+                var x;
+                for (x in obj) {
+                    if ($('#' + x).length) {
+                        $('#' + x).val(obj[x]);
+                        $('#' + x).addClass('ajaxApi');
+                    }
                 }
             }
-        }
-
-    }
-
-    function docrt_title_selected(type_surat) {
-        var title_tag = $(".docrt_pemohon_box .docrt_form_title");
-        $(title_tag).addClass('d-hide');
-        $(".docrt_pemohon_box .docrt_form_title .docrt_inputs").attr('disabled', 'disabled');
-
-
-        $(".docrt_pemohon_box .docrt_"+type_surat+"_id_title").removeClass('d-hide');
-        $(".docrt_pemohon_box #docrt_"+type_surat+"_id").removeAttr('disabled');
+        });
     }
 
     function docrt_kusus_skp() {
@@ -533,3 +520,50 @@ jQuery(document).ready(function($) {
     });
 
 });*/
+
+//SELECTED CURRENTLY NOT USE THIS
+    /*function docrt_form_selected() {
+        var form_class = '';
+        var tr_tag = $(".docrt_pemohon_box .docrt_form");
+        var type_surat = $(".docrt_type_surat_box input[type='radio']:checked").data('typesurat');
+        var data = docrt_form_data(type_surat);
+
+        docrt_title_selected(type_surat);
+
+        $("input[type='hidden']#docrt_tysrt_form ").val(type_surat);
+        //$(tr_tag).addClass('d-hide');
+        $(".docrt_pemohon_box .docrt_thead").addClass('d-hide');
+        $(".docrt_pemohon_box .docrt_form .docrt_inputs").attr('disabled', 'disabled');
+
+        // FORM utama
+        var data_surat = data['surat'];
+        if (data_surat) {
+            for (var i = 0 ; i < data_surat.length; i++) {
+                $(".docrt_pemohon_box ."+data_surat[i]+"_tr").removeClass('d-hide');
+                $(".docrt_pemohon_box #"+data_surat[i]).removeAttr('disabled');
+            }
+        }
+        //tHeader
+        var data_theads = data['header'];
+        var data_thead = '';
+        if (data_theads) {
+            for (var i = 0 ; i < data_theads.length; i++) {
+                data_thead = data_theads[i].split("=>");
+                if (data_thead[0] == 'thead') {
+
+                    $(".docrt_pemohon_box .docrt_"+data_thead[0]+"_"+data_thead[1]).removeClass('d-hide');
+                }
+            }
+        }
+
+    }
+
+    function docrt_title_selected(type_surat) {
+        var title_tag = $(".docrt_pemohon_box .docrt_form_title");
+        $(title_tag).addClass('d-hide');
+        $(".docrt_pemohon_box .docrt_form_title .docrt_inputs").attr('disabled', 'disabled');
+
+
+        $(".docrt_pemohon_box .docrt_"+type_surat+"_id_title").removeClass('d-hide');
+        $(".docrt_pemohon_box #docrt_"+type_surat+"_id").removeAttr('disabled');
+    }*/

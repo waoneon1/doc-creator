@@ -124,3 +124,8 @@ label[for=suratdiv-hide],
     height: 90px!important;
     background-position: 0px 12px!important;
 }
+
+.ajaxApi {
+    border: 1px solid #7ddca8!important;
+    background: #deffed!important;
+}
