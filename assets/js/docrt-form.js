@@ -4,6 +4,7 @@ jQuery(document).ready(function($) {
     //docrt_form_selected();
     docrt_kusus_skp();
     //docrt_kusus_skel();
+     datepicker_init();
 
     $(".docrt_type_surat_box input:radio").click(function() {
         console.log('click');
@@ -21,12 +22,21 @@ jQuery(document).ready(function($) {
         docrt_kusus_skel();
     });
 
-    //  form kembar khusus skel
+    //  API KTP
     $(document).on("click", ".nik_api_button", function (e) { //vpc-options
         e.preventDefault();
-        if (true) {}
-        docrt_api_ktp();
+        if ($('#docrt_form_nonik').val()) {
+            $('.api_msg_nik').hide();
+            docrt_api_ktp($('#docrt_form_nonik').val());
+        } else {
+            $('.api_msg_nik').show();
+        }
     });
+
+
+    function datepicker_init() {
+        $( ".docrt_datepicker" ).datepicker();
+    }
 
     function tes_docrt_form_selected() {
         var form_class = '';
@@ -47,18 +57,22 @@ jQuery(document).ready(function($) {
             url: ajax_url+'form_creator.php',
             success: function(data){
                 $('.docrt-master-form').append(data);
+                datepicker_init();
                 //console.log(data);
+
             }
         });
+
     }
 
-    function docrt_api_ktp() {
+    function docrt_api_ktp(nik) {
         var param = docrt_form_data(type_surat);
         var type_surat = $(".docrt_type_surat_box input[type='radio']:checked").data('typesurat');
 
         var data = {
             'data': param,
             'post_id': post_id,
+            'nik': nik,
             'type_surat': type_surat
         };
         $.ajax({
@@ -66,6 +80,7 @@ jQuery(document).ready(function($) {
             type: 'POST',
             url: ajax_url+'api.php',
             success: function(data){
+                console.log(data);
                 var obj = jQuery.parseJSON(data);
                 var x;
                 for (x in obj) {

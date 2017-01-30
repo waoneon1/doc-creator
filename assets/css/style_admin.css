@@ -129,3 +129,23 @@ label[for=suratdiv-hide],
     border: 1px solid #7ddca8!important;
     background: #deffed!important;
 }
+
+.api_msg {
+  color: white;
+  background: #f45246;
+  font-size: 12px;
+  padding: 0px 6px 2px;
+  /* border-radius: 5px; */
+  margin: 1px;
+  display: none;
+}
+
+.nik_api_button{
+  background: #64ca92;
+  color: white;
+  cursor: pointer;
+  border: 0px solid #000;
+  padding: 7px;
+  position: relative;
+  left: -52px;
+}

@@ -35,6 +35,10 @@ function docrt_include_admin() {
         include_once __DIR__ . '/includes/admin/settings.php';
         wp_enqueue_style( 'style-default', docrt_plugin_url() . '/assets/css/style_admin.css' );
         wp_enqueue_script( 'form-js', docrt_plugin_url() . '/assets/js/docrt-form.js' , array('jquery'), '' );
+
+        wp_enqueue_style( 'jqui-css', '//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css' );
+        wp_enqueue_script( 'jqui-js', 'https://code.jquery.com/ui/1.12.1/jquery-ui.js', array('jquery'), '' );
+
     }
 }
 

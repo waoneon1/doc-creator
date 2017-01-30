@@ -172,14 +172,14 @@ function docrt_form_agama($meta, $type_surat) {
 }
 
 function docrt_form_sperkawinan($meta, $type_surat) {
-
   $data = '<tr align="left" class="docrt_form_sperkawinan_tr docrt_form">
         <th><label class="diy-label" for="docrt_form_sperkawinan">Status Perkawinan</label></th>
         <td> : </td>
         <td><select name="docrt_form_sperkawinan" class="docrt_inputs" id="docrt_form_sperkawinan" >
               <option value="Belum Kawin" >Belum Kawin</option>
               <option value="Kawin" '.(($meta['docrt_form_sperkawinan'][0] == 'Kawin') ? 'selected' : '').'>Kawin</option>
-              <option value="Janda/Duda" '.(($meta['docrt_form_sperkawinan'][0] == 'Janda/Duda') ? 'selected' : '').'>Janda/Duda</option>
+              <option value="Cerai Hidup" '.(($meta['docrt_form_sperkawinan'][0] == 'Cerai Hidup') ? 'selected' : '').'>Cerai Hidup</option>
+              <option value="Cerai Mati" '.(($meta['docrt_form_sperkawinan'][0] == 'Cerai Mati') ? 'selected' : '').'>Cerai Mati</option>
             </select>
         </td>
     </tr>';
@@ -201,8 +201,10 @@ function docrt_form_nonik($meta, $type_surat) {
   $data = '<tr align="left" class="docrt_form_nonik_tr docrt_form">
         <th><label class="diy-label" for="docrt_form_nonik">No NIK</label></th>
         <td> : </td>
-        <td><input name="docrt_form_nonik" type="text" class="docrt_inputs" id="docrt_form_nonik" value="'.$meta['docrt_form_nonik'][0].'"/>
-          <button class="nik_api_button">tes</button>
+        <td>
+        <span class="api_msg api_msg_nik"> - Mohon isi form No NIK - </span>
+        <input name="docrt_form_nonik" type="text" class="docrt_inputs" id="docrt_form_nonik" value="'.$meta['docrt_form_nonik'][0].'"/>
+        <button class="nik_api_button">Auto</button>
         </td>
     </tr>';
   return $data;
@@ -365,7 +367,7 @@ function docrt_form_tgl_jam($meta, $type_surat) {
   $data = '<tr align="left" class="docrt_form_tgl_tr docrt_form">
         <th><label class="diy-label" for="docrt_form_tgl">Tanggal</label></th>
         <td> : </td>
-        <td><input name="docrt_form_tgl" type="date" class="docrt_inputs half" id="docrt_form_tgl" value="'.$meta['docrt_form_tgl'][0].'"/>
+        <td><input name="docrt_form_tgl" type="text" class="docrt_inputs half docrt_datepicker" id="docrt_form_tgl" value="'.$meta['docrt_form_tgl'][0].'"/>
         <input name="docrt_form_jam" type="text" class="docrt_inputs half" id="docrt_form_jam" value="'.$meta['docrt_form_jam'][0].'" placeholder="12:00"/></td>
     </tr>';
   return $data;
@@ -376,7 +378,7 @@ function docrt_form_tgl($meta, $type_surat) {
   $data = '<tr align="left" class="docrt_form_tgl_tr docrt_form">
         <th><label class="diy-label" for="docrt_form_tgl">Tanggal</label></th>
         <td> : </td>
-        <td><input name="docrt_form_tgl" type="date" class="docrt_inputs half" id="docrt_form_tgl" value="'.$meta['docrt_form_tgl'][0].'"/></td>
+        <td><input name="docrt_form_tgl" type="text" class="docrt_inputs half docrt_datepicker" id="docrt_form_tgl" value="'.$meta['docrt_form_tgl'][0].'"/></td>
     </tr>';
   return $data;
 }
@@ -908,7 +910,8 @@ function docrt_tbl_pindah($meta, $type_surat) {
               <td><select class="pengikut_status" name="docrt_pengikut_status'.$i.'" type="text" id="docrt_pengikut_status'.$i.'" >
                     <option value="Blm Kawin">Blm Kawin</option>
                     <option value="Kawin" '.(($meta['docrt_pengikut_status'.$i][0] == 'Kawin') ? 'selected' : '').'>Kawin</option>
-                    <option value="Janda/Duda" '.(($meta['docrt_pengikut_status'.$i][0] == 'Janda/Duda') ? 'selected' : '').'>Janda/Duda</option>
+                    <option value="Cerai Hidup" '.(($meta['docrt_pengikut_status'.$i][0] == 'Cerai Hidup') ? 'selected' : '').'>Cerai Hidup</option>
+                    <option value="Cerai Mati" '.(($meta['docrt_pengikut_status'.$i][0] == 'Cerai Mati') ? 'selected' : '').'>Cerai Mati</option>
                   </select>
               </td>
               <td><input name="docrt_pengikut_pendidikan'.$i.'" type="text" id="docrt_pengikut_pendidikan'.$i.'" value="'.$meta['docrt_pengikut_pendidikan'.$i][0].'" class="pengikut_pend"/></td>
@@ -946,8 +949,8 @@ function docrt_doc_title_nosurat($meta, $type_surat) {
 
   // form id & title
   $readonly = 'readonly';
-  if ($type_surat == 'sk' 
-    || $type_surat == 'sktm' 
+  if ($type_surat == 'sk'
+    || $type_surat == 'sktm'
     || $type_surat == 'skbpm') {
     $readonly = '';
   }
