@@ -35,7 +35,7 @@ jQuery(document).ready(function($) {
 
 
     function datepicker_init() {
-        $( ".docrt_datepicker" ).datepicker();
+        jQuery( ".docrt_datepicker" ).datepicker();
     }
 
     function tes_docrt_form_selected() {
