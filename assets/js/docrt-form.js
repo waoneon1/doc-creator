@@ -43,6 +43,8 @@ jQuery(document).ready(function($) {
         var tr_tag = $(".docrt_pemohon_box .docrt_form");
         var type_surat = $(".docrt_type_surat_box input[type='radio']:checked").data('typesurat');
         var param = docrt_form_data(type_surat);
+        var post_id;
+
         $('.docrt-master-form').html('');
         var data = {
             'data': param,
@@ -488,6 +490,7 @@ jQuery(document).ready(function($) {
 
 jQuery(document).ready(function($) {
 
+    console.log('rtrw');
     var perangkat_jabatan = $('#docrt_perangkat_jabatan');
     var rw_option = $('#docrt_perangkat_jabatan_rw');
     var perangkat_no_jabatan_rw = $('#docrt_perangkat_jabatan_rw');
