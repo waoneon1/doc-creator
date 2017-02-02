@@ -26,7 +26,7 @@ class Dispenduk_API
       'docrt_form_ttl' => $ktp->KTP->TMPT_LHR.', '.$ktp->KTP->TGL_LHR,
       'docrt_form_sperkawinan' => $this->filter($ktp->KTP->STAT_KWN,'sperkawinan'),
       'docrt_form_agama' => $this->filter($ktp->KTP->AGAMA,'agama'),
-      'docrt_form_pekerjaan' => $ktp->KTP->JENIS_PKRJN,
+      'docrt_form_pekerjaan' => $this->filter($ktp->KTP->JENIS_PKRJN,'pekerjaan'),
       'docrt_form_provinsi' => $ktp->KTP->NO_PROP,
       'docrt_form_kota' => $ktp->KTP->NO_KAB,
       'docrt_form_kecamatan' => $ktp->KTP->NO_KEC,
