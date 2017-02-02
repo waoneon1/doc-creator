@@ -38,8 +38,8 @@ function docrt_include_admin() {
         wp_enqueue_style( 'style-default', docrt_plugin_url() . '/assets/css/style_admin.css' );
         if ($pagenow != 'admin.php') {
             wp_enqueue_script( 'form-js', docrt_plugin_url() . '/assets/js/docrt-form.js' , array('jquery'), '' );
-            wp_enqueue_style( 'jqui-css', '//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css' );
-            wp_enqueue_script( 'jqui-js', 'https://code.jquery.com/ui/1.12.1/jquery-ui.js', array('jquery'), '' );
+            wp_enqueue_style( 'jqui-css', docrt_plugin_url() . '/assets/css/jquery-ui.css' );
+            wp_enqueue_script( 'jqui-js', docrt_plugin_url() . '/assets/js/jquery-ui.js', array('jquery'), '' );
         }
 
         ?>

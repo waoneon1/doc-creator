@@ -75,6 +75,46 @@ class Dispenduk_API
             $return = $param[$data];
             break;
 
+        case 'pekerjaan':
+            $param = array('',
+              'Belum/Tidak Bekerja',
+              'Mengurus Rumah Tangga',
+              'Pelajar/Mahasiswa',
+              'Pensiunan',
+              'Pegawai Negeri Sipil (PNS)',
+              'Tentara Nasional Indonesia (TNI)',
+              'Kepolisian RI (POLRI)',
+              'Perdagangan',
+              'Petani/Pekebun',
+              'Peternak', //10
+              'Nelayan/Perikanan',
+              'Industri',
+              'Konstruksi',
+              'Transportasi',
+              'Karyawan Swasta',
+              'Karyawan BUMN',
+              'Karyawan BUMD',
+              'Karyawan Honorer',
+              'Buruh Harian Lepas',
+              'Buruh Tani/Perkebunan', //20
+              'Buruh Nelayan/Perikanan',
+              'Buruh Peternakan',
+              'Pembantu Rumah Tangga',
+              'Tukang Cukur',
+              'Tukang Listrik',
+              'Tukang Batu',
+              'Tukang Kayu',
+              'Tukang Sol Sepatu',
+              'Tukang Las/Pandai Besi',
+              'Tukang Jahit', //30
+              'Lain - Lain'
+              );
+            if ($data > 30) {
+              $data = 31;
+            }
+            $return = $param[$data];
+            break;
+
         default:
             # code...
             break;

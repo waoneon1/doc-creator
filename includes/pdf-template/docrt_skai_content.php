@@ -40,7 +40,6 @@ function docrt_skai_content($param, $meta, $post_term) {
     $tbl .= '
     <table cellspacing="0" cellpadding="1" border="0">
         <tr><td colspan="2"></td></tr>
-        <tr><td colspan="2"></td></tr>
         <tr>
             <td width="10%"></td>
             <td width="90%">Demikian untuk menjadikan periksa dan dipergunakan seperlunya.</td>
