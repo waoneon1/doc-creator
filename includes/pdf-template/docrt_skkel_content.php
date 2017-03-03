@@ -5,6 +5,8 @@ function docrt_skkel_content($pdf,$postID, $post_term) {
 
     $data = docrt_pdf_template_form('skkel',$meta,$postID);
     $saksi_data = $pdf->get_saksi($meta['docrt_form_saksi'][0]);
+   /* echo "<pre>";
+    print_r($saksi_data);*/
     foreach ($saksi_data as $key => $value) {
         $param[$key] = array(
             'Nama Lengkap' => $value['nama'],
@@ -15,7 +17,8 @@ function docrt_skkel_content($pdf,$postID, $post_term) {
             'Telepon' => $value['telepon'],
         );
     }
-
+    /*print_r( $param);
+    exit();*/
     if ($meta['docrt_jenis_ttd'][0] == 'lurah') {
         //$ttd_jabatan = 'LURAH SAWOJAJAR';
         $ttd_nama = 'J.A. Bayu Widjaya, S.Sos, M.Si';

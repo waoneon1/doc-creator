@@ -1,13 +1,15 @@
 jQuery(document).ready(function($) {
 
-    tes_docrt_form_selected();
+    if (cpt_type == 'create_document') {
+        tes_docrt_form_selected();
+    }
+
     //docrt_form_selected();
     docrt_kusus_skp();
     //docrt_kusus_skel();
-     datepicker_init();
+    datepicker_init();
 
     $(".docrt_type_surat_box input:radio").click(function() {
-        console.log('click');
         // docrt_form_selected();
         tes_docrt_form_selected();
     });
@@ -25,6 +27,7 @@ jQuery(document).ready(function($) {
     //  API KTP
     $(document).on("click", ".nik_api_button", function (e) { //vpc-options
         e.preventDefault();
+        console($(this));
         if ($('#docrt_form_nonik').val()) {
             $('.api_msg_nik').hide();
             docrt_api_ktp($('#docrt_form_nonik').val());
@@ -35,7 +38,10 @@ jQuery(document).ready(function($) {
 
 
     function datepicker_init() {
-        jQuery( ".docrt_datepicker" ).datepicker();
+        jQuery( ".docrt_datepicker" ).datepicker({
+            changeMonth: true,
+            changeYear: true
+        });
     }
 
     function tes_docrt_form_selected() {
@@ -81,7 +87,7 @@ jQuery(document).ready(function($) {
             type: 'POST',
             url: ajax_url+'api.php',
             success: function(data){
-                console.log(data);
+                //console.log(data);
                 var obj = jQuery.parseJSON(data);
                 var x;
                 for (x in obj) {
@@ -489,7 +495,6 @@ jQuery(document).ready(function($) {
 
 jQuery(document).ready(function($) {
 
-    console.log('rtrw');
     var perangkat_jabatan = $('#docrt_perangkat_jabatan');
     var rw_option = $('#docrt_perangkat_jabatan_rw');
     var perangkat_no_jabatan_rw = $('#docrt_perangkat_jabatan_rw');

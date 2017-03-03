@@ -25,35 +25,64 @@ function docrt_plugin_path() {
 function docrt_plugin_basename() {
     return plugin_basename(__FILE__);
 }
+/*****************************************************************************************
+ * Define
+ *****************************************************************************************/
+define("DOCRT_TTD",serialize(array('Lurah','Seklur','Kasi')));
+define("DOCRT_TYPE_SURAT_ALLOWED",serialize(array(
+        'kk','ktp','skel','skem','skbpm','skck','skd','skdu','skik','skp','sktm','sku', 'sk'
+    )));
+// List yang menandatangani
+function docrt_who_give_ttd($jenis_ttd) {
+    if ($jenis_ttd == 'lurah') {
+        $ttd['jabatan'] = 'LURAH SAWOJAJAR';
+        $ttd['nama']    = 'J.A. BAYU WIDJAYA, S.Sos, M.Si';
+        $ttd['kasi']    = '';
+        $ttd['nip']     = 'NIP. 19710731 199203 1 003';
+    } elseif ($jenis_ttd == 'seklur') {
+        $ttd['jabatan'] = 'LURAH SAWOJAJAR<br/><span style="font-size:11px;">Sekretaris</span>';
+        $ttd['nama']    = 'ADI ANDRIANTO. P, SH.M.Hum';
+        $ttd['kasi']    = '';
+        $ttd['nip']     = 'NIP. 19740730 200312 1 005';
+    } elseif ($jenis_ttd == 'kasi') {
+        $ttd['jabatan'] = 'an: LURAH SAWOJAJAR<br/><span style="font-size:11px;">Kasi Pemerintahan, Ketentraman dan Ketertiban Umum</span>';
+        $ttd['nama']    = 'AMAN SANTOSO';
+        $ttd['kasi']    = '<span style="font-size:11px;">Penata</span><br/>';
+        $ttd['nip']     = 'NIP. 19610928 199111 1 001';
+    } else {
+        $ttd['jabatan'] = $jenis_ttd;
+        $ttd['nama']    = '';
+        $ttd['kasi']    = '';
+        $ttd['nip']     = '';
+    }
+    return $ttd;
+}
 
-include_once __DIR__ . '/includes/types.php';
-include_once __DIR__ . '/includes/types-perangkat.php';
+
 
 function docrt_include_admin() {
-    global $pagenow;
-
     if (is_admin()) {
         include_once __DIR__ . '/includes/admin/types-table-filter.php';
         include_once __DIR__ . '/includes/admin/settings.php';
-        wp_enqueue_style( 'style-default', docrt_plugin_url() . '/assets/css/style_admin.css' );
-        if ($pagenow != 'admin.php') {
-            wp_enqueue_script( 'form-js', docrt_plugin_url() . '/assets/js/docrt-form.js' , array('jquery'), '' );
-            wp_enqueue_style( 'jqui-css', docrt_plugin_url() . '/assets/css/jquery-ui.css' );
-            wp_enqueue_script( 'jqui-js', docrt_plugin_url() . '/assets/js/jquery-ui.js', array('jquery'), '' );
-        }
-
-        ?>
-        <script type="text/javascript">
-            var ajax_url = '';
-            var post_id  = '';
-        </script>
-        <?php
     }
 }
-
 add_action('init', 'docrt_include_admin');
 
-add_action( 'wp_enqueue_scripts', 'docrt_load_scripts' );
+function docrt_load_scripts_admin() {
+    global $pagenow;
+
+    wp_enqueue_style( 'style-default', docrt_plugin_url() . '/assets/css/style_admin.css' );
+    wp_enqueue_style( 'jqui-css', docrt_plugin_url() . '/assets/css/jquery-ui.css' );
+    wp_enqueue_script( 'jqui-js', docrt_plugin_url() . '/assets/js/jquery-ui.js', array('jquery'), '' );
+
+    if (in_array($pagenow,  array('post-new.php', 'post.php'))) {
+        wp_enqueue_media();
+        wp_enqueue_script( 'form-js', docrt_plugin_url() . '/assets/js/docrt-form.js' , array('jquery'), '' );
+    }
+}
+add_action('admin_enqueue_scripts', 'docrt_load_scripts_admin');
+
+
 function docrt_load_scripts(){
     wp_enqueue_media();
     wp_enqueue_style( 'style-default', docrt_plugin_url() . '/assets/css/style.css' );
@@ -64,28 +93,12 @@ function docrt_load_scripts(){
         'ajax_url' => docrt_plugin_url() . '/ajax' . '/'
     ));
 }
-
+add_action( 'wp_enqueue_scripts', 'docrt_load_scripts' );
 
 /*****************************************************************************************
  * Set Option on install Plugin
  * docrt-document
  *****************************************************************************************/
-register_activation_hook(__FILE__,'docrt_install');
-// register_deactivation_hook( __FILE__, 'docrt_remove' );
-
-function docrt_install() {
-    /* Creates new database field */
-    add_option("docrt_skd", 0, '', 'yes');
-    add_option("docrt_skdu", 0, '', 'yes');
-    add_option("docrt_sku", 0, '', 'yes');
-}
-/*function docrt_remove() {
-
-    delete_option('docrt_skd');
-    delete_option('docrt_skdu');
-    delete_option('docrt_sku');
-}
-*/
 
 function docrt_tax_list() {
 
@@ -105,15 +118,6 @@ function docrt_tax_list() {
 }
 
 
-function docrt_local_timezone() {
-    define( 'MY_TIMEZONE', (get_option( 'timezone_string' ) ? get_option( 'timezone_string' ) : date_default_timezone_get() ) );
-    date_default_timezone_set( MY_TIMEZONE );
-    echo date_i18n('F d, Y H:i', 1365194723);
-}
 
-
-
-
-
-
-
+include_once __DIR__ . '/includes/types.php';
+include_once __DIR__ . '/includes/types-perangkat.php';

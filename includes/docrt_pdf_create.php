@@ -217,35 +217,15 @@ function docrt_get_content_pdf2($pdf, $postID, $post_term, $main_doc = '') {
 
 function docrt_content_by_type($param,$meta,$post_term,$pdf='') {
     $slug = $post_term[0]->slug;
-   /* print_r($param);
-    print_r($meta);
-    print_r($post_term);
-    print_r('docrt_'.$slug.'_content');exit;*/
     return call_user_func_array('docrt_'.$slug.'_content', array($param,$meta,$post_term));
 }
 
 // footer tandatangan in general
 function docrt_pdf_footer($meta,$postID,$type,$hspace='60',$nopelapor=true,$w1 = '30%',$w2 = '30%',$w3 = '43%') {
+
      // Yang menandatangani dokumen
-    $kasi = '';
-    if ($meta['docrt_jenis_ttd'][0] == 'lurah') {
-        $ttd_jabatan = 'LURAH SAWOJAJAR';
-        $ttd_nama = 'J.A. BAYU WIDJAYA, S.Sos, M.Si';
-        $ttd_nip = 'NIP. 19710731 199203 1 003';
-    } elseif ($meta['docrt_jenis_ttd'][0] == 'seklur') {
-        $ttd_jabatan = 'LURAH SAWOJAJAR<br/><span style="font-size:11px;">Sekretaris</span>';
-        $ttd_nama = 'ADI ANDRIANTO. P, SH.M.Hum';
-        $ttd_nip = 'NIP. 19740730 200312 1 005';
-    } elseif ($meta['docrt_jenis_ttd'][0] == 'kasi') {
-        $ttd_jabatan = 'an: LURAH SAWOJAJAR<br/><span style="font-size:11px;">Kasi Pemerintahan, Ketentraman dan Ketertiban Umum</span>';
-        $ttd_nama = 'AMAN SANTOSO';
-        $kasi = '<span style="font-size:11px;">Penata</span><br/>';
-        $ttd_nip = 'NIP. 19610928 199111 1 001';
-    } else {
-        $ttd_jabatan = $meta['docrt_jenis_ttd'][0];
-        $ttd_nama = '';
-        $ttd_nip = '';
-    }
+    $ttd = docrt_who_give_ttd($meta['docrt_jenis_ttd'][0]);
+
     $mengetahui_camat = '';
     if ($type =='skai') {
         $mengetahui_camat =
@@ -268,7 +248,7 @@ function docrt_pdf_footer($meta,$postID,$type,$hspace='60',$nopelapor=true,$w1 =
         <tr>
             <td>'.(($nopelapor) ? 'Yang Bersangkutan' : '').'</td>
             <td></td>
-            <td align="'.$align.'">'.$ttd_jabatan.'</td>
+            <td align="'.$align.'">'.$ttd['jabatan'].'</td>
         </tr>
         <tr>
             <td height="'.$hspace.'"></td>
@@ -278,8 +258,8 @@ function docrt_pdf_footer($meta,$postID,$type,$hspace='60',$nopelapor=true,$w1 =
         <tr>
             <td>'.(($nopelapor) ? ucwords($meta['docrt_form_nama'][0]) : '').'</td>
             <td> </td>
-            <td align="'.$align.'"><strong style="text-align: '.$align.'; text-decoration: underline; font-size:11px">'.$ttd_nama.'</strong><br/>'.$kasi .'
-            '.$ttd_nip.'
+            <td align="'.$align.'"><strong style="text-align: '.$align.'; text-decoration: underline; font-size:11px">'.$ttd['nama'].'</strong><br/>'.$ttd['kasi'] .'
+            '.$ttd['nip'].'
             </td>
         </tr>
         '.$mengetahui_camat.'

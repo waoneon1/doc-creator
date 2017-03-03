@@ -25,7 +25,7 @@ function docrt_list_surat_dashboard_widgets() {
     if ($role == 'top_editor' || $role == 'administrator') {
        wp_add_dashboard_widget(
                  'surat_dashboard_widget',         // Widget slug.
-                 'List Surat <span>show all</span>',         // Title.
+                 'List Surat',         // Title.
                  'list_surat_dashboard_widget_function' // Display function.
         );
 
@@ -41,6 +41,7 @@ add_action( 'wp_dashboard_setup', 'docrt_list_surat_dashboard_widgets' );
 // Dasboard surat
 function list_surat_dashboard_widget_function() {
     $tax = 'surat';
+    $typesurat = unserialize(DOCRT_TYPE_SURAT_ALLOWED);
     $terms = get_terms( array(
         'taxonomy' => $tax,
         'hide_empty' => false,
@@ -49,12 +50,14 @@ function list_surat_dashboard_widget_function() {
         echo '<ul>';
 
         foreach ( $terms as $term ) {
-         $term = sanitize_term( $term, $tax  );
-         $term_link = get_site_url().'/wp-admin/edit.php?post_type=docrt-document&'.$tax.'='.$term->slug;
+            if (in_array($term->slug, $typesurat)) {
+                $term = sanitize_term( $term, $tax  );
+                $term_link = get_site_url().'/wp-admin/edit.php?post_type=docrt-document&'.$tax.'='.$term->slug;
 
-          echo '<li><a href="' . esc_url( $term_link ) . '"><strong>' . ucwords($term->name) . '</strong></a></li>';
-          echo '<li><a href="' . esc_url( $term_link ) . '"><strong>' . strtoupper($term->slug) . '</strong> Jumlah Surat : ' . $term->count . '</a></li>';
-          echo '<li><hr/></li>';
+                echo '<li><a href="' . esc_url( $term_link ) . '"><strong>' . ucwords($term->name) . '</strong></a></li>';
+                echo '<li><a href="' . esc_url( $term_link ) . '"><strong>' . strtoupper($term->slug) . '</strong> Jumlah Surat : ' . $term->count . '</a></li>';
+                echo '<li><hr/></li>';
+            }
         }
         echo '</ul>';
     }
@@ -64,9 +67,11 @@ function list_surat_dashboard_widget_function() {
 function author_dashboard_widget_function() {
 
     $blogusers = get_users('role=editor');
+
     echo '<ul>';
     foreach ( $blogusers as $user ) {
-        echo '<li><a href="#"><strong>' . ucwords($user->user_nicename) . '</strong> publish : '.count_user_posts( $user->ID , "docrt-document"  ).' surat</a></li>';
+        $author_link = get_site_url().'/wp-admin/edit.php?post_type=docrt-document&author='.$user->ID;
+        echo '<li><a href="'.esc_url($author_link).'"><strong>' . ucwords($user->user_nicename) . '</strong> publish : '.count_user_posts( $user->ID , "docrt-document"  ).' surat</a></li>';
     }
     echo '</ul>';
 }

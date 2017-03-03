@@ -106,6 +106,7 @@ function docrt_pemohon_box() {
     <script type="text/javascript">
         var ajax_url = <?php echo '"'.docrt_plugin_url() . '/ajax' . '/"' ?>;
         var post_id  = <?php echo $post->ID ?>;
+        var cpt_type = <?php echo '"create_document"' ?>;
     </script><?php
 
     // all form goes here
@@ -121,9 +122,7 @@ function docrt_type_surat_box($post) {
       'orderby' => 'name',
       'order' => 'ASC'
     );
-    $type_surat_allow = array(
-        'kk','ktp','skel','skem','skbpm','skck','skd','skdu','skik','skp','sktm','sku', 'sk'
-    );
+    $type_surat_allow = unserialize(DOCRT_TYPE_SURAT_ALLOWED);
     $tax_terms = get_terms($taxonomy,$term_args);
     $post_term = get_the_terms ($post->ID,$taxonomy );
 
@@ -149,18 +148,15 @@ function docrt_type_surat_box($post) {
 }
 
 function docrt_ttd_box($post) {
-    $ttd = array(
-        'Lurah' => 'lurah',
-        'Seklur' => 'seklur',
-        'Kasi' => 'kasi'
-    );
+    $ttd = unserialize(DOCRT_TTD);
     $meta = get_post_meta($post->ID, 'docrt_jenis_ttd', true);
     echo '<table class="docrt_ttd_box">';
-    foreach ($ttd as $key => $value) {
-        $checked = ($meta == $value) ? 'checked' : '';
+    foreach ($ttd as $value) {
+        $slug = strtolower($value);
+        $checked = ($meta == $slug) ? 'checked' : '';
         echo '<tr align="left">
-            <th><input type="radio" name="docrt_jenis_ttd" value="'.$value.'" data-ttd="'.$value.'" '.$checked.' required></th>
-            <td>'.$key.'</td>
+            <th><input type="radio" name="docrt_jenis_ttd" value="'.$slug.'" data-ttd="'.$slug.'" '.$checked.' required></th>
+            <td>'.$value.'</td>
         </tr>';
     }
     echo '</table>';

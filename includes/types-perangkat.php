@@ -55,7 +55,6 @@ function docrt_report_page() {
         );
     }
 }
-
 /**
  * Display callback for the submenu page.
  */
@@ -104,6 +103,77 @@ function docrt_report_page_callback() {
     <?php
 }
 
+/**
+ * Adds a submenu page under a custom post type parent.
+ */
+add_action('admin_menu', 'docrt_ttd_setting');
+function docrt_ttd_setting() {
+    if (current_user_can('manage_options')) {
+         add_submenu_page(
+            'edit.php?post_type=docrt-perangkat',
+            'TTD Setting',
+            'TTD Setting',
+            'read',
+            'docrt-ttd',
+            'docrt_ttd_setting_callback'
+        );
+    }
+}
+
+function docrt_ttd_setting_callback() {
+    global $post;
+
+    $ttd = unserialize(DOCRT_TTD);
+    ?>
+    <div class="wrap">
+        <h1>TTD Setting</h1>
+        <p>Pilih yang</p>
+        <form name="post" action="edit.php?post_type=docrt-perangkat&page=docrt-report" method="post" id="post" autocomplete="off" target="_blank">
+        <?php printf('<input type="hidden" name="docrt_nonce_report" value="%s" />', wp_create_nonce(plugin_basename(__FILE__))); ?>
+
+        <?php foreach ($ttd as $key => $value) { ?>
+            <div class="ttd_box">
+                <input class="ttd_box_checkbox" type="checkbox" id="<?php echo strtolower($value) ?>" name="<?php echo strtolower($value) ?>" value="<?php echo strtolower($value) ?>">
+                <label for="<?php echo strtolower($value) ?>">Check me</label>
+            </div>
+        <?php } ?>
+
+        <style type="text/css">
+            .ttd_box {
+                position: relative;
+                font-size: 40px;
+                font-weight: 800;
+                width: 40%;
+                padding-top: 100px;
+                height: 150px;
+                text-align: center;
+                background-color: #fff;
+                display: inline-block;
+                margin:20px;
+                box-shadow: 1px 0px 12px 2px #e3e3e3;
+            }
+            .ttd_box_checkbox {
+                position: relative;
+                top: -96px;
+                /* left: -35px; */
+                margin: 10px!important;
+                float: left;
+                }
+            }
+        </style>
+        <strong></strong>
+        </form>
+        <script type="text/javascript">
+            jQuery(document).ready(function($){
+                $(document).on('click', '.ttd_box', function(e){
+                    $(this).children().addClass('testing').pro;
+                });
+            });
+        </script>
+    </div>
+    <?php
+}
+
 add_action('wp_loaded', 'docrt_report_page_func', 40);
 function docrt_report_page_func() {
 
@@ -142,7 +212,11 @@ function docrt_perangkat_desa_box() {
     global $post;
     $meta = get_post_meta($post->ID, 'docrt_perangkat', true);
     $docrt_saksi = docrt_get_saksi_form('',@$meta['jabatan_rw']);
-
+    ?><script type="text/javascript">
+        var ajax_url = <?php echo '"'.docrt_plugin_url() . '/ajax' . '/"' ?>;
+        var post_id  = <?php echo $post->ID ?>;
+        var cpt_type = <?php echo '"perangkat"' ?>;
+    </script><?php
     printf( '<input type="hidden" name="docrt_nonce" value="%s" />', wp_create_nonce( plugin_basename(__FILE__) ) );
     echo '<table class="docrt_pemohon_box docrt_tbl docrt_tp_sku">';
         echo '<tbody class="">';
@@ -160,7 +234,7 @@ function docrt_perangkat_desa_box() {
             <tr align="left">
                 <th><label class="diy-label" for="docrt_perangkat_tl">Tanggal Lahir</label></th>
                 <td> : </td>
-                <td><input name="docrt_perangkat[tl]" type="date" class="docrt_inputs" id="docrt_perangkat_tl" value="'.@$meta['tl'].'" /></td>
+                <td><input name="docrt_perangkat[tl]" type="text" class="docrt_inputs docrt_datepicker" id="docrt_perangkat_tl" value="'.@$meta['tl'].'" /></td>
             </tr>
             <tr align="left">
                 <th><label class="diy-label" for="docrt_perangkat_pekerjaan">Pekerjaan</label></th>
