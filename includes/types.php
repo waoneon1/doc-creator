@@ -148,11 +148,12 @@ function docrt_type_surat_box($post) {
 }
 
 function docrt_ttd_box($post) {
-    $ttd = unserialize(DOCRT_TTD);
+    //$ttd = unserialize(DOCRT_TTD);
+    $ttd = get_option('docrt_list_ttd_perangkat');
     $meta = get_post_meta($post->ID, 'docrt_jenis_ttd', true);
     echo '<table class="docrt_ttd_box">';
-    foreach ($ttd as $value) {
-        $slug = strtolower($value);
+    foreach ($ttd as $slug => $value) {
+        //$slug = strtolower($value);
         $checked = ($meta == $slug) ? 'checked' : '';
         echo '<tr align="left">
             <th><input type="radio" name="docrt_jenis_ttd" value="'.$slug.'" data-ttd="'.$slug.'" '.$checked.' required></th>

@@ -120,53 +120,75 @@ function docrt_ttd_setting() {
     }
 }
 
+function docrt_ttd_save() {
+    //   verify the nonce
+    if ( !isset($_POST['docrt_nonce_ttd_perangkat']) || !wp_verify_nonce( $_POST['docrt_nonce_ttd_perangkat'], plugin_basename(__FILE__) ) ) return;
+    //  don't try to save the data under autosave, ajax, or future post.
+    if ( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE ) return;
+    if ( defined('DOING_AJAX') && DOING_AJAX ) return;
+    if ( defined('DOING_CRON') && DOING_CRON ) return;
+
+    //  is the user allowed to edit the URL?
+    if ( ! current_user_can( 'edit_posts' ) 
+        || $_GET['post_type'] != 'docrt-perangkat' 
+        || $_GET['page'] != 'docrt-ttd' )
+    return;
+    
+    update_option( 'docrt_list_ttd_perangkat', $_POST['ttd_checkbox']);
+
+}
+add_action('wp_loaded', 'docrt_ttd_save', 40);
+
 function docrt_ttd_setting_callback() {
     global $post;
-
+    $options = get_option('docrt_list_ttd_perangkat');
     $ttd = unserialize(DOCRT_TTD);
     ?>
     <div class="wrap">
         <h1>TTD Setting</h1>
         <p>Pilih yang</p>
-        <form name="post" action="edit.php?post_type=docrt-perangkat&page=docrt-report" method="post" id="post" autocomplete="off" target="_blank">
-        <?php printf('<input type="hidden" name="docrt_nonce_report" value="%s" />', wp_create_nonce(plugin_basename(__FILE__))); ?>
+        <form name="post" action="edit.php?post_type=docrt-perangkat&page=docrt-ttd" method="post" id="post" autocomplete="off">
+        <?php printf('<input type="hidden" name="docrt_nonce_ttd_perangkat" value="%s" />', wp_create_nonce(plugin_basename(__FILE__))); ?>
 
-        <?php foreach ($ttd as $key => $value) { ?>
+        <input type="submit" name="ttd_submit" value="submit" />
+        <?php foreach ($ttd as $key => $value) { $ttd_slug = strtolower($value); ?>
             <div class="ttd_box">
-                <input class="ttd_box_checkbox" type="checkbox" id="<?php echo strtolower($value) ?>" name="<?php echo strtolower($value) ?>" value="<?php echo strtolower($value) ?>">
-                <label for="<?php echo strtolower($value) ?>">Check me</label>
+                <input class="ttd_box_checkbox" type="checkbox"  name="ttd_checkbox[<?php echo $ttd_slug ?>]" value="<?php echo $value ?>" <?php checked( @$options[$ttd_slug], $value ); ?>/>
+                <div class="ttd_box_desc"><?php echo $value ?></div>
             </div>
         <?php } ?>
 
         <style type="text/css">
             .ttd_box {
                 position: relative;
-                font-size: 40px;
                 font-weight: 800;
-                width: 40%;
-                padding-top: 100px;
-                height: 150px;
-                text-align: center;
+                width: 100%;
+                padding: 10px;
                 background-color: #fff;
                 display: inline-block;
-                margin:20px;
                 box-shadow: 1px 0px 12px 2px #e3e3e3;
             }
-            .ttd_box_checkbox {
-                position: relative;
-                top: -96px;
-                /* left: -35px; */
-                margin: 10px!important;
+            .ttd_box .ttd_box_desc {
                 float: left;
-                }
+                background-color: #e3e3e3;
+                width: 90%;
+                padding: 10px;
+                cursor: pointer;
+            }
+            .ttd_box .ttd_box_checkbox {
+                float: left;
+                margin: 10px 20px 10px 10px;
             }
         </style>
         <strong></strong>
         </form>
         <script type="text/javascript">
             jQuery(document).ready(function($){
-                $(document).on('click', '.ttd_box', function(e){
-                    $(this).children().addClass('testing').pro;
+                $(document).on("click", ".ttd_box .ttd_box_desc", function(e){
+                    console.log($(this).parent().find("input.ttd_box_checkbox").length);
+                    $(this).parent().find("input.ttd_box_checkbox").trigger("click")
+                    //$(this).children().trigger("click");
+
                 });
             });
         </script>
@@ -185,7 +207,9 @@ function docrt_report_page_func() {
     if ( defined('DOING_CRON') && DOING_CRON ) return;
 
     //  is the user allowed to edit the URL?
-    if ( ! current_user_can( 'edit_posts' ) || $_GET['post_type'] != 'docrt-perangkat' || $_GET['page'] != 'docrt-report' )
+    if ( ! current_user_can( 'edit_posts' ) 
+        || $_GET['post_type'] != 'docrt-perangkat' 
+        || $_GET['page'] != 'docrt-report' )
         return;
 
     $jenis_surat = $_POST['docrt_report']['jenis_surat'];
