@@ -149,3 +149,10 @@ label[for=suratdiv-hide],
   position: relative;
   left: -52px;
 }
+
+
+/* RUBAH ICON ADMIN MENU */
+li#menu-posts-docrt-document .wp-menu-image::before,
+li#menu-posts-docrt-perangkat .wp-menu-image::before {
+    content: "\f175";
+}

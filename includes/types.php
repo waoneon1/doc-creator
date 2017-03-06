@@ -72,6 +72,7 @@ function docrt_doc_taxonomies() {
         'show_ui'           => $show_ui,
         'show_admin_column' => true,
         'query_var'         => true,
+        'meta_box_cb'       => false,
         'rewrite'           => array( 'slug' => 'surat' ),
     );
 
@@ -150,6 +151,8 @@ function docrt_type_surat_box($post) {
 function docrt_ttd_box($post) {
     //$ttd = unserialize(DOCRT_TTD);
     $ttd = get_option('docrt_list_ttd_perangkat');
+    if (!$ttd) return;
+
     $meta = get_post_meta($post->ID, 'docrt_jenis_ttd', true);
     echo '<table class="docrt_ttd_box">';
     foreach ($ttd as $slug => $value) {

@@ -101,7 +101,6 @@ add_action( 'wp_enqueue_scripts', 'docrt_load_scripts' );
  *****************************************************************************************/
 
 function docrt_tax_list() {
-
     wp_insert_term( 'surat keterangan usaha',               'surat', $args = array('slug'=>'sku') );
     wp_insert_term( 'surat keterangan domisili usaha ',     'surat', $args = array('slug'=>'skdu') );
     wp_insert_term( 'surat keterangan domisili',            'surat', $args = array('slug'=>'skd') );
@@ -114,7 +113,6 @@ function docrt_tax_list() {
     wp_insert_term( 'surat kematian',                       'surat', $args = array('slug'=>'skem') );
     wp_insert_term( 'kartu tanda penduduk',                 'surat', $args = array('slug'=>'ktp') );
     wp_insert_term( 'kartu keluarga',                       'surat', $args = array('slug'=>'kk') );
-    wp_insert_term( 'surat keterangan adat istiadat',       'surat', $args = array('slug'=>'skai') );
 }
 
 
