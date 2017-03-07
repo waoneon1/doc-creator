@@ -1,5 +1,5 @@
 jQuery(document).ready(function($) {
-
+console.log('form.js');
     if (cpt_type == 'create_document') {
         tes_docrt_form_selected();
     }
@@ -22,6 +22,15 @@ jQuery(document).ready(function($) {
     //  form kembar khusus skel
     $(document).on("change", "#docrt_form_kelahiran", function (e) { //vpc-options
         docrt_kusus_skel();
+    });
+
+    // add pejabat
+    $(document).on("click", ".button-pej-add", function(e) {
+        docrt_add_pejabat_kel();
+    });
+    // remove pejabat
+    $(document).on("click", ".button-pej-remove", function(e) {
+        docrt_remove_pejabat_kel();
     });
 
     //  API KTP
@@ -132,6 +141,18 @@ jQuery(document).ready(function($) {
         } else {
             kembar.removeAttr('disabled', 'disabled');
         }
+    }
+
+    function docrt_add_pejabat_kel() {
+        var count_html = $(".docrt_pej_count");
+        var count = $(".docrt_pej_count").val();
+
+        console.log(typeof count);
+       // count_html.val()
+
+    }
+    function docrt_remove_pejabat_kel() {
+
     }
 
     function docrt_form_data(type_surat = '') {

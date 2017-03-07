@@ -243,7 +243,8 @@ function docrt_ttd_setting() {
 function docrt_ttd_setting_callback() {
     global $post;
     $options = get_option('docrt_list_ttd_perangkat');
-    $ttd = unserialize(DOCRT_TTD);
+    $ttd = get_option('docrt_pej');
+    unset($ttd['count']);
     ?>
     <div class="wrap">
         <h1>TTD Setting</h1>
@@ -251,10 +252,10 @@ function docrt_ttd_setting_callback() {
         <form name="post" action="edit.php?post_type=docrt-perangkat&page=docrt-ttd" method="post" id="post" autocomplete="off">
         <?php printf('<input type="hidden" name="docrt_nonce_ttd_perangkat" value="%s" />', wp_create_nonce(plugin_basename(__FILE__))); ?>
         <input type="submit" name="ttd_submit" value="submit" class="button-primary button-large button-fullwidth button-ttd-submit" />
-        <?php foreach ($ttd as $key => $value) { $ttd_slug = strtolower($value); ?>
+        <?php foreach ($ttd as $key => $value) { $ttd_slug = strtolower($value['jabatan']); ?>
             <div class="ttd_box">
-                <input class="ttd_box_checkbox" type="checkbox"  name="ttd_checkbox[<?php echo $ttd_slug ?>]" value="<?php echo $value ?>" <?php checked( @$options[$ttd_slug], $value ); ?>/>
-                <div class="ttd_box_desc"><?php echo $value ?></div>
+                <input class="ttd_box_checkbox" type="checkbox"  name="ttd_checkbox[<?php echo $ttd_slug ?>]" value="<?php echo $value['jabatan'] ?>" <?php checked( @$options[$ttd_slug], $value['jabatan'] ); ?>/>
+                <div class="ttd_box_desc"><?php echo $value['jabatan'] ?></div>
             </div>
         <?php } ?>
 
@@ -322,46 +323,163 @@ function docrt_data_dasar() {
     if (current_user_can('manage_options')) {
          add_submenu_page(
             'edit.php?post_type=docrt-perangkat',
-            'Data Dasar',
-            'Data Dasar',
+            'Option',
+            'Option',
             'read',
             'docrt-data-dasar',
             'docrt_data_dasar_callback'
         );
     }
 }
-function docrt_data_dasar_callback() { ?>
+function docrt_data_dasar_callback() {
+    global $post; ?>
+    <form name="post" action="edit.php?post_type=docrt-perangkat&page=docrt-data-dasar" method="post">
+    <div id="data_dasar_tabs" style="display: none;">
+      <ul>
+        <li><a href="#data_dasar_tabs-1">Data Dasar</a></li>
+        <li><a href="#data_dasar_tabs-2">List Surat</a></li>
+        <li><a href="#data_dasar_tabs-3">TTD Setting</a></li>
+      </ul>
+      <div id="data_dasar_tabs-1">
+        <?php $meta = get_option('docrt_data_dasar'); ?>
+        <?php $meta_pej = get_option('docrt_pej'); ?>
+        <?php printf( '<input type="hidden" name="docrt_nonce_data_dasar" value="%s" />', wp_create_nonce( plugin_basename(__FILE__) ) ); ?>
+        <h3>Kop Surat</h3>
+        <hr/>
+        <table class="docrt_tbl"><tbody class="">
+            <tr align="left">
+                <th><label class="diy-label" for="docrt_data_dasar_kel">Kelurahan</label></th>
+                <td> : </td>
+                <td><input name="docrt_data_dasar[kel]" type="text" class="docrt_inputs" id="docrt_data_dasar_kel" value="<?php echo isset($meta['kel']) ? $meta['kel'] : '' ?>" /></td>
+            </tr>
+            <tr align="left">
+                <th><label class="diy-label" for="docrt_data_dasar_alamat">Alamat</label></th>
+                <td> : </td>
+                <td><input name="docrt_data_dasar[alamat]" type="text" class="docrt_inputs" id="docrt_data_dasar_alamat" value="<?php echo isset($meta['alamat']) ? $meta['alamat'] : '' ?>" /></td>
+            </tr>
+            <tr align="left">
+                <th><label class="diy-label" for="docrt_data_dasar_telp">Telepon</label></th>
+                <td> : </td>
+                <td><input name="docrt_data_dasar[telp]" type="text" class="docrt_inputs" id="docrt_data_dasar_telp" value="<?php echo isset($meta['telp']) ? $meta['telp'] : '' ?>" /></td>
+            </tr>
+            <tr align="left">
+                <th><label class="diy-label" for="docrt_data_dasar_kpos">Kode Pos</label></th>
+                <td> : </td>
+                <td><input name="docrt_data_dasar[kpos]" type="number" class="docrt_inputs" id="docrt_data_dasar_kpos" value="<?php echo isset($meta['kpos']) ? $meta['kpos'] : '' ?>" /></td>
+            </tr>
+            <tr align="left">
+                <th><label class="diy-label" for="docrt_data_dasar_kec">Kecamatan</label></th>
+                <td> : </td>
+                <td><input name="docrt_data_dasar[kec]" type="text" class="docrt_inputs" id="docrt_data_dasar_kec" value="<?php echo isset($meta['kec']) ? $meta['kec'] : '' ?>" /></td>
+            </tr>
+            <tr align="left">
+                <th><label class="diy-label" for="docrt_data_dasar_kpos">Kode Kecamatan</label></th>
+                <td> : </td>
+                <td><input name="docrt_data_dasar[kkec]" type="number" class="docrt_inputs" id="docrt_data_dasar_kpos" value="<?php echo isset($meta['kkec']) ? $meta['kkec'] : '' ?>" /></td>
+            </tr>
+            <tr align="left">
+                <th><label class="diy-label" for="docrt_data_dasar_kpos">Kode Kabupaten</label></th>
+                <td> : </td>
+                <td><input name="docrt_data_dasar[kkab]" type="number" class="docrt_inputs" id="docrt_data_dasar_kpos" value="<?php echo isset($meta['kkab']) ? $meta['kkab'] : '' ?>" /></td>
+            </tr>
+        </tbody></table>
 
-<div id="data_dasar_tabs" style="display: none;">
-  <ul>
-    <li><a href="#data_dasar_tabs-1">Data Dasar</a></li>
-    <li><a href="#data_dasar_tabs-2">List Surat</a></li>
-    <li><a href="#data_dasar_tabs-3">TTD Setting</a></li>
-  </ul>
-  <div id="data_dasar_tabs-1">
-    <p>Proin elit arcu, rutrum commodo, vehicula tempus, commodo a, risus. Curabitur nec arcu. Donec sollicitudin mi sit amet mauris. Nam elementum quam ullamcorper ante. Etiam aliquet massa et lorem. Mauris dapibus lacus auctor risus. Aenean tempor ullamcorper leo. Vivamus sed magna quis ligula eleifend adipiscing. Duis orci. Aliquam sodales tortor vitae ipsum. Aliquam nulla. Duis aliquam molestie erat. Ut et mauris vel pede varius sollicitudin. Sed ut dolor nec orci tincidunt interdum. Phasellus ipsum. Nunc tristique tempus lectus.</p>
-  </div>
-  <div id="data_dasar_tabs-2">
-    <p>Morbi tincidunt, dui sit amet facilisis feugiat, odio metus gravida ante, ut pharetra massa metus id nunc. Duis scelerisque molestie turpis. Sed fringilla, massa eget luctus malesuada, metus eros molestie lectus, ut tempus eros massa ut dolor. Aenean aliquet fringilla sem. Suspendisse sed ligula in ligula suscipit aliquam. Praesent in eros vestibulum mi adipiscing adipiscing. Morbi facilisis. Curabitur ornare consequat nunc. Aenean vel metus. Ut posuere viverra nulla. Aliquam erat volutpat. Pellentesque convallis. Maecenas feugiat, tellus pellentesque pretium posuere, felis lorem euismod felis, eu ornare leo nisi vel felis. Mauris consectetur tortor et purus.</p>
-  </div>
-  <div id="data_dasar_tabs-3">
-    <p>Mauris eleifend est et turpis. Duis id erat. Suspendisse potenti. Aliquam vulputate, pede vel vehicula accumsan, mi neque rutrum erat, eu congue orci lorem eget lorem. Vestibulum non ante. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Fusce sodales. Quisque eu urna vel enim commodo pellentesque. Praesent eu risus hendrerit ligula tempus pretium. Curabitur lorem enim, pretium nec, feugiat nec, luctus a, lacus.</p>
-    <p>Duis cursus. Maecenas ligula eros, blandit nec, pharetra at, semper at, magna. Nullam ac lacus. Nulla facilisi. Praesent viverra justo vitae neque. Praesent blandit adipiscing velit. Suspendisse potenti. Donec mattis, pede vel pharetra blandit, magna ligula faucibus eros, id euismod lacus dolor eget odio. Nam scelerisque. Donec non libero sed nulla mattis commodo. Ut sagittis. Donec nisi lectus, feugiat porttitor, tempor ac, tempor vitae, pede. Aenean vehicula velit eu tellus interdum rutrum. Maecenas commodo. Pellentesque nec elit. Fusce in lacus. Vivamus a libero vitae lectus hendrerit hendrerit.</p>
-  </div>
-</div>
-<script type="text/javascript">
-    jQuery(document).ready(function($){
-        $( function() {
-            $( "#data_dasar_tabs" ).show().tabs();
-        } );
-    });
-</script>
-<?php
+
+
+        <h3>Pejabat Kelurahan</h3>
+        <hr/>
+        <input type="hidden" class="docrt_pej_count" name="docrt_pej[count]" value="<?php echo isset($meta_pej['count']) ? $meta_pej['count'] : 0 ?>">
+        <table class="docrt_tbl"><tbody class="">
+            <tr align="left">
+                <th><label class="diy-label" for="docrt_pej_jabatan">Jabatan</label></th>
+                <td> : </td>
+                <td><input name="docrt_pej[0][jabatan]" type="text" class="docrt_inputs" id="docrt_pej_jabatan" value="Lurah" readonly /></td>
+            </tr>
+            <tr align="left">
+                <th><label class="diy-label" for="docrt_pej_nama">Nama</label></th>
+                <td> : </td>
+                <td><input name="docrt_pej[0][nama]" type="text" class="docrt_inputs" id="docrt_pej_nama" value="<?php echo isset($meta_pej[0]['nama']) ? $meta_pej[0]['nama'] : '' ?>" /></td>
+            </tr>
+            <tr align="left">
+                <th><label class="diy-label" for="docrt_pej_nip">NIP</label></th>
+                <td> : </td>
+                <td><input name="docrt_pej[0][nip]" type="text" class="docrt_inputs" id="docrt_pej_nip" value="<?php echo isset($meta_pej[0]['nip']) ? $meta_pej[0]['nip'] : '' ?>" /></td>
+            </tr>
+            <tr align="left">
+                <th><label class="diy-label" for="docrt_pej_gol">Pangkat/Golongan</label></th>
+                <td> : </td>
+                <td><input name="docrt_pej[0][gol]" type="text" class="docrt_inputs" id="docrt_pej_gol" value="<?php echo isset($meta_pej[0]['gol']) ? $meta_pej[0]['gol'] : '' ?>" /></td>
+            </tr>
+            <tr align="left">
+                <th colspan="3">&nbsp;</th>
+            </tr>
+            <?php for ($i=0; $i < 10; $i++): ?>
+            <?php
+                //Hide status
+                $hide_status = 'none';
+                $disable_status = 'disabled';
+                $pej_id = $i+1;
+                $hide_count = isset($meta_pej['count']) ? $meta_pej['count'] : 0;
+
+                if ($i < $hide_count ) {
+                    $hide_status = '';
+                    $disable_status = '';
+                }
+             ?>
+                <tbody class="docrt_pej_jabatan docrt_pej_jabatan_<?php echo $pej_id ?>" style="display: <?php echo $hide_status ?>">
+                <tr align="left">
+                    <th><label class="diy-label" for="docrt_pej_jabatan">Jabatan</label></th>
+                    <td> : </td>
+                    <td><input name="docrt_pej[<?php echo $pej_id ?>][jabatan]" type="text" class="docrt_inputs" id="docrt_pej_jabatan" value="<?php echo isset($meta_pej[$pej_id]['jabatan']) ? $meta_pej[$pej_id]['jabatan'] : '' ?>"  <?php echo $disable_status ?>/></td>
+                </tr>
+                <tr align="left">
+                    <th><label class="diy-label" for="docrt_pej_nama">Nama</label></th>
+                    <td> : </td>
+                    <td><input name="docrt_pej[<?php echo $pej_id ?>][nama]" type="text" class="docrt_inputs" id="docrt_pej_nama" value="<?php echo isset($meta_pej[$pej_id]['nama']) ? $meta_pej[$pej_id]['nama'] : '' ?>" <?php echo $disable_status ?>/></td>
+                </tr>
+                <tr align="left">
+                    <th><label class="diy-label" for="docrt_pej_nip">NIP</label></th>
+                    <td> : </td>
+                    <td><input name="docrt_pej[<?php echo $pej_id ?>][nip]" type="text" class="docrt_inputs" id="docrt_pej_nip" value="<?php echo isset($meta_pej[$pej_id]['jabatan']) ? $meta_pej[$pej_id]['nip'] : '' ?>" <?php echo $disable_status ?>/></td>
+                </tr>
+                <tr align="left">
+                    <th><label class="diy-label" for="docrt_pej_gol">Pangkat/Golongan</label></th>
+                    <td> : </td>
+                    <td><input name="docrt_pej[<?php echo $pej_id ?>][gol]" type="text" class="docrt_inputs" id="docrt_pej_gol" value="<?php echo isset($meta_pej[$pej_id]['gol']) ? $meta_pej[$pej_id]['gol'] : '' ?>" <?php echo $disable_status ?>/></td>
+                </tr>
+                <tr align="left">
+                    <th colspan="3">&nbsp;</th>
+                </tr>
+                </tbody>
+            <?php endfor ?>
+        </tbody></table>
+        <button class="button-primary button-large button-pej-add">Add</button>
+        <button class="button button-pej-remove">Remove</button>
+        <hr/>
+      </div>
+      <div id="data_dasar_tabs-2">
+        <p>Morbi tincidunt, dui sit amet facilisis feugiat, odio metus gravida ante, ut pharetra massa metus id nunc. Duis scelerisque molestie turpis. Sed fringilla, massa eget luctus malesuada, metus eros molestie lectus, ut tempus eros massa ut dolor. Aenean aliquet fringilla sem. Suspendisse sed ligula in ligula suscipit aliquam. Praesent in eros vestibulum mi adipiscing adipiscing. Morbi facilisis. Curabitur ornare consequat nunc. Aenean vel metus. Ut posuere viverra nulla. Aliquam erat volutpat. Pellentesque convallis. Maecenas feugiat, tellus pellentesque pretium posuere, felis lorem euismod felis, eu ornare leo nisi vel felis. Mauris consectetur tortor et purus.</p>
+      </div>
+      <div id="data_dasar_tabs-3">
+        <p>Mauris eleifend est et turpis. Duis id erat. Suspendisse potenti. Aliquam vulputate, pede vel vehicula accumsan, mi neque rutrum erat, eu congue orci lorem eget lorem. Vestibulum non ante. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Fusce sodales. Quisque eu urna vel enim commodo pellentesque. Praesent eu risus hendrerit ligula tempus pretium. Curabitur lorem enim, pretium nec, feugiat nec, luctus a, lacus.</p>
+        <p>Duis cursus. Maecenas ligula eros, blandit nec, pharetra at, semper at, magna. Nullam ac lacus. Nulla facilisi. Praesent viverra justo vitae neque. Praesent blandit adipiscing velit. Suspendisse potenti. Donec mattis, pede vel pharetra blandit, magna ligula faucibus eros, id euismod lacus dolor eget odio. Nam scelerisque. Donec non libero sed nulla mattis commodo. Ut sagittis. Donec nisi lectus, feugiat porttitor, tempor ac, tempor vitae, pede. Aenean vehicula velit eu tellus interdum rutrum. Maecenas commodo. Pellentesque nec elit. Fusce in lacus. Vivamus a libero vitae lectus hendrerit hendrerit.</p>
+      </div>
+    </div>
+    <input type="submit" name="data_dasar_submit" value="Save" class="button-primary button-large button-data-dasar-submit" />
+    </form>
+    <script type="text/javascript">
+        jQuery(document).ready(function($){
+            $( function() {
+                $( "#data_dasar_tabs" ).show().tabs();
+            } );
+        });
+    </script>
+    <?php
 }
 add_action('wp_loaded', 'docrt_data_dasar_save', 40);
 function docrt_data_dasar_save() {
     //   verify the nonce
-    if ( !isset($_POST['docrt_nonce_ttd_perangkat']) || !wp_verify_nonce( $_POST['docrt_nonce_ttd_perangkat'], plugin_basename(__FILE__) ) ) return;
+    if ( !isset($_POST['docrt_nonce_data_dasar']) || !wp_verify_nonce( $_POST['docrt_nonce_data_dasar'], plugin_basename(__FILE__) ) ) return;
     //  don't try to save the data under autosave, ajax, or future post.
     if ( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE ) return;
     if ( defined('DOING_AJAX') && DOING_AJAX ) return;
@@ -370,9 +488,10 @@ function docrt_data_dasar_save() {
     //  is the user allowed to edit the URL?
     if ( ! current_user_can( 'edit_posts' )
         || $_GET['post_type'] != 'docrt-perangkat'
-        || $_GET['page'] != 'docrt-ttd' )
+        || $_GET['page'] != 'docrt-data-dasar' )
     return;
 
-    update_option( 'docrt_list_ttd_perangkat', $_POST['ttd_checkbox']);
+    update_option( 'docrt_data_dasar', $_POST['docrt_data_dasar']);
+    update_option( 'docrt_pej', $_POST['docrt_pej']);
 }
 

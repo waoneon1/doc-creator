@@ -79,6 +79,11 @@ function docrt_load_scripts_admin() {
         wp_enqueue_media();
         wp_enqueue_script( 'form-js', docrt_plugin_url() . '/assets/js/docrt-form.js' , array('jquery'), '' );
     }
+
+    if (in_array($pagenow,  array('edit.php'))) {
+        wp_enqueue_media();
+        wp_enqueue_script( 'edit-js', docrt_plugin_url() . '/assets/js/docrt-edit.js' , array('jquery'), '' );
+    }
 }
 add_action('admin_enqueue_scripts', 'docrt_load_scripts_admin');
 

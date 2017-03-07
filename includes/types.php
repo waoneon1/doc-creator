@@ -149,7 +149,6 @@ function docrt_type_surat_box($post) {
 }
 
 function docrt_ttd_box($post) {
-    //$ttd = unserialize(DOCRT_TTD);
     $ttd = get_option('docrt_list_ttd_perangkat');
     if (!$ttd) return;
 
