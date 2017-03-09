@@ -28,32 +28,58 @@ function docrt_plugin_basename() {
 /*****************************************************************************************
  * Define
  *****************************************************************************************/
-define("DOCRT_TTD",serialize(array('Lurah','Seklur','Kasi')));
+//define("DOCRT_TTD",serialize(array('Lurah','Seklur','Kasi')));
+function docrt_get_list_ttd() {
+    $docrt_pej = get_option('docrt_pej');
+    $pejabat = array();
+    foreach ($docrt_pej as $key => $value) {
+        $pejabat[] = $value['kode'];
+    }
+
+    return $pejabat;
+}
 define("DOCRT_TYPE_SURAT_ALLOWED",serialize(array(
         'kk','ktp','skel','skem','skbpm','skck','skd','skdu','skik','skp','sktm','sku', 'sk'
     )));
 // List yang menandatangani
 function docrt_who_give_ttd($jenis_ttd) {
-    if ($jenis_ttd == 'lurah') {
-        $ttd['jabatan'] = 'LURAH SAWOJAJAR';
-        $ttd['nama']    = 'J.A. BAYU WIDJAYA, S.Sos, M.Si';
-        $ttd['kasi']    = '';
-        $ttd['nip']     = 'NIP. 19710731 199203 1 003';
-    } elseif ($jenis_ttd == 'seklur') {
-        $ttd['jabatan'] = 'LURAH SAWOJAJAR<br/><span style="font-size:11px;">Sekretaris</span>';
-        $ttd['nama']    = 'ADI ANDRIANTO. P, SH.M.Hum';
-        $ttd['kasi']    = '';
-        $ttd['nip']     = 'NIP. 19740730 200312 1 005';
-    } elseif ($jenis_ttd == 'kasi') {
-        $ttd['jabatan'] = 'an: LURAH SAWOJAJAR<br/><span style="font-size:11px;">Kasi Pemerintahan, Ketentraman dan Ketertiban Umum</span>';
-        $ttd['nama']    = 'AMAN SANTOSO';
-        $ttd['kasi']    = '<span style="font-size:11px;">Penata</span><br/>';
-        $ttd['nip']     = 'NIP. 19610928 199111 1 001';
-    } else {
-        $ttd['jabatan'] = $jenis_ttd;
-        $ttd['nama']    = '';
-        $ttd['kasi']    = '';
-        $ttd['nip']     = '';
+
+    $pejabat    = get_option('docrt_pej');
+    $data_dasar = get_option('docrt_data_dasar');
+    //unset($pejabat['count']);
+    $status = false;
+    foreach ($pejabat as $k => $v) {
+        // Kondisi kusus
+        $lurah = strtoupper('Lurah '.$data_dasar['kel']);
+        switch ($v['kode']) {
+        case 'lurah':
+            $option_jabatan = $lurah;
+            $option_kasi = '';
+            break;
+        case 'seklur':
+            $option_jabatan = $lurah.'<br /><span style="font-size:11px;">'.$v['jabatan'].'</span>';
+            $option_kasi = '';
+            break;
+        default:
+            $option_jabatan = 'an: '.$lurah.'<br /><span style="font-size:11px;">'.$v['jabatan'].'</span>';
+            $option_kasi = '<span style="font-size:11px;">Penata</span><br/>';
+            break;
+        }
+
+        if ($v['kode'] == $jenis_ttd) {
+            $ttd['jabatan'] = $option_jabatan;
+            $ttd['nama']    = $v['nama'];
+            $ttd['kasi']    = $option_kasi;
+            $ttd['nip']     = 'NIP. '.$v['nip'];
+            $status = true;
+        }
+    }
+
+    if (!$status)  {
+        $ttd['jabatan'] = 'error';
+        $ttd['nama']    = 'error';
+        $ttd['kasi']    = 'error';
+        $ttd['nip']     = 'error';
     }
     return $ttd;
 }

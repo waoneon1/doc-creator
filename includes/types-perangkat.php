@@ -244,18 +244,27 @@ function docrt_ttd_setting_callback() {
     global $post;
     $options = get_option('docrt_list_ttd_perangkat');
     $ttd = get_option('docrt_pej');
-    unset($ttd['count']);
     ?>
     <div class="wrap">
         <h1>TTD Setting</h1>
-        <p>List Dengan tanda check akan muncul di "Buat Document"</p>
+        <p>List Dengan tanda check dapat di pilih sebagai pengesah saat membuat surat</p>
         <form name="post" action="edit.php?post_type=docrt-perangkat&page=docrt-ttd" method="post" id="post" autocomplete="off">
         <?php printf('<input type="hidden" name="docrt_nonce_ttd_perangkat" value="%s" />', wp_create_nonce(plugin_basename(__FILE__))); ?>
         <input type="submit" name="ttd_submit" value="submit" class="button-primary button-large button-fullwidth button-ttd-submit" />
-        <?php foreach ($ttd as $key => $value) { $ttd_slug = strtolower($value['jabatan']); ?>
+        <?php foreach ($ttd as $key => $value) { $ttd_slug = strtolower($value['kode']); ?>
             <div class="ttd_box">
-                <input class="ttd_box_checkbox" type="checkbox"  name="ttd_checkbox[<?php echo $ttd_slug ?>]" value="<?php echo $value['jabatan'] ?>" <?php checked( @$options[$ttd_slug], $value['jabatan'] ); ?>/>
-                <div class="ttd_box_desc"><?php echo $value['jabatan'] ?></div>
+                <input class="ttd_box_checkbox" type="checkbox"  name="ttd_checkbox[<?php echo $ttd_slug ?>]" value="<?php echo strip_tags($value['jabatan']) ?>" <?php checked( @$options[$ttd_slug], $value['jabatan'] ); ?>/>
+                <?php $formated_ttd = docrt_who_give_ttd($ttd_slug); ?>
+                <div class="ttd_box_desc">
+                    <ul>
+                        <li><?php echo $formated_ttd['jabatan'] ?></li>
+                        <li>&nbsp;</li>
+                        <li>&nbsp;</li>
+                        <li><?php echo $formated_ttd['nama'] ?></li>
+                        <li><?php echo $formated_ttd['kasi'] ?></li>
+                        <li><?php echo $formated_ttd['nip'] ?></li>
+                    </ul>
+                </div>
             </div>
         <?php } ?>
 
@@ -343,9 +352,11 @@ function docrt_data_dasar_callback() {
       <div id="data_dasar_tabs-1">
         <?php $meta = get_option('docrt_data_dasar'); ?>
         <?php $meta_pej = get_option('docrt_pej'); ?>
+        <?php $meta_pej['count'] = get_option('docrt_pej_count'); ?>
+
         <?php printf( '<input type="hidden" name="docrt_nonce_data_dasar" value="%s" />', wp_create_nonce( plugin_basename(__FILE__) ) ); ?>
-        <h3>Kop Surat</h3>
-        <hr/>
+        <h3 class="docrt-option-title">Kop Surat</h3>
+        <div style="background-color: #0085ba; height: 4px;"></div>
         <table class="docrt_tbl"><tbody class="">
             <tr align="left">
                 <th><label class="diy-label" for="docrt_data_dasar_kel">Kelurahan</label></th>
@@ -384,16 +395,17 @@ function docrt_data_dasar_callback() {
             </tr>
         </tbody></table>
 
-
-
-        <h3>Pejabat Kelurahan</h3>
-        <hr/>
-        <input type="hidden" class="docrt_pej_count" name="docrt_pej[count]" value="<?php echo isset($meta_pej['count']) ? $meta_pej['count'] : 0 ?>">
+        <h3 class="docrt-option-title">PENGESAH</h3>
+        <div style="background-color: #0085ba; height: 4px;"></div>
+        <?php $kelurahan = ucwords(isset($meta['kel']) ? $meta['kel'] : '') ?>
+        <input type="hidden" class="docrt_pej_count" name="docrt_pej_count" value="<?php echo isset($meta_pej['count']) ? $meta_pej['count'] : 0 ?>">
         <table class="docrt_tbl"><tbody class="">
             <tr align="left">
-                <th><label class="diy-label" for="docrt_pej_jabatan">Jabatan</label></th>
-                <td> : </td>
-                <td><input name="docrt_pej[0][jabatan]" type="text" class="docrt_inputs" id="docrt_pej_jabatan" value="Lurah" readonly /></td>
+                <th valign="top"><label class="diy-label" for="docrt_pej_jabatan">Jabatan</label></th>
+                <td valign="top"> : </td>
+                <td><input name="docrt_pej[0][jabatan]" type="text" class="docrt_inputs" id="docrt_pej_jabatan" value="Lurah" readonly />
+                    <input name="docrt_pej[0][kode]" type="hidden" value="lurah" />
+                </td>
             </tr>
             <tr align="left">
                 <th><label class="diy-label" for="docrt_pej_nama">Nama</label></th>
@@ -411,13 +423,16 @@ function docrt_data_dasar_callback() {
                 <td><input name="docrt_pej[0][gol]" type="text" class="docrt_inputs" id="docrt_pej_gol" value="<?php echo isset($meta_pej[0]['gol']) ? $meta_pej[0]['gol'] : '' ?>" /></td>
             </tr>
             <tr align="left">
-                <th colspan="3">&nbsp;</th>
+                <th colspan="3"><hr/></th>
             </tr>
             <?php for ($i=0; $i < 10; $i++): ?>
             <?php
                 //Hide status
                 $hide_status = 'none';
                 $disable_status = 'disabled';
+                $r_status = '';
+                $pej_kode = "kasi$i";
+                $pej_desc = "<i>(Kasi $i)</i>";
                 $pej_id = $i+1;
                 $hide_count = isset($meta_pej['count']) ? $meta_pej['count'] : 0;
 
@@ -425,12 +440,24 @@ function docrt_data_dasar_callback() {
                     $hide_status = '';
                     $disable_status = '';
                 }
+                // if sekretaris
+                if ($i == 0) {
+                    $hide_status = '';
+                    $disable_status = '';
+                    $r_status = 'readonly';
+                    $meta_pej[$pej_id]['jabatan'] = 'Sekretaris';
+                    $pej_kode = 'seklur';
+                    $pej_desc = '';
+                }
              ?>
-                <tbody class="docrt_pej_jabatan docrt_pej_jabatan_<?php echo $pej_id ?>" style="display: <?php echo $hide_status ?>">
+                <!--<?php echo $pej_desc ?>-->
+                <input name="docrt_pej[<?php echo $pej_id ?>][kode]" type="hidden" value="<?php echo $pej_kode ?>" <?php echo $disable_status ?>/>
+                <tbody class="docrt_pej_jabatan docrt_pej_jabatan_<?php echo ($pej_id == 1) ? '' : $pej_id ?>" style="display: <?php echo $hide_status ?>;">
                 <tr align="left">
-                    <th><label class="diy-label" for="docrt_pej_jabatan">Jabatan</label></th>
+                    <th><label class="diy-label" for="docrt_pej_jabatan">Jabatan <?php echo $pej_desc ?></label></th>
                     <td> : </td>
-                    <td><input name="docrt_pej[<?php echo $pej_id ?>][jabatan]" type="text" class="docrt_inputs" id="docrt_pej_jabatan" value="<?php echo isset($meta_pej[$pej_id]['jabatan']) ? $meta_pej[$pej_id]['jabatan'] : '' ?>"  <?php echo $disable_status ?>/></td>
+                    <td><input name="docrt_pej[<?php echo $pej_id ?>][jabatan]" type="text" class="docrt_inputs" id="docrt_pej_jabatan" value="<?php echo isset($meta_pej[$pej_id]['jabatan']) ? $meta_pej[$pej_id]['jabatan'] : '' ?>"  <?php echo $disable_status.' '.$r_status ?>/>
+                    </td>
                 </tr>
                 <tr align="left">
                     <th><label class="diy-label" for="docrt_pej_nama">Nama</label></th>
@@ -448,7 +475,7 @@ function docrt_data_dasar_callback() {
                     <td><input name="docrt_pej[<?php echo $pej_id ?>][gol]" type="text" class="docrt_inputs" id="docrt_pej_gol" value="<?php echo isset($meta_pej[$pej_id]['gol']) ? $meta_pej[$pej_id]['gol'] : '' ?>" <?php echo $disable_status ?>/></td>
                 </tr>
                 <tr align="left">
-                    <th colspan="3">&nbsp;</th>
+                    <th colspan="3"><hr/></th>
                 </tr>
                 </tbody>
             <?php endfor ?>
@@ -467,6 +494,26 @@ function docrt_data_dasar_callback() {
     </div>
     <input type="submit" name="data_dasar_submit" value="Save" class="button-primary button-large button-data-dasar-submit" />
     </form>
+    <style>
+        input.button-data-dasar-submit {
+            margin-top: 10px!important;
+            font-size: 20px!important;
+            padding: 3px 30px 5px!important;
+            box-sizing: content-box!important;
+        }
+        .docrt_howto {
+            color: #bdbdbd;
+            font-style: italic;
+            display: block;
+            font-size: 13px;
+            line-height: 1.5;
+            margin: 2px 0 5px 2px;
+        }
+        h3.docrt-option-title {
+            margin: 30px 0 5px 0;
+            text-transform: uppercase;
+        }
+    </style>
     <script type="text/javascript">
         jQuery(document).ready(function($){
             $( function() {
@@ -493,5 +540,6 @@ function docrt_data_dasar_save() {
 
     update_option( 'docrt_data_dasar', $_POST['docrt_data_dasar']);
     update_option( 'docrt_pej', $_POST['docrt_pej']);
+    update_option( 'docrt_pej_count', $_POST['docrt_pej_count']);
 }
 

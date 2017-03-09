@@ -45,8 +45,8 @@ jQuery(document).ready(function($) {
         $(".docrt_pej_jabatan_"+count).hide();
         $(".docrt_pej_jabatan_"+count+" .docrt_inputs").attr('disabled', 'disabled');
 
-        if (count_prev < 0) {
-            count_html.val(0);
+        if (count_prev < 1) {
+            count_html.val(1);
         } else {
             count_html.val(count_prev);
         }

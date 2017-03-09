@@ -157,7 +157,7 @@ function docrt_form_agama($meta, $type_surat) {
   $data = '<tr align="left" class="docrt_form_agama_tr docrt_form">
         <th><label class="diy-label" for="docrt_form_agama">Agama</label></th>
         <td> : </td>
-         <td><select name="docrt_form_agama" class="docrt_inputs" id="docrt_form_agama" >
+        <td><select name="docrt_form_agama" class="docrt_inputs" id="docrt_form_agama" >
               <option value="Islam" >Islam</option>
               <option value="Kristen" '.(($meta['docrt_form_agama'][0] == 'Kristen') ? 'selected' : '').'>Kristen</option>
               <option value="Katolik" '.(($meta['docrt_form_agama'][0] == 'Katolik') ? 'selected' : '').'>Katolik</option>
