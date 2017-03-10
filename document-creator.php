@@ -28,19 +28,27 @@ function docrt_plugin_basename() {
 /*****************************************************************************************
  * Define
  *****************************************************************************************/
-//define("DOCRT_TTD",serialize(array('Lurah','Seklur','Kasi')));
 function docrt_get_list_ttd() {
     $docrt_pej = get_option('docrt_pej');
     $pejabat = array();
     foreach ($docrt_pej as $key => $value) {
         $pejabat[] = $value['kode'];
     }
-
     return $pejabat;
 }
-define("DOCRT_TYPE_SURAT_ALLOWED",serialize(array(
-        'kk','ktp','skel','skem','skbpm','skck','skd','skdu','skik','skp','sktm','sku', 'sk'
-    )));
+function docrt_get_type_surat_allowed() {
+    $docrt_surat_checkbox = get_option('docrt_surat_checkbox');
+    $surat = array();
+
+    foreach ($docrt_surat_checkbox as $key => $value) {
+        if ($value == 1) {
+            $surat[] = $key;
+        }
+    }
+
+    return $surat;
+}
+
 // List yang menandatangani
 function docrt_who_give_ttd($jenis_ttd) {
 
@@ -137,11 +145,14 @@ function docrt_tax_list() {
     wp_insert_term( 'surat keterangan domisili',            'surat', $args = array('slug'=>'skd') );
     wp_insert_term( 'surat keterangan ijin keramaian',      'surat', $args = array('slug'=>'skik') );
     wp_insert_term( 'surat keterangan catatan kepolisian',  'surat', $args = array('slug'=>'skck') );
+
     wp_insert_term( 'surat keterangan pindah',              'surat', $args = array('slug'=>'skp') );
     wp_insert_term( 'surat keterangan tidak mampu',         'surat', $args = array('slug'=>'sktm') );
     wp_insert_term( 'surat keterangan balum pernah menikah','surat', $args = array('slug'=>'skbpm') );
     wp_insert_term( 'surat kelahiran',                      'surat', $args = array('slug'=>'skel') );
     wp_insert_term( 'surat kematian',                       'surat', $args = array('slug'=>'skem') );
+
+    wp_insert_term( 'surat keterangan',                     'surat', $args = array('slug'=>'sk') );
     wp_insert_term( 'kartu tanda penduduk',                 'surat', $args = array('slug'=>'ktp') );
     wp_insert_term( 'kartu keluarga',                       'surat', $args = array('slug'=>'kk') );
 }

@@ -341,13 +341,22 @@ function docrt_data_dasar() {
     }
 }
 function docrt_data_dasar_callback() {
-    global $post; ?>
+    global $post;
+    $terms_surat = get_terms( array(
+        'taxonomy' => 'surat',
+        'hide_empty' => false,
+    ) );
+    // jika term surat gk ada panggil fungsi add
+    if (!$terms_surat) {
+        docrt_tax_list();
+    } ?>
+
     <form name="post" action="edit.php?post_type=docrt-perangkat&page=docrt-data-dasar" method="post">
     <div id="data_dasar_tabs" style="display: none;">
       <ul>
         <li><a href="#data_dasar_tabs-1">Data Dasar</a></li>
         <li><a href="#data_dasar_tabs-2">List Surat</a></li>
-        <li><a href="#data_dasar_tabs-3">TTD Setting</a></li>
+        <li><a href="#data_dasar_tabs-3">Pengesah</a></li>
       </ul>
       <div id="data_dasar_tabs-1">
         <?php $meta = get_option('docrt_data_dasar'); ?>
@@ -394,102 +403,136 @@ function docrt_data_dasar_callback() {
                 <td><input name="docrt_data_dasar[kkab]" type="number" class="docrt_inputs" id="docrt_data_dasar_kpos" value="<?php echo isset($meta['kkab']) ? $meta['kkab'] : '' ?>" /></td>
             </tr>
         </tbody></table>
-
-        <h3 class="docrt-option-title">PENGESAH</h3>
-        <div style="background-color: #0085ba; height: 4px;"></div>
-        <?php $kelurahan = ucwords(isset($meta['kel']) ? $meta['kel'] : '') ?>
-        <input type="hidden" class="docrt_pej_count" name="docrt_pej_count" value="<?php echo isset($meta_pej['count']) ? $meta_pej['count'] : 0 ?>">
-        <table class="docrt_tbl"><tbody class="">
-            <tr align="left">
-                <th valign="top"><label class="diy-label" for="docrt_pej_jabatan">Jabatan</label></th>
-                <td valign="top"> : </td>
-                <td><input name="docrt_pej[0][jabatan]" type="text" class="docrt_inputs" id="docrt_pej_jabatan" value="Lurah" readonly />
-                    <input name="docrt_pej[0][kode]" type="hidden" value="lurah" />
-                </td>
-            </tr>
-            <tr align="left">
-                <th><label class="diy-label" for="docrt_pej_nama">Nama</label></th>
-                <td> : </td>
-                <td><input name="docrt_pej[0][nama]" type="text" class="docrt_inputs" id="docrt_pej_nama" value="<?php echo isset($meta_pej[0]['nama']) ? $meta_pej[0]['nama'] : '' ?>" /></td>
-            </tr>
-            <tr align="left">
-                <th><label class="diy-label" for="docrt_pej_nip">NIP</label></th>
-                <td> : </td>
-                <td><input name="docrt_pej[0][nip]" type="text" class="docrt_inputs" id="docrt_pej_nip" value="<?php echo isset($meta_pej[0]['nip']) ? $meta_pej[0]['nip'] : '' ?>" /></td>
-            </tr>
-            <tr align="left">
-                <th><label class="diy-label" for="docrt_pej_gol">Pangkat/Golongan</label></th>
-                <td> : </td>
-                <td><input name="docrt_pej[0][gol]" type="text" class="docrt_inputs" id="docrt_pej_gol" value="<?php echo isset($meta_pej[0]['gol']) ? $meta_pej[0]['gol'] : '' ?>" /></td>
-            </tr>
-            <tr align="left">
-                <th colspan="3"><hr/></th>
-            </tr>
-            <?php for ($i=0; $i < 10; $i++): ?>
-            <?php
-                //Hide status
-                $hide_status = 'none';
-                $disable_status = 'disabled';
-                $r_status = '';
-                $pej_kode = "kasi$i";
-                $pej_desc = "<i>(Kasi $i)</i>";
-                $pej_id = $i+1;
-                $hide_count = isset($meta_pej['count']) ? $meta_pej['count'] : 0;
-
-                if ($i < $hide_count ) {
-                    $hide_status = '';
-                    $disable_status = '';
-                }
-                // if sekretaris
-                if ($i == 0) {
-                    $hide_status = '';
-                    $disable_status = '';
-                    $r_status = 'readonly';
-                    $meta_pej[$pej_id]['jabatan'] = 'Sekretaris';
-                    $pej_kode = 'seklur';
-                    $pej_desc = '';
-                }
-             ?>
-                <!--<?php echo $pej_desc ?>-->
-                <input name="docrt_pej[<?php echo $pej_id ?>][kode]" type="hidden" value="<?php echo $pej_kode ?>" <?php echo $disable_status ?>/>
-                <tbody class="docrt_pej_jabatan docrt_pej_jabatan_<?php echo ($pej_id == 1) ? '' : $pej_id ?>" style="display: <?php echo $hide_status ?>;">
-                <tr align="left">
-                    <th><label class="diy-label" for="docrt_pej_jabatan">Jabatan <?php echo $pej_desc ?></label></th>
-                    <td> : </td>
-                    <td><input name="docrt_pej[<?php echo $pej_id ?>][jabatan]" type="text" class="docrt_inputs" id="docrt_pej_jabatan" value="<?php echo isset($meta_pej[$pej_id]['jabatan']) ? $meta_pej[$pej_id]['jabatan'] : '' ?>"  <?php echo $disable_status.' '.$r_status ?>/>
-                    </td>
-                </tr>
-                <tr align="left">
-                    <th><label class="diy-label" for="docrt_pej_nama">Nama</label></th>
-                    <td> : </td>
-                    <td><input name="docrt_pej[<?php echo $pej_id ?>][nama]" type="text" class="docrt_inputs" id="docrt_pej_nama" value="<?php echo isset($meta_pej[$pej_id]['nama']) ? $meta_pej[$pej_id]['nama'] : '' ?>" <?php echo $disable_status ?>/></td>
-                </tr>
-                <tr align="left">
-                    <th><label class="diy-label" for="docrt_pej_nip">NIP</label></th>
-                    <td> : </td>
-                    <td><input name="docrt_pej[<?php echo $pej_id ?>][nip]" type="text" class="docrt_inputs" id="docrt_pej_nip" value="<?php echo isset($meta_pej[$pej_id]['jabatan']) ? $meta_pej[$pej_id]['nip'] : '' ?>" <?php echo $disable_status ?>/></td>
-                </tr>
-                <tr align="left">
-                    <th><label class="diy-label" for="docrt_pej_gol">Pangkat/Golongan</label></th>
-                    <td> : </td>
-                    <td><input name="docrt_pej[<?php echo $pej_id ?>][gol]" type="text" class="docrt_inputs" id="docrt_pej_gol" value="<?php echo isset($meta_pej[$pej_id]['gol']) ? $meta_pej[$pej_id]['gol'] : '' ?>" <?php echo $disable_status ?>/></td>
-                </tr>
-                <tr align="left">
-                    <th colspan="3"><hr/></th>
-                </tr>
-                </tbody>
-            <?php endfor ?>
-        </tbody></table>
-        <button class="button-primary button-large button-pej-add">Add</button>
-        <button class="button button-pej-remove">Remove</button>
-        <hr/>
       </div>
       <div id="data_dasar_tabs-2">
-        <p>Morbi tincidunt, dui sit amet facilisis feugiat, odio metus gravida ante, ut pharetra massa metus id nunc. Duis scelerisque molestie turpis. Sed fringilla, massa eget luctus malesuada, metus eros molestie lectus, ut tempus eros massa ut dolor. Aenean aliquet fringilla sem. Suspendisse sed ligula in ligula suscipit aliquam. Praesent in eros vestibulum mi adipiscing adipiscing. Morbi facilisis. Curabitur ornare consequat nunc. Aenean vel metus. Ut posuere viverra nulla. Aliquam erat volutpat. Pellentesque convallis. Maecenas feugiat, tellus pellentesque pretium posuere, felis lorem euismod felis, eu ornare leo nisi vel felis. Mauris consectetur tortor et purus.</p>
+        <p><em>Pilih surat yang digunakan kemudian klik "save"</em><br/>
+        <em>Surat yang tidak diberi tanda "check" adalah surat tidak digunakan</em></p>
+        <?php $surat = get_option('docrt_surat_checkbox'); ?>
+        <?php foreach ($terms_surat as $k => $v) { ?>
+            <div class="surat_box">
+                <input class="surat_box_checkbox" id="surat_box_desc_<?php echo $v->slug ?>" type="checkbox"  name="docrt_surat_checkbox[<?php echo $v->slug ?>]" value="1"
+                <?php checked( $surat[$v->slug], 1 ); ?>/>
+                <label class="surat_box_desc" for="surat_box_desc_<?php echo $v->slug ?>"><strong><?php echo strtoupper($v->slug) ?></strong> | <?php echo $v->name ?></label>
+            </div>
+        <?php } ?>
+        <style type="text/css">
+            .surat_box {
+                position: relative;
+                font-weight: 400;
+                width: 100%;
+                padding: 10px;
+                background-color: #fff;
+                display: inline-block;
+                box-shadow: 1px 0px 12px 2px #e3e3e3;
+                box-sizing: border-box;
+            }
+            .surat_box .surat_box_desc {
+                float: left;
+                background-color: #f1f1f1;
+                color: #000;
+                width: 90%;
+                padding: 10px;
+                cursor: pointer;
+                font-size: 400;
+            }
+            .surat_box .surat_box_checkbox {
+                float: left;
+                margin: 10px 20px 10px 10px;
+            }
+            input.button-primary.button-large.button-fullwidth.button-surat-submit {
+                margin-bottom: 7px;
+            }
+        </style>
       </div>
       <div id="data_dasar_tabs-3">
-        <p>Mauris eleifend est et turpis. Duis id erat. Suspendisse potenti. Aliquam vulputate, pede vel vehicula accumsan, mi neque rutrum erat, eu congue orci lorem eget lorem. Vestibulum non ante. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Fusce sodales. Quisque eu urna vel enim commodo pellentesque. Praesent eu risus hendrerit ligula tempus pretium. Curabitur lorem enim, pretium nec, feugiat nec, luctus a, lacus.</p>
-        <p>Duis cursus. Maecenas ligula eros, blandit nec, pharetra at, semper at, magna. Nullam ac lacus. Nulla facilisi. Praesent viverra justo vitae neque. Praesent blandit adipiscing velit. Suspendisse potenti. Donec mattis, pede vel pharetra blandit, magna ligula faucibus eros, id euismod lacus dolor eget odio. Nam scelerisque. Donec non libero sed nulla mattis commodo. Ut sagittis. Donec nisi lectus, feugiat porttitor, tempor ac, tempor vitae, pede. Aenean vehicula velit eu tellus interdum rutrum. Maecenas commodo. Pellentesque nec elit. Fusce in lacus. Vivamus a libero vitae lectus hendrerit hendrerit.</p>
+        <h3 class="docrt-option-title">PENGESAH</h3>
+          <div style="background-color: #0085ba; height: 4px;"></div>
+          <?php $kelurahan = ucwords(isset($meta['kel']) ? $meta['kel'] : '') ?>
+          <input type="hidden" class="docrt_pej_count" name="docrt_pej_count" value="<?php echo isset($meta_pej['count']) ? $meta_pej['count'] : 0 ?>">
+          <table class="docrt_tbl"><tbody class="">
+              <tr align="left">
+                  <th valign="top"><label class="diy-label" for="docrt_pej_jabatan">Jabatan</label></th>
+                  <td valign="top"> : </td>
+                  <td><input name="docrt_pej[0][jabatan]" type="text" class="docrt_inputs" id="docrt_pej_jabatan" value="Lurah" readonly />
+                      <input name="docrt_pej[0][kode]" type="hidden" value="lurah" />
+                  </td>
+              </tr>
+              <tr align="left">
+                  <th><label class="diy-label" for="docrt_pej_nama">Nama</label></th>
+                  <td> : </td>
+                  <td><input name="docrt_pej[0][nama]" type="text" class="docrt_inputs" id="docrt_pej_nama" value="<?php echo isset($meta_pej[0]['nama']) ? $meta_pej[0]['nama'] : '' ?>" /></td>
+              </tr>
+              <tr align="left">
+                  <th><label class="diy-label" for="docrt_pej_nip">NIP</label></th>
+                  <td> : </td>
+                  <td><input name="docrt_pej[0][nip]" type="text" class="docrt_inputs" id="docrt_pej_nip" value="<?php echo isset($meta_pej[0]['nip']) ? $meta_pej[0]['nip'] : '' ?>" /></td>
+              </tr>
+              <tr align="left">
+                  <th><label class="diy-label" for="docrt_pej_gol">Pangkat/Golongan</label></th>
+                  <td> : </td>
+                  <td><input name="docrt_pej[0][gol]" type="text" class="docrt_inputs" id="docrt_pej_gol" value="<?php echo isset($meta_pej[0]['gol']) ? $meta_pej[0]['gol'] : '' ?>" /></td>
+              </tr>
+              <tr align="left">
+                  <th colspan="3"><hr/></th>
+              </tr>
+              <?php for ($i=0; $i < 10; $i++): ?>
+              <?php
+                  //Hide status
+                  $hide_status = 'none';
+                  $disable_status = 'disabled';
+                  $r_status = '';
+                  $pej_kode = "kasi$i";
+                  $pej_desc = "<i>(Kasi $i)</i>";
+                  $pej_id = $i+1;
+                  $hide_count = isset($meta_pej['count']) ? $meta_pej['count'] : 0;
+
+                  if ($i < $hide_count ) {
+                      $hide_status = '';
+                      $disable_status = '';
+                  }
+                  // if sekretaris
+                  if ($i == 0) {
+                      $hide_status = '';
+                      $disable_status = '';
+                      $r_status = 'readonly';
+                      $meta_pej[$pej_id]['jabatan'] = 'Sekretaris';
+                      $pej_kode = 'seklur';
+                      $pej_desc = '';
+                  }
+               ?>
+                  <!--<?php echo $pej_desc ?>-->
+                  <input name="docrt_pej[<?php echo $pej_id ?>][kode]" type="hidden" value="<?php echo $pej_kode ?>" <?php echo $disable_status ?>/>
+                  <tbody class="docrt_pej_jabatan docrt_pej_jabatan_<?php echo ($pej_id == 1) ? '' : $pej_id ?>" style="display: <?php echo $hide_status ?>;">
+                  <tr align="left">
+                      <th><label class="diy-label" for="docrt_pej_jabatan">Jabatan <?php echo $pej_desc ?></label></th>
+                      <td> : </td>
+                      <td><input name="docrt_pej[<?php echo $pej_id ?>][jabatan]" type="text" class="docrt_inputs" id="docrt_pej_jabatan" value="<?php echo isset($meta_pej[$pej_id]['jabatan']) ? $meta_pej[$pej_id]['jabatan'] : '' ?>"  <?php echo $disable_status.' '.$r_status ?>/>
+                      </td>
+                  </tr>
+                  <tr align="left">
+                      <th><label class="diy-label" for="docrt_pej_nama">Nama</label></th>
+                      <td> : </td>
+                      <td><input name="docrt_pej[<?php echo $pej_id ?>][nama]" type="text" class="docrt_inputs" id="docrt_pej_nama" value="<?php echo isset($meta_pej[$pej_id]['nama']) ? $meta_pej[$pej_id]['nama'] : '' ?>" <?php echo $disable_status ?>/></td>
+                  </tr>
+                  <tr align="left">
+                      <th><label class="diy-label" for="docrt_pej_nip">NIP</label></th>
+                      <td> : </td>
+                      <td><input name="docrt_pej[<?php echo $pej_id ?>][nip]" type="text" class="docrt_inputs" id="docrt_pej_nip" value="<?php echo isset($meta_pej[$pej_id]['jabatan']) ? $meta_pej[$pej_id]['nip'] : '' ?>" <?php echo $disable_status ?>/></td>
+                  </tr>
+                  <tr align="left">
+                      <th><label class="diy-label" for="docrt_pej_gol">Pangkat/Golongan</label></th>
+                      <td> : </td>
+                      <td><input name="docrt_pej[<?php echo $pej_id ?>][gol]" type="text" class="docrt_inputs" id="docrt_pej_gol" value="<?php echo isset($meta_pej[$pej_id]['gol']) ? $meta_pej[$pej_id]['gol'] : '' ?>" <?php echo $disable_status ?>/></td>
+                  </tr>
+                  <tr align="left">
+                      <th colspan="3"><hr/></th>
+                  </tr>
+                  </tbody>
+              <?php endfor ?>
+          </tbody></table>
+          <button class="button-primary button-large button-pej-add">Add</button>
+          <button class="button button-pej-remove">Remove</button>
+          <hr/>
       </div>
     </div>
     <input type="submit" name="data_dasar_submit" value="Save" class="button-primary button-large button-data-dasar-submit" />
@@ -541,5 +584,6 @@ function docrt_data_dasar_save() {
     update_option( 'docrt_data_dasar', $_POST['docrt_data_dasar']);
     update_option( 'docrt_pej', $_POST['docrt_pej']);
     update_option( 'docrt_pej_count', $_POST['docrt_pej_count']);
+    update_option( 'docrt_surat_checkbox', $_POST['docrt_surat_checkbox']);
 }
 

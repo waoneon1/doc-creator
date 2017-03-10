@@ -129,9 +129,9 @@ function docrt_get_header_pdf($pdf,$postID, $post_term) {
     } else {
         $pdf->AddPage('P', 'F4');
     }
-
+    $dd = get_option('docrt_data_dasar');
     $pdf->letak('../assets/img/pemkot_mlg_logo.png');
-    $pdf->judul('PEMERINTAH KOTA MALANG', 'KECAMATAN KEDUNGKANDANG','KELURAHAN SAWOJAJAR','Alamat: Jl. Raya Sawojajar No. 45 (0341) 715953 - Malang KODE POS 65139', '');
+    $pdf->judul('PEMERINTAH KOTA MALANG', 'KECAMATAN '.strtoupper($dd['kec']),'KELURAHAN '.strtoupper($dd['kel']),'Alamat: '.$dd['alamat'].' '.$dd['telp'].' - Malang KODE POS '.$dd['kpos'], '');
     $pdf->garis();
 }
 

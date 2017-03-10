@@ -49,8 +49,8 @@ add_action( 'init', 'docrt_doc_taxonomies', 0 );
 function docrt_doc_taxonomies() {
     // Add new taxonomy, make it hierarchical (like categories)
     $show_ui = false;
-    if (current_user_can('manage_options'))
-        $show_ui = true;
+    // if (current_user_can('manage_options'))
+        // $show_ui = true;
 
     $labels = array(
         'name'              => _x( 'Jenis Surat', 'taxonomy general name' ),
@@ -123,7 +123,7 @@ function docrt_type_surat_box($post) {
       'orderby' => 'name',
       'order' => 'ASC'
     );
-    $type_surat_allow = unserialize(DOCRT_TYPE_SURAT_ALLOWED);
+    $type_surat_allow = docrt_get_type_surat_allowed();
     $tax_terms = get_terms($taxonomy,$term_args);
     $post_term = get_the_terms ($post->ID,$taxonomy );
 

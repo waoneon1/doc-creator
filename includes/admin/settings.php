@@ -41,7 +41,7 @@ add_action( 'wp_dashboard_setup', 'docrt_list_surat_dashboard_widgets' );
 // Dasboard surat
 function list_surat_dashboard_widget_function() {
     $tax = 'surat';
-    $typesurat = unserialize(DOCRT_TYPE_SURAT_ALLOWED);
+    $typesurat = docrt_get_type_surat_allowed();
     $terms = get_terms( array(
         'taxonomy' => $tax,
         'hide_empty' => false,

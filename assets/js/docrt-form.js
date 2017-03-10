@@ -36,7 +36,7 @@ console.log('form.js');
     //  API KTP
     $(document).on("click", ".nik_api_button", function (e) { //vpc-options
         e.preventDefault();
-        console($(this));
+        console.log($(this));
         if ($('#docrt_form_nonik').val()) {
             $('.api_msg_nik').hide();
             docrt_api_ktp($('#docrt_form_nonik').val());
