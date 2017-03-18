@@ -129,9 +129,9 @@ function docrt_get_header_pdf($pdf,$postID, $post_term) {
     } else {
         $pdf->AddPage('P', 'F4');
     }
-    $dd = get_option('docrt_data_dasar');
+
     $pdf->letak('../assets/img/pemkot_mlg_logo.png');
-    $pdf->judul('PEMERINTAH KOTA MALANG', 'KECAMATAN '.strtoupper($dd['kec']),'KELURAHAN '.strtoupper($dd['kel']),'Alamat: '.$dd['alamat'].' '.$dd['telp'].' - Malang KODE POS '.$dd['kpos'], '');
+    $pdf->judul('PEMERINTAH KOTA MALANG', 'KECAMATAN '.strtoupper(docrt_dd('kec')),'KELURAHAN '.strtoupper(docrt_dd('kel')),'Alamat: '.docrt_dd('alamat').' '.docrt_dd('telp').' - Malang KODE POS '.docrt_dd('kpos'), '');
     $pdf->garis();
 }
 
@@ -233,7 +233,7 @@ function docrt_pdf_footer($meta,$postID,$type,$hspace='60',$nopelapor=true,$w1 =
             <td colspan="3">&nbsp;</td>
         </tr>
         <tr>
-            <td colspan="3"><span style="font-size:9px; text-align:center;">Mengetahui:<br/>CAMAT KEDUNGKANDANG</span></td>
+            <td colspan="3"><span style="font-size:9px; text-align:center;">Mengetahui:<br/>CAMAT '.strtoupper(docrt_dd('kec')).'</span></td>
         </tr>';
     }
 
@@ -268,28 +268,4 @@ function docrt_pdf_footer($meta,$postID,$type,$hspace='60',$nopelapor=true,$w1 =
     return $tbl;
 }
 
-// no surat here
-function docrt_no_surat($type,$meta,$postID) {
 
-    // Surat Utama 13
-    $data['sku']    = '563/'.$meta['docrt_sku_id'][0].'/'.'35.73.03.1008/'.get_the_date('Y',$postID) ;
-    $data['skdu']   = '563/'.$meta['docrt_skdu_id'][0].'/'.'35.73.03.1008/'.get_the_date('Y',$postID) ;
-    $data['skd']    = '563/'.$meta['docrt_skd_id'][0].'/'.'35.73.03.1008/'.get_the_date('Y',$postID) ;
-    $data['skik']   = '435/'.$meta['docrt_skik_id'][0].'/'.'35.73.03.1008/'.get_the_date('Y',$postID) ;
-    $data['skck']   = '331/'.$meta['docrt_skck_id'][0].'/'.'35.73.03.1008/'.get_the_date('Y',$postID) ;
-    $data['skp']    = '475/'.$meta['docrt_skp_id'][0].'/'.'35.73.03.1008/'.get_the_date('Y',$postID) ;
-    $data['sktm']   = '581/'.$meta['docrt_sktm_id'][0].'/'.'35.73.03.1008/'.get_the_date('Y',$postID) ;
-    $data['skbpm']  = '474/'.$meta['docrt_skbpm_id'][0].'/'.'35.73.03.1008/'.get_the_date('Y',$postID) ;
-    $data['skel']   = '474.1/'.$meta['docrt_skel_id'][0].'/'.'35.73.03.1008/V/'.get_the_date('Y',$postID) ;
-    $data['skem']   = '474.3/'.$meta['docrt_skem_id'][0].'/'.'35.73.03.1008/V/'.get_the_date('Y',$postID) ;
-    $data['kk']     = $meta['docrt_kk_id'][0].'/'.get_the_date('Y',$postID) ;
-    $data['ktp']    = $meta['docrt_ktp_id'][0].'/'.get_the_date('Y',$postID) ;
-    $data['sk']     = '474/'.$meta['docrt_sk_id'][0].'/'.'35.73.03.1008/'.get_the_date('Y',$postID) ;
-
-    // option: bukan merupakan surat utama
-    $data['skai']   = '331/'.$meta['docrt_skp_id'][0].'/'.'35.73.03.1008/V/'.get_the_date('Y',$postID) ;
-    $data['skkel']   = '???/'.$meta['docrt_skel_id'][0].'/'.'35.73.03.1008/V/'.get_the_date('Y',$postID) ;
-    $data['skkem']   = '???/'.$meta['docrt_skem_id'][0].'/'.'35.73.03.1008/V/'.get_the_date('Y',$postID) ;
-
-    return $data[$type];
-}

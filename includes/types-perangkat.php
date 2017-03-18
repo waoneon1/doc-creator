@@ -393,14 +393,14 @@ function docrt_data_dasar_callback() {
                 <td><input name="docrt_data_dasar[kec]" type="text" class="docrt_inputs" id="docrt_data_dasar_kec" value="<?php echo isset($meta['kec']) ? $meta['kec'] : '' ?>" /></td>
             </tr>
             <tr align="left">
-                <th><label class="diy-label" for="docrt_data_dasar_kpos">Kode Kecamatan</label></th>
+                <th><label class="diy-label" for="docrt_data_dasar_kkec">Kode Kecamatan</label></th>
                 <td> : </td>
-                <td><input name="docrt_data_dasar[kkec]" type="number" class="docrt_inputs" id="docrt_data_dasar_kpos" value="<?php echo isset($meta['kkec']) ? $meta['kkec'] : '' ?>" /></td>
+                <td><input name="docrt_data_dasar[kkec]" type="number" class="docrt_inputs" id="docrt_data_dasar_kkec" value="<?php echo isset($meta['kkec']) ? $meta['kkec'] : '' ?>" /></td>
             </tr>
             <tr align="left">
-                <th><label class="diy-label" for="docrt_data_dasar_kpos">Kode Kabupaten</label></th>
+                <th><label class="diy-label" for="docrt_data_dasar_kkel">Kode Kelurahan</label></th>
                 <td> : </td>
-                <td><input name="docrt_data_dasar[kkab]" type="number" class="docrt_inputs" id="docrt_data_dasar_kpos" value="<?php echo isset($meta['kkab']) ? $meta['kkab'] : '' ?>" /></td>
+                <td><input name="docrt_data_dasar[kkel]" type="number" class="docrt_inputs" id="docrt_data_dasar_kkel" value="<?php echo isset($meta['kkel']) ? $meta['kkel'] : '' ?>" /></td>
             </tr>
         </tbody></table>
       </div>
@@ -409,9 +409,10 @@ function docrt_data_dasar_callback() {
         <em>Surat yang tidak diberi tanda "check" adalah surat tidak digunakan</em></p>
         <?php $surat = get_option('docrt_surat_checkbox'); ?>
         <?php foreach ($terms_surat as $k => $v) { ?>
+            <?php $checkedd = isset($surat[$v->slug]) ? $surat[$v->slug] : '' ?>
             <div class="surat_box">
                 <input class="surat_box_checkbox" id="surat_box_desc_<?php echo $v->slug ?>" type="checkbox"  name="docrt_surat_checkbox[<?php echo $v->slug ?>]" value="1"
-                <?php checked( $surat[$v->slug], 1 ); ?>/>
+                <?php checked( $checkedd, 1 ); ?>/>
                 <label class="surat_box_desc" for="surat_box_desc_<?php echo $v->slug ?>"><strong><?php echo strtoupper($v->slug) ?></strong> | <?php echo $v->name ?></label>
             </div>
         <?php } ?>

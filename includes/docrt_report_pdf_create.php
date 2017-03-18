@@ -46,7 +46,7 @@ class MYPDF extends TCPDF {
             );
 
             $prepare_data[$key][1] = date_i18n( 'j F Y', strtotime($postval->post_date));
-            $prepare_data[$key][2] = $this->docrt_no_surat($post_term[0]->slug,$meta,$postval->ID);
+            $prepare_data[$key][2] = docrt_no_surat($post_term[0]->slug,$meta,$postval->ID);
             $prepare_data[$key][3] = $meta['docrt_form_nama'][0];
             $prepare_data[$key][4] = $meta['docrt_form_umur'][0];
             $prepare_data[$key][5] = $meta['docrt_form_agama'][0];
@@ -74,28 +74,6 @@ class MYPDF extends TCPDF {
         $this->Cell(10);
         $this->Cell(0,8,$teks5,0,1,'C');*/
     }
-
-    private function docrt_no_surat($type,$meta,$postID) {
-
-        $data['sku']    = '563/'.$meta['docrt_sku_id'][0].'/'.'35.73.03.1008/'.get_the_date('Y',$postID) ;
-        $data['skdu']   = '563/'.$meta['docrt_skdu_id'][0].'/'.'35.73.03.1008/'.get_the_date('Y',$postID) ;
-        $data['skd']    = '563/'.$meta['docrt_skd_id'][0].'/'.'35.73.03.1008/'.get_the_date('Y',$postID) ;
-        $data['skik']   = '435/'.$meta['docrt_skik_id'][0].'/'.'35.73.03.1008/'.get_the_date('Y',$postID) ;
-        $data['skck']   = '331/'.$meta['docrt_skck_id'][0].'/'.'35.73.03.1008/'.get_the_date('Y',$postID) ;
-        $data['skp']    = '475/'.$meta['docrt_skp_id'][0].'/'.'35.73.03.1008/'.get_the_date('Y',$postID) ;
-        $data['sktm']   = '581/'.$meta['docrt_sktm_id'][0].'/'.'35.73.03.1008/'.get_the_date('Y',$postID) ;
-        $data['skbpm']  = '474/'.$meta['docrt_skbpm_id'][0].'/'.'35.73.03.1008/'.get_the_date('Y',$postID) ;
-        $data['skel']   = '474.1/'.$meta['docrt_skel_id'][0].'/'.'35.73.03.1008/V/'.get_the_date('Y',$postID) ;
-        $data['skem']   = '474.3/'.$meta['docrt_skem_id'][0].'/'.'35.73.03.1008/V/'.get_the_date('Y',$postID) ;
-        $data['kk']     = $meta['docrt_kk_id'][0].'/'.get_the_date('Y',$postID) ;
-        $data['ktp']    = $meta['docrt_ktp_id'][0].'/'.get_the_date('Y',$postID) ;
-        $data['skai']   = '331/'.$meta['docrt_skp_id'][0].'/'.'35.73.03.1008/V/'.get_the_date('Y',$postID) ;
-        $data['sk']     = '474/'.$meta['docrt_sk_id'][0].'/'.'35.73.03.1008/'.get_the_date('Y',$postID) ;
-        return $data[$type];
-    }
-
-
-
 
 }
 

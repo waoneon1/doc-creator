@@ -6,7 +6,7 @@ function docrt_skdu_content($param, $meta, $post_term) {
     $tbl = '
     <table cellspacing="0" cellpadding="1" border="0">
         <tr>
-            <td width="100%" colspan="3"><p align="justify">'.$space.'Yang bertanda tangan dibawah ini kami, Lurah Sawojajar Kecamatan Kedungkandang Kota Malang, menerangkan dengan Sebenarnya bahwa:</p></td>
+            <td width="100%" colspan="3"><p align="justify">'.$space.'Yang bertanda tangan dibawah ini kami, Lurah '.docrt_dd('kel').' Kecamatan '.docrt_dd('kec').' Kota Malang, menerangkan dengan Sebenarnya bahwa:</p></td>
         </tr>
     </table>';
 
@@ -25,7 +25,7 @@ function docrt_skdu_content($param, $meta, $post_term) {
      <table cellspacing="0" cellpadding="1" border="0">
         <tr>
             <td width="100%" colspan="3">
-            <p align="justify">'. $space.'Bahwa berdasarkan Keterangan '.$param['b']['docrt_form_rtrw_usaha'].', '.$param['b']['docrt_form_ketRT'].', Tgl. '.$param['b']['docrt_form_tgl'].' Kelurahan Sawojajar Kecamatan Kedungkandang Kota Malang, orang tersebut diatas benar-benar mempunyai Usaha '.$param['b']['docrt_form_nama_usaha'].' yang bergerak di Bidang '.$param['b']['docrt_form_ket_usaha'].', yang saat ini berdomisili di '.$param['b']['docrt_form_alamat_usaha'].', '.$param['b']['docrt_form_rtrw_usaha'].' Kelurahan Sawojajar Kecamatan Kedungkandang Kota Malang.
+            <p align="justify">'. $space.'Bahwa berdasarkan Keterangan '.$param['b']['docrt_form_rtrw_usaha'].', '.$param['b']['docrt_form_ketRT'].', Tgl. '.$param['b']['docrt_form_tgl'].' Kelurahan '.docrt_dd('kel').' Kecamatan '.docrt_dd('kec').' Kota Malang, orang tersebut diatas benar-benar mempunyai Usaha '.$param['b']['docrt_form_nama_usaha'].' yang bergerak di Bidang '.$param['b']['docrt_form_ket_usaha'].', yang saat ini berdomisili di '.$param['b']['docrt_form_alamat_usaha'].', '.$param['b']['docrt_form_rtrw_usaha'].' Kelurahan '.docrt_dd('kel').' Kecamatan '.docrt_dd('kec').' Kota Malang.
             </p></td>
         </tr>
         <tr>

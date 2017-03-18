@@ -26,7 +26,7 @@ function docrt_sku_content($param, $meta, $post_term) {
            <td width="30%">Menerangkan Bahwa</td>
            <td width="5%"> </td>
            <td width="5%">1.</td>
-           <td width="60%">Yang bersangkutan benar-benar penduduk Kelurahan Sawojajar Kec.Kedungkandang Kota Malang</td>
+           <td width="60%">Yang bersangkutan benar-benar penduduk Kelurahan '.docrt_dd('kel').' Kec.'.docrt_dd('kec').' Kota Malang</td>
         </tr>
         <tr>
            <td width="30%"> </td>

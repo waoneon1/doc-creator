@@ -48,7 +48,40 @@ function docrt_get_type_surat_allowed() {
 
     return $surat;
 }
+// data dasar
+function docrt_dd($jenis = false){
+    $dd = get_option('docrt_data_dasar');
+    if($jenis) return $dd[$jenis];
 
+    return $dd;
+}
+// no surat here
+function docrt_no_surat($type,$meta,$postID) {
+
+    $no = '35.73'.'.'.docrt_dd('kkel').'.'.docrt_dd('kkec');
+    // Surat Utama 13
+    
+    $data['sku']    = '563/'.$meta['docrt_sku_id'][0].'/'.$no.'/'.get_the_date('Y',$postID) ;
+    $data['skdu']   = '563/'.$meta['docrt_skdu_id'][0].'/'.$no.'/'.get_the_date('Y',$postID) ;
+    $data['skd']    = '563/'.$meta['docrt_skd_id'][0].'/'.$no.'/'.get_the_date('Y',$postID) ;
+    $data['skik']   = '435/'.$meta['docrt_skik_id'][0].'/'.$no.'/'.get_the_date('Y',$postID) ;
+    $data['skck']   = '331/'.$meta['docrt_skck_id'][0].'/'.$no.'/'.get_the_date('Y',$postID) ;
+    $data['skp']    = '475/'.$meta['docrt_skp_id'][0].'/'.$no.'/'.get_the_date('Y',$postID) ;
+    $data['sktm']   = '581/'.$meta['docrt_sktm_id'][0].'/'.$no.'/'.get_the_date('Y',$postID) ;
+    $data['skbpm']  = '474/'.$meta['docrt_skbpm_id'][0].'/'.$no.'/'.get_the_date('Y',$postID) ;
+    $data['skel']   = '474.1/'.$meta['docrt_skel_id'][0].'/'.$no.'/'.'V/'.get_the_date('Y',$postID) ;
+    $data['skem']   = '474.3/'.$meta['docrt_skem_id'][0].'/'.$no.'/'.'V/'.get_the_date('Y',$postID) ;
+    $data['kk']     = $meta['docrt_kk_id'][0].'/'.get_the_date('Y',$postID) ;
+    $data['ktp']    = $meta['docrt_ktp_id'][0].'/'.get_the_date('Y',$postID) ;
+    $data['sk']     = '474/'.$meta['docrt_sk_id'][0].'/'.$no.'/'.get_the_date('Y',$postID) ;
+
+    // option: bukan merupakan surat utama
+    $data['skai']   = '331/'.$meta['docrt_skp_id'][0].'/'.$no.'/'.'V/'.get_the_date('Y',$postID) ;
+    $data['skkel']   = '???/'.$meta['docrt_skel_id'][0].'/'.$no.'/'.'V/'.get_the_date('Y',$postID) ;
+    $data['skkem']   = '???/'.$meta['docrt_skem_id'][0].'/'.$no.'/'.'V/'.get_the_date('Y',$postID) ;
+
+    return $data[$type];
+}
 // List yang menandatangani
 function docrt_who_give_ttd($jenis_ttd) {
 
@@ -80,6 +113,11 @@ function docrt_who_give_ttd($jenis_ttd) {
             $ttd['kasi']    = $option_kasi;
             $ttd['nip']     = 'NIP. '.$v['nip'];
             $status = true;
+        }
+
+        // lurah selalu ikut
+        if ($v['kode'] == 'lurah') {
+            $ttd['lurah'] = $v;
         }
     }
 

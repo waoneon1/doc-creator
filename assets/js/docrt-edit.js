@@ -1,5 +1,5 @@
 jQuery(document).ready(function($) {
-    console.log('edit.js');
+    console.log('edist.js');
 
     //docrt_kusus_skel();
     datepicker_init();
@@ -7,6 +7,7 @@ jQuery(document).ready(function($) {
     $(document).on("click", ".button-pej-add", function(e) {
         e.preventDefault();
         docrt_add_pejabat_kel();
+        console.log('lsdfljdsfds');
     });
 
     // remove pejabat
@@ -24,9 +25,15 @@ jQuery(document).ready(function($) {
 
     function docrt_add_pejabat_kel() {
         var count_html  = $(".docrt_pej_count");
-        var count       = parseInt($(".docrt_pej_count").val());
+        if(isNaN($(".docrt_pej_count").val())) {
+            var count = 1;
+        } else {
+            var count = parseInt($(".docrt_pej_count").val());
+        }
+        
         var count_next  = count + 1;
-        //console.log(".docrt_pej_jabatan"+count_next);
+
+        console.log(".docrt_pej_jabatan"+count_next);
         $(".docrt_pej_jabatan_"+count_next).show();
         $(".docrt_pej_jabatan_"+count_next+" .docrt_inputs").removeAttr('disabled', 'disabled');
 
