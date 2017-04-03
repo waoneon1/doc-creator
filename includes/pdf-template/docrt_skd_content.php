@@ -5,7 +5,7 @@ function docrt_skd_content($param, $meta, $post_term) {
     $tbl = '
     <table cellspacing="0" cellpadding="1" border="0">
         <tr>
-            <td width="100%" colspan="3"><p align="justify">'.$space.'Yang bertanda tangan dibawah ini kami, Lurah Sawojajar Kecamatan Kedungkandang Kota Malang, menerangkan dengan Sebenarnya bahwa:</p></td>
+            <td width="100%" colspan="3"><p align="justify">'.$space.'Yang bertanda tangan dibawah ini kami, Lurah '.docrt_dd('kel').' Kecamatan '.docrt_dd('kec').' Kota Malang, menerangkan dengan Sebenarnya bahwa:</p></td>
         </tr>
     </table>';
 

@@ -17,23 +17,7 @@ function docrt_skkem_content($pdf,$postID, $post_term) {
         );
     }
 
-    if ($meta['docrt_jenis_ttd'][0] == 'lurah') {
-        //$ttd_jabatan = 'LURAH SAWOJAJAR';
-        $ttd_nama = 'J.A. Bayu Widjaya, S.Sos, M.Si';
-        $ttd_nip = 'NIP. 19710731 199203 1 003';
-    } elseif ($meta['docrt_jenis_ttd'][0] == 'seklur') {
-        //$ttd_jabatan = 'LURAH SAWOJAJAR<br/><span style="font-size:11px;">Sekretaris</span>';
-        $ttd_nama = 'Adi Andrianto. P, SH.M.Hum';
-        $ttd_nip = 'NIP. 19740730 200312 1 005';
-    } elseif ($meta['docrt_jenis_ttd'][0] == 'kasi') {
-        //$ttd_jabatan = 'an: Lurah Sawojajar<br/><span style="font-size:11px;">Kasi Sarana dan Prasarana Umum</span>';
-        $ttd_nama = 'ENDAH KOESOEMANINGTYAS, S.Sos<br/><span style="font-size:11px;">Penata</span>';
-        $ttd_nip = 'NIP. 19690622 199202 2 002';
-    } else {
-        $ttd_jabatan = $meta['docrt_jenis_ttd'][0];
-        $ttd_nama = '';
-        $ttd_nip = '';
-    }
+    $ttd = docrt_who_give_ttd($meta['docrt_jenis_ttd'][0]);
 
     $pdf->SetMargins(15, 10, 15, true);
     $pdf->SetAutoPageBreak(TRUE, 0);
@@ -50,13 +34,13 @@ function docrt_skkem_content($pdf,$postID, $post_term) {
         <tr>
            <td width="34%">KECAMATAN</td>
            <td width="5%"> : </td>
-           <td width="30%">KEDUNGKANDANG</td>
+           <td width="30%">'.strtoupper(docrt_dd('kec')).'</td>
            <td width="31%" align="right">Kode : F-2.29</td>
         </tr>
         <tr>
            <td width="34%">KELURAHAN</td>
            <td width="5%"> : </td>
-           <td width="61%">SAWOJAJAR</td>
+           <td width="61%">'.strtoupper(docrt_dd('kec')).'</td>
         </tr>
         <tr>
            <td width="34%">KODE WILAYAH</td>
@@ -234,7 +218,7 @@ function docrt_skkem_content($pdf,$postID, $post_term) {
             <td>&nbsp;</td>
         </tr>
         <tr>
-            <td>('.$ttd_nama.')</td>
+            <td>('.$ttd['lurah']['nama'].')</td>
             <td>('. $param['saksi1']['Nama Lengkap'].')</td>
             <td>('. $param['saksi2']['Nama Lengkap'].')</td>
             <td>('. $data['pelapor']['Nama Lengkap'].')</td>
@@ -244,9 +228,13 @@ function docrt_skkem_content($pdf,$postID, $post_term) {
 
    $pdf->AddPage('P', 'F4');
 
-   $pdf->Image($saksi_data['saksi1']['image'][0], '', '', '', '', '', '', '', true, 72, 'C', false, false, 1, true, false, true);
+    if ($saksi_data['saksi1']['image'][0]) {
+        $pdf->Image($saksi_data['saksi1']['image'][0], '', '', '', '', '', '', '', true, 72, 'C', false, false, 1, true, false, true);
+    }
    $pdf->SetXY(0, 100);
-   $pdf->Image($saksi_data['saksi2']['image'][0], '', '', '', '', '', '', '', true, 72, 'C', false, false, 1, true, false, true);
+   if ($saksi_data['saksi2']['image'][0]) {
+    $pdf->Image($saksi_data['saksi2']['image'][0], '', '', '', '', '', '', '', true, 72, 'C', false, false, 1, true, false, true);
+   }
     //$pdf->Image($saksi_data['saksi2']['image'][0], '', '', '', '', 'JPG', ''/*link*/, ''/*align*/, true, 72, '', false, false, 1, true, false, false);
 }
 //====================================================================================================

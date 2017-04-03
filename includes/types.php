@@ -3,7 +3,7 @@
 /* * * * * * * * * * * * * * * *
  *  Register custom post type  *
  * * * * * * * * * * * * * * * */
-
+include 'docrt_get_saksi_form.php';
 function docrt_register_custom_post_types() {
     // PRODUCT custom post type
     register_post_type('docrt-document', array(
@@ -49,8 +49,8 @@ add_action( 'init', 'docrt_doc_taxonomies', 0 );
 function docrt_doc_taxonomies() {
     // Add new taxonomy, make it hierarchical (like categories)
     $show_ui = false;
-    if (current_user_can('manage_options'))
-        $show_ui = true;
+    // if (current_user_can('manage_options'))
+        // $show_ui = true;
 
     $labels = array(
         'name'              => _x( 'Jenis Surat', 'taxonomy general name' ),
@@ -72,6 +72,7 @@ function docrt_doc_taxonomies() {
         'show_ui'           => $show_ui,
         'show_admin_column' => true,
         'query_var'         => true,
+        'meta_box_cb'       => false,
         'rewrite'           => array( 'slug' => 'surat' ),
     );
 
@@ -102,11 +103,16 @@ function docrt_pemohon_box() {
     global $post;
     $post_term = get_the_terms ($post->ID,'surat' );
 
-    printf( '<input type="hidden" name="docrt_nonce" value="%s" />', wp_create_nonce( plugin_basename(__FILE__) ) );
-    echo '<input type="hidden" id="docrt_tysrt_form" name="docrt_type_surat" value="" />' ;
-    echo '<input type="hidden" id="docrt_tysrt_form" name="docrt_type_surat" value="" />' ;
+    printf( '<input type="hidden" name="docrt_nonce" value="%s" />', wp_create_nonce( plugin_basename(__FILE__) ) );   ?>
+    <script type="text/javascript">
+        var ajax_url = <?php echo '"'.docrt_plugin_url() . '/ajax' . '/"' ?>;
+        var post_id  = <?php echo $post->ID ?>;
+        var cpt_type = <?php echo '"create_document"' ?>;
+    </script><?php
 
-    include "docrt_form.php";
+    // all form goes here
+    echo '<div class="docrt-master-form"></div>';
+    //include "docrt_form.php";
 }
 function docrt_type_surat_box($post) {
 
@@ -117,9 +123,7 @@ function docrt_type_surat_box($post) {
       'orderby' => 'name',
       'order' => 'ASC'
     );
-    $type_surat_allow = array(
-        'kk','ktp','skel','skem','skbpm','skck','skd','skdu','skik','skp','sktm','sku', 'sk'
-    );
+    $type_surat_allow = docrt_get_type_surat_allowed();
     $tax_terms = get_terms($taxonomy,$term_args);
     $post_term = get_the_terms ($post->ID,$taxonomy );
 
@@ -145,19 +149,21 @@ function docrt_type_surat_box($post) {
 }
 
 function docrt_ttd_box($post) {
-    $ttd = array(
-        'Lurah' => 'lurah',
-        'Seklur' => 'seklur',
-        'Kasi' => 'kasi'
-    );
+    $pejabat    = get_option('docrt_pej');
+    $picked_ttd = get_option('docrt_list_ttd_perangkat');
+    $ttd_allow  = docrt_get_list_ttd();
+    if (!$picked_ttd) return;
+
     $meta = get_post_meta($post->ID, 'docrt_jenis_ttd', true);
     echo '<table class="docrt_ttd_box">';
-    foreach ($ttd as $key => $value) {
-        $checked = ($meta == $value) ? 'checked' : '';
-        echo '<tr align="left">
-            <th><input type="radio" name="docrt_jenis_ttd" value="'.$value.'" data-ttd="'.$value.'" '.$checked.' required></th>
-            <td>'.$key.'</td>
-        </tr>';
+    foreach ($picked_ttd as $slug => $value) {
+        if (in_array($slug, $ttd_allow)) {
+           $checked = ($meta == $slug) ? 'checked' : '';
+           echo '<tr align="left">
+               <th><input type="radio" name="docrt_jenis_ttd" value="'.$slug.'" data-ttd="'.$slug.'" '.$checked.' required></th>
+               <td>'.$value.'</td>
+           </tr>';
+        }
     }
     echo '</table>';
 }
@@ -316,42 +322,4 @@ function docrt_get_form_surat($type_surat = 'sku') {
 }
 
 
-function docrt_get_saksi_form($meta_value1 = '',$meta_value2 = '') {
-    $query_args = array(
-        'post_type'      => 'docrt-perangkat',
-        'post_status'    => 'publish',
-        'orderby'        => 'date',
-    );
-    $posts = new WP_Query( $query_args );
-    $data['RT'] = '';
-    $data['RW'] = '';
-    foreach ($posts->posts as $key => $post) {
-        $meta = get_post_meta($post->ID, 'docrt_perangkat', true);
-        $param[ $meta['jabatan'] ][] = array(
-            'id' => $post->ID,
-            'jabatan' => $meta['jabatan'].' '.$meta['no_jabatan'],
-            'no_jabatan_rw' => $meta['no_jabatan_rw']
-        );
-    }
 
-    foreach ($param as $key => $value) {
-        foreach ($value as $k => $v) {
-            if ($v['id'] == $meta_value1) {
-                $selected = 'selected';
-            } elseif ($v['id'] == $meta_value2) {
-                $selected = 'selected';
-            } else {
-                 $selected = '';
-            }
-
-            if ($key == 'RT') {
-                $data[$key] .= '<option value="'.$v['id'].'" '.$selected.'>'.$v['jabatan'].' / '.$v['no_jabatan_rw'].'</option>';
-            } else {
-                $data[$key] .= '<option value="'.$v['id'].'" '.$selected.'>'.$v['jabatan'].'</option>';
-            }
-
-        }
-    }
-
-    return $data;
-}

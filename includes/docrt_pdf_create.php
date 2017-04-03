@@ -131,7 +131,7 @@ function docrt_get_header_pdf($pdf,$postID, $post_term) {
     }
 
     $pdf->letak('../assets/img/pemkot_mlg_logo.png');
-    $pdf->judul('PEMERINTAH KOTA MALANG', 'KECAMATAN KEDUNGKANDANG','KELURAHAN SAWOJAJAR','Alamat: Jl. Raya Sawojajar No. 45 (0341) 715953 - Malang KODE POS 65139', '');
+    $pdf->judul('PEMERINTAH KOTA MALANG', 'KECAMATAN '.strtoupper(docrt_dd('kec')),'KELURAHAN '.strtoupper(docrt_dd('kel')),'Alamat: '.docrt_dd('alamat').' '.docrt_dd('telp').' - Malang KODE POS '.docrt_dd('kpos'), '');
     $pdf->garis();
 }
 
@@ -217,34 +217,15 @@ function docrt_get_content_pdf2($pdf, $postID, $post_term, $main_doc = '') {
 
 function docrt_content_by_type($param,$meta,$post_term,$pdf='') {
     $slug = $post_term[0]->slug;
-   /* print_r($param);
-    print_r($meta);
-    print_r($post_term);
-    print_r('docrt_'.$slug.'_content');exit;*/
     return call_user_func_array('docrt_'.$slug.'_content', array($param,$meta,$post_term));
 }
 
 // footer tandatangan in general
 function docrt_pdf_footer($meta,$postID,$type,$hspace='60',$nopelapor=true,$w1 = '30%',$w2 = '30%',$w3 = '43%') {
-     // Yang menandatangani dokumen
 
-    if ($meta['docrt_jenis_ttd'][0] == 'lurah') {
-        $ttd_jabatan = 'LURAH SAWOJAJAR';
-        $ttd_nama = 'J.A. BAYU WIDJAYA, S.Sos, M.Si';
-        $ttd_nip = 'NIP. 19710731 199203 1 003';
-    } elseif ($meta['docrt_jenis_ttd'][0] == 'seklur') {
-        $ttd_jabatan = 'LURAH SAWOJAJAR<br/><span style="font-size:11px;">Sekretaris</span>';
-        $ttd_nama = 'ADI ANDRIANTO. P, SH.M.Hum';
-        $ttd_nip = 'NIP. 19740730 200312 1 005';
-    } elseif ($meta['docrt_jenis_ttd'][0] == 'kasi') {
-        $ttd_jabatan = 'an: LURAH SAWOJAJAR<br/><span style="font-size:11px;">Kasi Sarana dan Prasarana Umum</span>';
-        $ttd_nama = 'ENDAH KOESOEMANINGTYAS, S.Sos<br/><span style="font-size:11px;">Penata</span>';
-        $ttd_nip = 'NIP. 19690622 199202 2 002';
-    } else {
-        $ttd_jabatan = $meta['docrt_jenis_ttd'][0];
-        $ttd_nama = '';
-        $ttd_nip = '';
-    }
+     // Yang menandatangani dokumen
+    $ttd = docrt_who_give_ttd($meta['docrt_jenis_ttd'][0]);
+
     $mengetahui_camat = '';
     if ($type =='skai') {
         $mengetahui_camat =
@@ -252,7 +233,7 @@ function docrt_pdf_footer($meta,$postID,$type,$hspace='60',$nopelapor=true,$w1 =
             <td colspan="3">&nbsp;</td>
         </tr>
         <tr>
-            <td colspan="3"><span style="font-size:9px; text-align:center;">Mengetahui:<br/>CAMAT KEDUNGKANDANG</span></td>
+            <td colspan="3"><span style="font-size:9px; text-align:center;">Mengetahui:<br/>CAMAT '.strtoupper(docrt_dd('kec')).'</span></td>
         </tr>';
     }
 
@@ -267,7 +248,7 @@ function docrt_pdf_footer($meta,$postID,$type,$hspace='60',$nopelapor=true,$w1 =
         <tr>
             <td>'.(($nopelapor) ? 'Yang Bersangkutan' : '').'</td>
             <td></td>
-            <td align="'.$align.'">'.$ttd_jabatan.'</td>
+            <td align="'.$align.'">'.$ttd['jabatan'].'</td>
         </tr>
         <tr>
             <td height="'.$hspace.'"></td>
@@ -277,8 +258,8 @@ function docrt_pdf_footer($meta,$postID,$type,$hspace='60',$nopelapor=true,$w1 =
         <tr>
             <td>'.(($nopelapor) ? ucwords($meta['docrt_form_nama'][0]) : '').'</td>
             <td> </td>
-            <td align="'.$align.'"><strong style="text-align: '.$align.'; text-decoration: underline; font-size:11px">'.$ttd_nama.'</strong><br/>
-            '.$ttd_nip.'
+            <td align="'.$align.'"><strong style="text-align: '.$align.'; text-decoration: underline; font-size:11px">'.$ttd['nama'].'</strong><br/>'.$ttd['kasi'] .'
+            '.$ttd['nip'].'
             </td>
         </tr>
         '.$mengetahui_camat.'
@@ -287,27 +268,4 @@ function docrt_pdf_footer($meta,$postID,$type,$hspace='60',$nopelapor=true,$w1 =
     return $tbl;
 }
 
-// no surat here
-function docrt_no_surat($type,$meta,$postID) {
 
-    $data['sku']    = '563/'.$meta['docrt_sku_id'][0].'/'.'35.73.03.1008/'.get_the_date('Y',$postID) ;
-    $data['skdu']   = '563/'.$meta['docrt_skdu_id'][0].'/'.'35.73.03.1008/'.get_the_date('Y',$postID) ;
-    $data['skd']    = '563/'.$meta['docrt_skd_id'][0].'/'.'35.73.03.1008/'.get_the_date('Y',$postID) ;
-    $data['skik']   = '435/'.$meta['docrt_skik_id'][0].'/'.'35.73.03.1008/'.get_the_date('Y',$postID) ;
-    $data['skck']   = '331/'.$meta['docrt_skck_id'][0].'/'.'35.73.03.1008/'.get_the_date('Y',$postID) ;
-    $data['skp']    = '475/'.$meta['docrt_skp_id'][0].'/'.'35.73.03.1008/'.get_the_date('Y',$postID) ;
-    $data['sktm']   = '581/'.$meta['docrt_sktm_id'][0].'/'.'35.73.03.1008/'.get_the_date('Y',$postID) ;
-    $data['skbpm']  = '474/'.$meta['docrt_skbpm_id'][0].'/'.'35.73.03.1008/'.get_the_date('Y',$postID) ;
-    $data['skel']   = '474.1/'.$meta['docrt_skel_id'][0].'/'.'35.73.03.1008/V/'.get_the_date('Y',$postID) ;
-    $data['skem']   = '474.3/'.$meta['docrt_skem_id'][0].'/'.'35.73.03.1008/V/'.get_the_date('Y',$postID) ;
-    $data['kk']     = $meta['docrt_kk_id'][0].'/'.get_the_date('Y',$postID) ;
-    $data['ktp']    = $meta['docrt_ktp_id'][0].'/'.get_the_date('Y',$postID) ;
-    // option
-    $data['skai']   = '331/'.$meta['docrt_skp_id'][0].'/'.'35.73.03.1008/V/'.get_the_date('Y',$postID) ;
-    $data['skkel']   = '???/'.$meta['docrt_skel_id'][0].'/'.'35.73.03.1008/V/'.get_the_date('Y',$postID) ;
-    $data['skkem']   = '???/'.$meta['docrt_skem_id'][0].'/'.'35.73.03.1008/V/'.get_the_date('Y',$postID) ;
-
-    $data['sk']     = '474/'.$meta['docrt_sk_id'][0].'/'.'35.73.03.1008/'.get_the_date('Y',$postID) ;
-
-    return $data[$type];
-}

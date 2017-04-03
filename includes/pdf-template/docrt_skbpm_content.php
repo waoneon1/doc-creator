@@ -26,13 +26,13 @@ function docrt_skbpm_content($param, $meta, $post_term) {
            <td width="30%">Menerangkan Bahwa</td>
            <td width="5%"> </td>
            <td width="5%">1.</td>
-           <td width="60%"><p align="justify">Orang tersebut diatas benar-benar penduduk Kelurahan Sawojajar Kec.Kedungkandang Kota Malang.</p></td>
+           <td width="60%"><p align="justify">Orang tersebut diatas benar-benar penduduk Kelurahan '.docrt_dd('kel').' Kec.'.docrt_dd('kec').' Kota Malang.</p></td>
         </tr>
         <tr>
            <td width="30%"> </td>
            <td width="5%"> </td>
            <td width="5%">2.</td>
-           <td width="60%"><p align="justify">Orang tersebut diatas benar-benar belum pernah menikah ( Belum Kawin ).</p>
+           <td width="60%"><p align="justify">Menurut keterangan yang bersangkutan serta berdasarkan database kependudukan, orang tersebut diatas benar-benar belum pernah menikah ( Belum Kawin ).</p>
            </td>
         </tr>
     </table>';
