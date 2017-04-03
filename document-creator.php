@@ -3,7 +3,7 @@
 Plugin Name: Document Creator
 Plugin URI: -
 Description: Make Document From Template
-Version: 0.0.1
+Version: 1.0.1
 Author: Dharmawan Sukma Hardi
 Author URI: -
 License: GPLv2 or laterss
@@ -40,12 +40,13 @@ function docrt_get_type_surat_allowed() {
     $docrt_surat_checkbox = get_option('docrt_surat_checkbox');
     $surat = array();
 
-    foreach ($docrt_surat_checkbox as $key => $value) {
-        if ($value == 1) {
-            $surat[] = $key;
+    if ($docrt_surat_checkbox) {
+        foreach ($docrt_surat_checkbox as $key => $value) {
+            if ($value == 1) {
+                $surat[] = $key;
+            }
         }
     }
-
     return $surat;
 }
 // data dasar

@@ -107,10 +107,68 @@ class Dispenduk_API
               'Tukang Sol Sepatu',
               'Tukang Las/Pandai Besi',
               'Tukang Jahit', //30
-              'Lain - Lain'
-              );
-            if ($data > 30) {
-              $data = 31;
+              'Tukang Gigi',
+              'Penata Rias',
+              'Penata Busana',
+              'Penata Rambut',
+              'Mekanik',
+              'Seniman',
+              'Tabib',
+              'Paraji',
+              'Perancang Busana',
+              'Penterjemah', //40
+              'Imam masjid',
+              'Pendeta',
+              'Pastor',
+              'Wartawan',
+              'Ustadz/Mubaligh',
+              'Juru Masak',
+              'Promotor Acara',
+              'Anggota DPR-RI',
+              'Anggota DPD',
+              'Anggota BPK', //50
+              'Presiden',
+              'Wakil Presiden',
+              'Anggota Mahkamah Konstitusi',
+              'Anggota Kabinet Kementerian',
+              'Duta Besar',
+              'Gubernur',
+              'Wakil Gubernur',
+              'Bupati',
+              'Wakil Bupati',
+              'Walikota', //60
+              'Wakil Walikota',
+              'Anggota DPRD Prop',
+              'Anggota DPRD Kab/Kota',
+              'Dosen',
+              'Guru',
+              'Pilot',
+              'Pengacara',
+              'Notaris',
+              'Arsitek',
+              'Akuntan', //70
+              'Konsultan',
+              'Dokter',
+              'Bidan',
+              'Perawat',
+              'Apoteker',
+              'Psikiater/Psikolog',
+              'Penyiar Televisi',
+              'Penyiar Radio',
+              'Pelaut',
+              'Peneliti', //80
+              'Sopir',
+              'Pialang',
+              'Paranormal',
+              'Pedagang',
+              'Perangkat Desa',
+              'Kepala Desa',
+              'Biarawati',
+              'Wiraswasta',
+              'Lain-Lain',
+            );
+            if ($data > 89) {
+              $data = 89;
             }
             $return = $param[$data];
             break;
