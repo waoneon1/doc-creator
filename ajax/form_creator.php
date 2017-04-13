@@ -73,7 +73,7 @@ function docrt_form_dilahirkan_pelapor($meta, $type_surat) {
   $data = ' <tr align="left" class="docrt_form_dilahirkan_pelapor_tr docrt_form">
         <th><label class="diy-label" for="docrt_form_dilahirkan_pelapor"> - Tanggal Dilahirkan</label></th>
         <td> : </td>
-        <td><input name="docrt_form_dilahirkan_pelapor" type="text" class="docrt_inputs docrt_datepicker" id="docrt_form_dilahirkan_pelapor" value="'.$meta['docrt_form_dilahirkan_pelapor'][0].'" /></td>
+        <td><input name="docrt_form_dilahirkan_pelapor" type="text" class="docrt_inputs docrt_datepicker" id="docrt_form_dilahirkan_pelapor" value="'.$meta['docrt_form_dilahirkan_pelapor'][0].'" readonly/></td>
     </tr>';
   return $data;
 }
@@ -366,7 +366,7 @@ function docrt_form_tgl_jam($meta, $type_surat) {
   $data = '<tr align="left" class="docrt_form_tgl_tr docrt_form">
         <th><label class="diy-label" for="docrt_form_tgl">Tanggal</label></th>
         <td> : </td>
-        <td><input name="docrt_form_tgl" type="text" class="docrt_inputs half docrt_datepicker" id="docrt_form_tgl" value="'.$meta['docrt_form_tgl'][0].'"/>
+        <td><input name="docrt_form_tgl" type="text" class="docrt_inputs half docrt_datepicker" id="docrt_form_tgl" value="'.$meta['docrt_form_tgl'][0].'" readonly/>
         <input name="docrt_form_jam" type="text" class="docrt_inputs half" id="docrt_form_jam" value="'.$meta['docrt_form_jam'][0].'" placeholder="12:00"/></td>
     </tr>';
   return $data;
@@ -377,7 +377,7 @@ function docrt_form_tgl($meta, $type_surat) {
   $data = '<tr align="left" class="docrt_form_tgl_tr docrt_form">
         <th><label class="diy-label" for="docrt_form_tgl">Tanggal</label></th>
         <td> : </td>
-        <td><input name="docrt_form_tgl" type="text" class="docrt_inputs half docrt_datepicker" id="docrt_form_tgl" value="'.$meta['docrt_form_tgl'][0].'"/></td>
+        <td><input name="docrt_form_tgl" type="text" class="docrt_inputs half docrt_datepicker" id="docrt_form_tgl" value="'.$meta['docrt_form_tgl'][0].'" readonly/></td>
     </tr>';
   return $data;
 }
@@ -513,7 +513,7 @@ function docrt_form_rtrw_usaha($meta, $type_surat) {
 function docrt_form_ket_usaha($meta, $type_surat) {
 
   $data = '<tr align="left" class="docrt_form_ket_usaha_tr docrt_form">
-    <th><label class="diy-label" for="docrt_form_ket_usaha">Keterangan Usaha</label></th>
+    <th><label class="diy-label" for="docrt_form_ket_usaha">Usaha Bergerak dibidang</label></th>
     <td> : </td>
     <td><input name="docrt_form_ket_usaha" type="text" class="docrt_inputs" id="docrt_form_ket_usaha" value="'.$meta['docrt_form_ket_usaha'][0].'"/></td>
   </tr>';
@@ -565,7 +565,7 @@ function docrt_form_tgl_acara($meta, $type_surat) {
   $data = '<tr align="left" class="docrt_form_tgl_acara_tr docrt_form">
     <th><label class="diy-label" for="docrt_form_tgl_acara">Tanggal Acara</label></th>
     <td> : </td>
-    <td><input name="docrt_form_tgl_acara" type="text" class="docrt_inputs docrt_datepicker" id="docrt_form_tgl_acara" value="'.$meta['docrt_form_tgl_acara'][0].'"/></td>
+    <td><input name="docrt_form_tgl_acara" type="text" class="docrt_inputs docrt_datepicker" id="docrt_form_tgl_acara" value="'.$meta['docrt_form_tgl_acara'][0].'" readonly/></td>
     </tr>';
   return $data;
 }
@@ -612,7 +612,7 @@ function docrt_form_tgl_pindah($meta, $type_surat) {
   $data = '<tr align="left" class="docrt_form_tgl_pindah_tr docrt_form">
       <th><label class="diy-label" for="docrt_form_tgl_pindah">Tanggal Pindah</label></th>
       <td> : </td>
-      <td><input name="docrt_form_tgl_pindah" type="text" class="docrt_inputs docrt_datepicker" id="docrt_form_tgl_pindah" value="'.$meta['docrt_form_tgl_pindah'][0].'"/></td>
+      <td><input name="docrt_form_tgl_pindah" type="text" class="docrt_inputs docrt_datepicker" id="docrt_form_tgl_pindah" value="'.$meta['docrt_form_tgl_pindah'][0].'" readonly/></td>
   </tr>';
   return $data;
 }
@@ -651,7 +651,7 @@ function docrt_form_dilahirkan1($meta, $type_surat) {
   $data = '<tr align="left" class="docrt_form_dilahirkan1_tr docrt_form">
     <th><label class="diy-label" for="docrt_form_dilahirkan1">Tanggal Dilahirkan</label></th>
     <td> : </td>
-    <td><input name="docrt_form_dilahirkan1" type="text" class="docrt_inputs docrt_datepicker" id="docrt_form_dilahirkan1" value="'.$meta['docrt_form_dilahirkan1'][0].'" /></td>
+    <td><input name="docrt_form_dilahirkan1" type="text" class="docrt_inputs docrt_datepicker" id="docrt_form_dilahirkan1" value="'.$meta['docrt_form_dilahirkan1'][0].'" readonly/></td>
   </tr>';
   return $data;
 }
@@ -741,7 +741,7 @@ function docrt_form_dilahirkan2($meta, $type_surat) {
   $data = '<tr align="left" class="docrt_form_dilahirkan2_tr docrt_form">
     <th><label class="diy-label" for="docrt_form_dilahirkan2"> - Tanggal Dilahirkan</label></th>
     <td> : </td>
-    <td><input name="docrt_form_dilahirkan2" type="text" class="docrt_inputs docrt_datepicker" id="docrt_form_dilahirkan2" value="'.$meta['docrt_form_dilahirkan2'][0].'" /></td>
+    <td><input name="docrt_form_dilahirkan2" type="text" class="docrt_inputs docrt_datepicker" id="docrt_form_dilahirkan2" value="'.$meta['docrt_form_dilahirkan2'][0].'" readonly/></td>
   </tr>';
   return $data;
 }
@@ -811,7 +811,7 @@ function docrt_form_dilahirkan3($meta, $type_surat) {
   $data = '<tr align="left" class="docrt_form_dilahirkan3_tr docrt_form">
     <th><label class="diy-label" for="docrt_form_dilahirkan3"> - Tanggal Dilahirkan</label></th>
     <td> : </td>
-    <td><input name="docrt_form_dilahirkan3" type="text" class="docrt_inputs docrt_datepicker" id="docrt_form_dilahirkan3" value="'.$meta['docrt_form_dilahirkan3'][0].'" /></td>
+    <td><input name="docrt_form_dilahirkan3" type="text" class="docrt_inputs docrt_datepicker" id="docrt_form_dilahirkan3" value="'.$meta['docrt_form_dilahirkan3'][0].'" readonly/></td>
   </tr>';
   return $data;
 }
@@ -905,7 +905,7 @@ function docrt_tbl_pindah($meta, $type_surat) {
                     <option value="Perempuan" '.(($meta['docrt_pengikut_jk'.$i][0] == 'Perempuan') ? 'selected' : '').'>P</option>
                   </select>
               </td>
-              <td><input name="docrt_pengikut_lahir'.$i.'" type="text" id="docrt_pengikut_lahir'.$i.'" value="'.$meta['docrt_pengikut_lahir'.$i][0].'" class="pengikut_tgl docrt_datepicker"/></td>
+              <td><input name="docrt_pengikut_lahir'.$i.'" type="text" id="docrt_pengikut_lahir'.$i.'" value="'.$meta['docrt_pengikut_lahir'.$i][0].'" class="pengikut_tgl docrt_datepicker" readonly/></td>
               <td><select class="pengikut_status" name="docrt_pengikut_status'.$i.'" type="text" id="docrt_pengikut_status'.$i.'" >
                     <option value="Blm Kawin">Blm Kawin</option>
                     <option value="Kawin" '.(($meta['docrt_pengikut_status'.$i][0] == 'Kawin') ? 'selected' : '').'>Kawin</option>

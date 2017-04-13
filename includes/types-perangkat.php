@@ -251,22 +251,27 @@ function docrt_ttd_setting_callback() {
         <form name="post" action="edit.php?post_type=docrt-perangkat&page=docrt-ttd" method="post" id="post" autocomplete="off">
         <?php printf('<input type="hidden" name="docrt_nonce_ttd_perangkat" value="%s" />', wp_create_nonce(plugin_basename(__FILE__))); ?>
         <input type="submit" name="ttd_submit" value="submit" class="button-primary button-large button-fullwidth button-ttd-submit" />
-        <?php foreach ($ttd as $key => $value) { $ttd_slug = strtolower($value['kode']); ?>
-            <div class="ttd_box">
-                <input class="ttd_box_checkbox" type="checkbox"  name="ttd_checkbox[<?php echo $ttd_slug ?>]" value="<?php echo strip_tags($value['jabatan']) ?>" <?php checked( @$options[$ttd_slug], $value['jabatan'] ); ?>/>
-                <?php $formated_ttd = docrt_who_give_ttd($ttd_slug); ?>
-                <div class="ttd_box_desc">
-                    <ul>
-                        <li><?php echo $formated_ttd['jabatan'] ?></li>
-                        <li>&nbsp;</li>
-                        <li>&nbsp;</li>
-                        <li><?php echo $formated_ttd['nama'] ?></li>
-                        <li><?php echo $formated_ttd['kasi'] ?></li>
-                        <li><?php echo $formated_ttd['nip'] ?></li>
-                    </ul>
+        <?php
+        if ($ttd) {
+            foreach ($ttd as $key => $value) { $ttd_slug = strtolower($value['kode']); ?>
+                <div class="ttd_box">
+                    <input class="ttd_box_checkbox" type="checkbox"  name="ttd_checkbox[<?php echo $ttd_slug ?>]" value="<?php echo strip_tags($value['jabatan']) ?>" <?php checked( @$options[$ttd_slug], $value['jabatan'] ); ?>/>
+                    <?php $formated_ttd = docrt_who_give_ttd($ttd_slug); ?>
+                    <div class="ttd_box_desc">
+                        <ul>
+                            <li><?php echo $formated_ttd['jabatan'] ?></li>
+                            <li>&nbsp;</li>
+                            <li>&nbsp;</li>
+                            <li><?php echo $formated_ttd['nama'] ?></li>
+                            <li><?php echo $formated_ttd['kasi'] ?></li>
+                            <li><?php echo $formated_ttd['nip'] ?></li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-        <?php } ?>
+        <?php }
+        } else {
+            echo '<p>mohon isi <a href="'.admin_url().'edit.php?post_type=docrt-perangkat&page=docrt-data-dasar#data_dasar_tabs-3">Pengesah</a> terlebih dahulu</p>';
+        } ?>
 
         <style type="text/css">
             .ttd_box {
@@ -518,7 +523,7 @@ function docrt_data_dasar_callback() {
                   <tr align="left">
                       <th><label class="diy-label" for="docrt_pej_nip">NIP</label></th>
                       <td> : </td>
-                      <td><input name="docrt_pej[<?php echo $pej_id ?>][nip]" type="text" class="docrt_inputs" id="docrt_pej_nip" value="<?php echo isset($meta_pej[$pej_id]['jabatan']) ? $meta_pej[$pej_id]['nip'] : '' ?>" <?php echo $disable_status ?>/></td>
+                      <td><input name="docrt_pej[<?php echo $pej_id ?>][nip]" type="text" class="docrt_inputs" id="docrt_pej_nip" value="<?php echo isset($meta_pej[$pej_id]['nip']) ? $meta_pej[$pej_id]['nip'] : '' ?>" <?php echo $disable_status ?>/></td>
                   </tr>
                   <tr align="left">
                       <th><label class="diy-label" for="docrt_pej_gol">Pangkat/Golongan</label></th>

@@ -3,7 +3,7 @@
 Plugin Name: Document Creator
 Plugin URI: -
 Description: Make Document From Template
-Version: 0.0.1
+Version: 1.0.1
 Author: Dharmawan Sukma Hardi
 Author URI: -
 License: GPLv2 or laterss
@@ -40,12 +40,13 @@ function docrt_get_type_surat_allowed() {
     $docrt_surat_checkbox = get_option('docrt_surat_checkbox');
     $surat = array();
 
-    foreach ($docrt_surat_checkbox as $key => $value) {
-        if ($value == 1) {
-            $surat[] = $key;
+    if ($docrt_surat_checkbox) {
+        foreach ($docrt_surat_checkbox as $key => $value) {
+            if ($value == 1) {
+                $surat[] = $key;
+            }
         }
     }
-
     return $surat;
 }
 // data dasar
@@ -58,9 +59,9 @@ function docrt_dd($jenis = false){
 // no surat here
 function docrt_no_surat($type,$meta,$postID) {
 
-    $no = '35.73'.'.'.docrt_dd('kkel').'.'.docrt_dd('kkec');
+    $no = '35.73'.'.'.docrt_dd('kkec').'.'.docrt_dd('kkel');
     // Surat Utama 13
-    
+
     $data['sku']    = '563/'.$meta['docrt_sku_id'][0].'/'.$no.'/'.get_the_date('Y',$postID) ;
     $data['skdu']   = '563/'.$meta['docrt_skdu_id'][0].'/'.$no.'/'.get_the_date('Y',$postID) ;
     $data['skd']    = '563/'.$meta['docrt_skd_id'][0].'/'.$no.'/'.get_the_date('Y',$postID) ;
