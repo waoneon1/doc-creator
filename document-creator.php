@@ -133,6 +133,7 @@ function docrt_who_give_ttd($jenis_ttd) {
 
 
 function docrt_include_admin() {
+    docrt_tax_list();
     if (is_admin()) {
         include_once __DIR__ . '/includes/admin/types-table-filter.php';
         include_once __DIR__ . '/includes/admin/settings.php';
@@ -178,21 +179,21 @@ add_action( 'wp_enqueue_scripts', 'docrt_load_scripts' );
  *****************************************************************************************/
 
 function docrt_tax_list() {
-    wp_insert_term( 'surat keterangan usaha',               'surat', $args = array('slug'=>'sku') );
-    wp_insert_term( 'surat keterangan domisili usaha ',     'surat', $args = array('slug'=>'skdu') );
-    wp_insert_term( 'surat keterangan domisili',            'surat', $args = array('slug'=>'skd') );
-    wp_insert_term( 'surat keterangan ijin keramaian',      'surat', $args = array('slug'=>'skik') );
-    wp_insert_term( 'surat keterangan catatan kepolisian',  'surat', $args = array('slug'=>'skck') );
+    wp_insert_term( 'surat keterangan usaha',               'surat', $args = array('slug'=>'sku') );//
+    wp_insert_term( 'surat keterangan domisili usaha ',     'surat', $args = array('slug'=>'skdu') );//
+    wp_insert_term( 'surat keterangan domisili',            'surat', $args = array('slug'=>'skd') );//
+    wp_insert_term( 'surat keterangan ijin keramaian',      'surat', $args = array('slug'=>'skik') );//
+    wp_insert_term( 'surat keterangan catatan kepolisian',  'surat', $args = array('slug'=>'skck') );//
 
-    wp_insert_term( 'surat keterangan pindah',              'surat', $args = array('slug'=>'skp') );
-    wp_insert_term( 'surat keterangan tidak mampu',         'surat', $args = array('slug'=>'sktm') );
-    wp_insert_term( 'surat keterangan balum pernah menikah','surat', $args = array('slug'=>'skbpm') );
-    wp_insert_term( 'surat kelahiran',                      'surat', $args = array('slug'=>'skel') );
-    wp_insert_term( 'surat kematian',                       'surat', $args = array('slug'=>'skem') );
+    wp_insert_term( 'surat keterangan pindah',              'surat', $args = array('slug'=>'skp') );//
+    wp_insert_term( 'surat keterangan tidak mampu',         'surat', $args = array('slug'=>'sktm') );//
+    wp_insert_term( 'surat keterangan balum pernah menikah','surat', $args = array('slug'=>'skbpm') );//
+    wp_insert_term( 'surat kelahiran',                      'surat', $args = array('slug'=>'skel') );//
+    wp_insert_term( 'surat kematian',                       'surat', $args = array('slug'=>'skem') );//
 
     wp_insert_term( 'surat keterangan',                     'surat', $args = array('slug'=>'sk') );
-    wp_insert_term( 'kartu tanda penduduk',                 'surat', $args = array('slug'=>'ktp') );
-    wp_insert_term( 'kartu keluarga',                       'surat', $args = array('slug'=>'kk') );
+    wp_insert_term( 'kartu tanda penduduk',                 'surat', $args = array('slug'=>'ktp') );//
+    wp_insert_term( 'kartu keluarga',                       'surat', $args = array('slug'=>'kk') );//
 }
 
 

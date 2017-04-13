@@ -36,11 +36,13 @@ console.log('form.js');
     //  API KTP
     $(document).on("click", ".nik_api_button", function (e) { //vpc-options
         e.preventDefault();
-        console.log($(this));
+        //console.log($(this));
         if ($('#docrt_form_nonik').val()) {
+            $('.api_msg_nik').text('');
             $('.api_msg_nik').hide();
             docrt_api_ktp($('#docrt_form_nonik').val());
         } else {
+            $('.api_msg_nik').text(' - Mohon isi form No NIK - ');
             $('.api_msg_nik').show();
         }
     });
@@ -96,15 +98,23 @@ console.log('form.js');
             type: 'POST',
             url: ajax_url+'api.php',
             success: function(data){
-                //console.log(data);
+                $('.api_msg_nik').text('');
+                $('.api_msg_nik').hide();
                 var obj = jQuery.parseJSON(data);
-                var x;
-                for (x in obj) {
-                    if ($('#' + x).length) {
-                        $('#' + x).val(obj[x]);
-                        $('#' + x).addClass('ajaxApi');
+
+                if (obj.status === false) {
+                    $('.api_msg_nik').show();
+                    $('.api_msg_nik').text(obj.message);
+                } else {
+                    var x;
+                    for (x in obj) {
+                        if ($('#' + x).length) {
+                            $('#' + x).val(obj[x]);
+                            $('#' + x).addClass('ajaxApi');
+                        }
                     }
                 }
+               
             }
         });
     }

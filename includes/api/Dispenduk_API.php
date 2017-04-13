@@ -17,29 +17,56 @@ class Dispenduk_API
   function get_data_ktp($nik, $format = 'json') {
 
     $ktp = $this->call_ktp($nik, $format);
-    $return = array(
-      'docrt_form_nonik' => $ktp->KTP->NIK,
-      'docrt_form_nokk' => $ktp->KTP->NO_KK,
-      'docrt_form_nama' => $ktp->KTP->NAMA_LGKP,
-      'docrt_form_alamat' => $ktp->KTP->ALAMAT,
-      'docrt_form_rtrw' => $ktp->KTP->NO_RT.'  '.$ktp->KTP->NO_RW,
-      'docrt_form_ttl' => $ktp->KTP->TMPT_LHR.', '.$ktp->KTP->TGL_LHR,
-      'docrt_form_sperkawinan' => $this->filter($ktp->KTP->STAT_KWN,'sperkawinan'),
-      'docrt_form_agama' => $this->filter($ktp->KTP->AGAMA,'agama'),
-      'docrt_form_pekerjaan' => $this->filter($ktp->KTP->JENIS_PKRJN,'pekerjaan'),
-      'docrt_form_provinsi' => $ktp->KTP->NO_PROP,
-      'docrt_form_kota' => $ktp->KTP->NO_KAB,
-      'docrt_form_kecamatan' => $ktp->KTP->NO_KEC,
-      'docrt_form_kelurahan' => $ktp->KTP->NO_KEL,
-    );
+    $return = false;
+
+    if ($ktp) {
+
+      if ($ktp->status === false) {
+        $return = $ktp;
+      } else {
+        $return = array(
+          'docrt_form_nonik' => $ktp->KTP->NIK,
+          'docrt_form_nokk' => $ktp->KTP->NO_KK,
+          'docrt_form_nama' => $ktp->KTP->NAMA_LGKP,
+          'docrt_form_alamat' => $ktp->KTP->ALAMAT,
+          'docrt_form_rtrw' => $ktp->KTP->NO_RT.' / '.$ktp->KTP->NO_RW,
+          'docrt_form_ttl' => $ktp->KTP->TMPT_LHR.', '.$ktp->KTP->TGL_LHR,
+          'docrt_form_sperkawinan' => $this->filter($ktp->KTP->STAT_KWN,'sperkawinan'),
+          'docrt_form_agama' => $this->filter($ktp->KTP->AGAMA,'agama'),
+          'docrt_form_pekerjaan' => $this->filter($ktp->KTP->JENIS_PKRJN,'pekerjaan'),
+          'docrt_form_provinsi' => $ktp->KTP->NO_PROP,
+          'docrt_form_kota' => $ktp->KTP->NO_KAB,
+          'docrt_form_kecamatan' => $ktp->KTP->NO_KEC,
+          'docrt_form_kelurahan' => $ktp->KTP->NO_KEL,
+        );
+      }
+    } else {
+      $return = array("status"=>false,"message"=>"koneksi gagal");
+    }
+    
     return $return;
   }
 
-  function call_ktp($nik, $format) {
+  function call_ktp($nik, $format = 'json') {
     $url = 'http://'.$this->ip.'/ws/api/v2/ktp/nik/'.$nik.'/'.'key/'.$this->api_key.'/'.'format/'.$format;
     //$url = 'http://192.10.10.70:8082/ws/api/v2/ktp/nik/3573032709930004/key/3a1445af14d6920df76b9001e75c95c47e1ecd0d/format/json';
 
-    $json = file_get_contents($url);
+    //$json = file_get_contents($url);
+    //  Initiate curl
+    $ch = curl_init();
+    // Disable SSL verification
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    // Time out
+    curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+    // Will return the response, if false it print the response
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    // Set the url
+    curl_setopt($ch, CURLOPT_URL,$url);
+    // Execute
+    $json=curl_exec($ch);
+    // Closing
+    curl_close($ch);
+
     $obj = json_decode($json);
     /*$obj = array(
         'KTP' => array(

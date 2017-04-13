@@ -201,7 +201,7 @@ function docrt_form_nonik($meta, $type_surat) {
         <th><label class="diy-label" for="docrt_form_nonik">No NIK</label></th>
         <td> : </td>
         <td>
-        <span class="api_msg api_msg_nik"> - Mohon isi form No NIK - </span>
+        <span class="api_msg api_msg_nik"></span>
         <input name="docrt_form_nonik" type="text" class="docrt_inputs" id="docrt_form_nonik" value="'.$meta['docrt_form_nonik'][0].'"/>
         <button class="nik_api_button">Auto</button>
         </td>
