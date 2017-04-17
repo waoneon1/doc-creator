@@ -241,6 +241,7 @@ function docrt_get_form_surat($type_surat = 'sku') {
             'docrt_form_tempat',
             'docrt_form_sebab_kematian',
     'docrt_form_alamat',
+    'docrt_form_alamat_luar',
     'docrt_form_rtrw',
     'docrt_form_kelurahan',
     'docrt_form_kecamatan',
@@ -298,8 +299,20 @@ function docrt_get_form_surat($type_surat = 'sku') {
         'docrt_form_alamat_pelapor',
         'docrt_form_dilahirkan_pelapor',
         'docrt_form_yang_menerangkan',
-
         'docrt_form_menerangkan_bahwa',
+        'docrt_form_keterangan',
+        'docrt_form_dokumen',
+        // bangunan
+        'docrt_form_no_imb',
+        'docrt_form_tgl_imb',
+        'docrt_form_fungsi_imb',
+        'docrt_form_no_krk',
+        'docrt_form_tgl_krk',
+        'docrt_form_fungsi_krk',
+        'docrt_form_jml_lantai',
+        'docrt_form_jml_unit',
+        'docrt_form_alamat_bangunan',
+        'docrt_form_bkt',
 
     );
 

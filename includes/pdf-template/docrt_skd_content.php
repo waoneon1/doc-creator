@@ -23,7 +23,7 @@ function docrt_skd_content($param, $meta, $post_term) {
     $tbl .= '
      <table cellspacing="0" cellpadding="1" border="0">
         <tr>
-            <td width="100%" colspan="3"><p align="justify">'.$space.'Berdasarkan Ketarangan '.$meta['docrt_form_rtrw'][0].' Kelurahan '.$meta['docrt_form_kelurahan'][0].' Kecamatan '.$meta['docrt_form_kecamatan'][0].' Kota '.$meta['docrt_form_kota'][0].', '.$meta['docrt_form_nama_usaha'][0].' tersebut benar-benar berdomisili di '.$meta['docrt_form_alamat_usaha'][0].' Kelurahan '.$meta['docrt_form_kelurahan'][0].' Kecamatan '.$meta['docrt_form_kecamatan'][0].' Kota '.$meta['docrt_form_kota'][0].',
+            <td width="100%" colspan="3"><p align="justify">'.$space.'Berdasarkan Keterangan '.$meta['docrt_form_rtrw'][0].' Kelurahan '.$meta['docrt_form_kelurahan'][0].' Kecamatan '.$meta['docrt_form_kecamatan'][0].' Kota '.$meta['docrt_form_kota'][0].', '.$meta['docrt_form_nama_usaha'][0].' tersebut benar-benar berdomisili di '.$meta['docrt_form_alamat_usaha'][0].' Kelurahan '.$meta['docrt_form_kelurahan'][0].' Kecamatan '.$meta['docrt_form_kecamatan'][0].' Kota '.$meta['docrt_form_kota'][0].',
            </p></td>
         </tr>
     </table>';

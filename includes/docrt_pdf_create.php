@@ -116,7 +116,7 @@ function docrt_get_header_pdf($pdf,$postID, $post_term) {
     $pdf->setPrintHeader(false);
     $pdf->setPrintFooter(false);
    // jika ada kontent surat yang perlu font size berbeda alter here
-    if ($post_term[0]->slug == 'skp') {
+    if ($post_term[0]->slug == 'skp' || $post_term[0]->slug == 'skp_m') {
         $pdf->setCellHeightRatio(1.2);
     } else {
         $pdf->setCellHeightRatio(1.5);
@@ -143,7 +143,7 @@ function docrt_get_content_pdf($pdf, $postID, $post_term, $main_doc = '') {
         strtoupper($post_term[0]->name).'</strong>', true, false, false, false, '');
 
     // jika ada kontent surat yang perlu font size berbeda alter here
-    if ($post_term[0]->slug == 'skp') {
+    if ($post_term[0]->slug == 'skp' || $post_term[0]->slug == 'skp_m') {
         $pdf->SetFont('times','','11');
     } else {
         $pdf->SetFont('times','','12');

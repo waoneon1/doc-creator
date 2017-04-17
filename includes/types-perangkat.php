@@ -352,9 +352,10 @@ function docrt_data_dasar_callback() {
         'hide_empty' => false,
     ) );
     // jika term surat gk ada panggil fungsi add
-    if (!$terms_surat) {
+    docrt_tax_list();
+    /*if (!$terms_surat) {
         docrt_tax_list();
-    } ?>
+    }*/ ?>
 
     <form name="post" action="edit.php?post_type=docrt-perangkat&page=docrt-data-dasar" method="post">
     <div id="data_dasar_tabs" style="display: none;">
@@ -362,6 +363,7 @@ function docrt_data_dasar_callback() {
         <li><a href="#data_dasar_tabs-1">Data Dasar</a></li>
         <li><a href="#data_dasar_tabs-2">List Surat</a></li>
         <li><a href="#data_dasar_tabs-3">Pengesah</a></li>
+        <li><a href="#data_dasar_tabs-4">Nomor Surat</a></li>
       </ul>
       <div id="data_dasar_tabs-1">
         <?php $meta = get_option('docrt_data_dasar'); ?>
@@ -540,6 +542,33 @@ function docrt_data_dasar_callback() {
           <button class="button button-pej-remove">Remove</button>
           <hr/>
       </div>
+      <div id="data_dasar_tabs-4">
+        <h3 class="docrt-option-title">Nomer Surat</h3>
+        <div style="background-color: #0085ba; height: 4px;"></div>
+            <p><i>Guna menghindari kesalahan</i></p>
+            <p><i>Untuk mengubah nomer surat, setelah mengisi angka yang diinginkan lakukan konfirmasi dengan memberi tanda "check" di bawah form</i></p>
+            <?php $terms_list = docrt_get_terms_active(); ?>
+            <table class="docrt_tbl"><tbody class="">
+            <?php foreach ($terms_list as $terms_id => $terms_name): ?>
+            <?php
+                $surat_option_id = (get_option('docrt_'.$terms_id)) ? get_option('docrt_'.$terms_id) : 0;
+            ?>
+                <tr align="left">
+                    <th><label class="diy-label" for="docrt_no_<?php echo $terms_id ?>"><?php echo $terms_name ?></label></th>
+                    <td><p><strong><?php echo $terms_id ?></strong></p></td>
+                    <td>
+                        <input name="docrt_no_surat[<?php echo 'docrt_'.$terms_id ?>]" type="number" class="docrt_inputs" id="docrt_no_<?php echo $terms_id ?>" value="<?php echo $surat_option_id ?>" />
+                    </td>
+                </tr>
+            <?php endforeach ?>
+            </tbody></table>
+            <div class="error notice" style="background-color: #ffebeb;">
+                <p><i>Mohon berhati - hati dalam mengubah angka - angka di atas karena akan berpengaruh ke nomer surat untuk seterusnya</i></p>
+                <p><i>Jika belum yakin atau lupa angka mana saja yang telah diubah, refresh page kemudian ulangi mengubah angka yang diinginkan </i></p>
+                <p><input type="checkbox" name="docrt_no_surat_confirm" id="docrt_no_surat_confirm" value="1">
+                <label for="docrt_no_surat_confirm"><i> Saya yakin untuk mengubah nomer surat di atas</i></label></p>
+            </div>
+      </div>
     </div>
     <input type="submit" name="data_dasar_submit" value="Save" class="button-primary button-large button-data-dasar-submit" />
     </form>
@@ -574,6 +603,7 @@ function docrt_data_dasar_callback() {
 }
 add_action('wp_loaded', 'docrt_data_dasar_save', 40);
 function docrt_data_dasar_save() {
+
     //   verify the nonce
     if ( !isset($_POST['docrt_nonce_data_dasar']) || !wp_verify_nonce( $_POST['docrt_nonce_data_dasar'], plugin_basename(__FILE__) ) ) return;
     //  don't try to save the data under autosave, ajax, or future post.
@@ -586,10 +616,18 @@ function docrt_data_dasar_save() {
         || $_GET['post_type'] != 'docrt-perangkat'
         || $_GET['page'] != 'docrt-data-dasar' )
     return;
-
+    //print_r($_POST['docrt_no_surat']); exit;
     update_option( 'docrt_data_dasar', $_POST['docrt_data_dasar']);
     update_option( 'docrt_pej', $_POST['docrt_pej']);
     update_option( 'docrt_pej_count', $_POST['docrt_pej_count']);
     update_option( 'docrt_surat_checkbox', $_POST['docrt_surat_checkbox']);
+
+    if ($_POST['docrt_no_surat_confirm']) {
+        foreach ($_POST['docrt_no_surat'] as $key => $value) {
+            update_option( $key, $value);
+        }
+    }
+
+
 }
 

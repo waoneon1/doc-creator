@@ -33,18 +33,44 @@ console.log('form.js');
         docrt_remove_pejabat_kel();
     });
 
-    //  API KTP
+    //  ========================================================================
+    //  API KTP ================================================================
+    //  ========================================================================
     $(document).on("click", ".nik_api_button", function (e) { //vpc-options
         e.preventDefault();
-        console.log($(this));
+        //console.log($(this));
+        var msg = $(this).parents('.api_msg_parent').find('.api_msg_nik');
+        msg.text('');
+        msg.hide();
+
         if ($('#docrt_form_nonik').val()) {
-            $('.api_msg_nik').hide();
-            docrt_api_ktp($('#docrt_form_nonik').val());
+            msg.hide();
+            docrt_api_ktp($('#docrt_form_nonik').val(), 'nik', '', msg);
         } else {
-            $('.api_msg_nik').show();
+            msg.text('mohon isi form No NIK');
+            msg.show();
         }
     });
 
+    $(document).on("click", ".nik_api_button_pengikut", function (e) { //vpc-options
+        e.preventDefault();
+        var i       = $(this).data('nikid');
+        var value   = $('#docrt_pengikut_nik'+i).val();
+        var msg = $(this).parents('.api_msg_parent').find('.api_msg_nik');
+        console.log(msg.length);
+
+        msg.text('');
+        msg.hide();
+
+        if (value) {
+            msg.hide();
+            docrt_api_ktp(value, 'pengikut', i, msg);
+        } else {
+            msg.text('mohon isi form No KTP');
+            msg.show();
+        }
+    });
+    //  ========================================================================
 
     function datepicker_init() {
         jQuery( ".docrt_datepicker" ).datepicker({
@@ -74,6 +100,7 @@ console.log('form.js');
             success: function(data){
                 $('.docrt-master-form').append(data);
                 datepicker_init();
+                docrt_kusus_skp();
                 //console.log(data);
 
             }
@@ -81,7 +108,7 @@ console.log('form.js');
 
     }
 
-    function docrt_api_ktp(nik) {
+    function docrt_api_ktp(nik, jenis, i, msg) {
         var param = docrt_form_data(type_surat);
         var type_surat = $(".docrt_type_surat_box input[type='radio']:checked").data('typesurat');
 
@@ -89,26 +116,37 @@ console.log('form.js');
             'data': param,
             'post_id': post_id,
             'nik': nik,
-            'type_surat': type_surat
+            'type_surat': type_surat,
+            'jenis': jenis,
+            'i': i
         };
         $.ajax({
             data: data,
             type: 'POST',
             url: ajax_url+'api.php',
             success: function(data){
-                //console.log(data);
+                console.log(data);
+                //msg.text('');
+                //msg.hide();
                 var obj = jQuery.parseJSON(data);
-                var x;
-                for (x in obj) {
-                    if ($('#' + x).length) {
-                        $('#' + x).val(obj[x]);
-                        $('#' + x).addClass('ajaxApi');
+
+                if (obj.status === false) {
+                    msg.show();
+                    msg.text(obj.message);
+                } else {
+                    var x;
+                    for (x in obj) {
+                        if ($('#' + x).length) {
+                            $('#' + x).val(obj[x]);
+                            $('#' + x).addClass('ajaxApi');
+                        }
                     }
                 }
             }
         });
     }
 
+    // skp, kk, skpm
     function docrt_kusus_skp() {
         var value = $("#docrt_form_pengikut").val();
         var current_val = $(".docrt_pengikut").length;
@@ -424,6 +462,7 @@ console.log('form.js');
         data.kk ={
             'surat' : [
                 'title###docrt_get_group_title### Data Diri / Pelapor',
+                'docrt_form_nonik',
                 'docrt_form_nokk',
                 'docrt_form_nama',
                 'docrt_form_alamat',
@@ -432,8 +471,10 @@ console.log('form.js');
                 'docrt_form_kecamatan',
                 'docrt_form_kota',
                 'docrt_form_provinsi',
-                'title###docrt_get_group_title### Ketarangan',
-                'docrt_form_tgl'
+                'title###docrt_get_group_title### Keterangan',
+                'docrt_form_tgl',
+                'docrt_form_pengikut',
+                'table###docrt_tbl_pindah',
             ]
         };
         // 12. ktp ===================================================================================================
@@ -455,6 +496,7 @@ console.log('form.js');
                 'docrt_form_kebangsaan',
                 'title###docrt_get_group_title###Keterangan',
                 'docrt_form_tgl_berlaku',
+                'docrt_form_keterangan',
             ]
         };
         // 13. data surat keterangan ===================================================================================================
@@ -480,7 +522,113 @@ console.log('form.js');
                 'docrt_form_menerangkan_bahwa',
             ]
         };
+        // 14. kk_p ===================================================================================================
+        data.kk_p = data['kk'];
+        // 15. kk_t ===================================================================================================
+        data.kk_t = data['kk'];
+        // 16. lg ===================================================================================================
+        data.lg ={
+            'surat' : [
+                'title###docrt_get_group_title### Data Diri / Pemohon',
+                'docrt_form_nonik',
+                'docrt_form_nokk',
+                'docrt_form_nama',
+                'docrt_form_ttl',
+                'docrt_form_jk',
+                'docrt_form_alamat',
+                'docrt_form_rtrw',
+                'title###docrt_get_group_title###Keterangan',
+                'docrt_form_tgl',
+                'docrt_form_keterangan',
+                'title###docrt_get_group_title###Rekomendasi',
+                'docrt_form_dokumen',
+                'docrt_form_keperluan',
+                'docrt_form_tujuan',
+            ]
+        };
+        // 17. r_u ===================================================================================================
+        data.r_u = data['lg'];
+        // 18. r_ho ===================================================================================================
+        data.r_ho ={
+            'surat' : [
+                'title###docrt_get_group_title### Data Diri / Pemohon',
+                'docrt_form_nonik',
+                'docrt_form_nama',
+                'docrt_form_ttl',
+                'docrt_form_jk',
+                'docrt_form_alamat',
+                'docrt_form_rtrw',
+                'title###docrt_get_group_title###Keterangan',
+                'docrt_form_tgl',
+                'title###docrt_get_group_title###Tentang Bangunan',
+                'docrt_form_no_imb',
+                'docrt_form_tgl_imb',
+                'docrt_form_fungsi_imb',
+                'title###docrt_get_group_title### Keterangan Usaha',
+                'docrt_form_nama_usaha',
+                'docrt_form_alamat_usaha',
+                'docrt_form_ket_usaha',
+            ]
+        };
+        // 19. r_imb ===================================================================================================
+        data.r_imb ={
+            'surat' : [
+                'title###docrt_get_group_title### Data Diri / Pemohon',
+                'docrt_form_nonik',
+                'docrt_form_nama',
+                'docrt_form_ttl',
+                'docrt_form_jk',
+                'docrt_form_alamat',
+                'docrt_form_rtrw',
+                'title###docrt_get_group_title###Keterangan',
+                'docrt_form_tgl',
+                'title###docrt_get_group_title###Tentang Bangunan',
+                'docrt_form_no_krk',
+                'docrt_form_tgl_krk',
+                'docrt_form_fungsi_krk',
+                'docrt_form_fungsi_imb',
+                'docrt_form_jml_lantai',
+                'docrt_form_jml_unit',
+                'docrt_form_alamat_bangunan',
+                'docrt_form_bkt',
+            ]
+        };
+        // 20. skp masuk ===================================================================================================
+        data.skp_m ={
+            'surat' : [
+                'title###docrt_get_group_title### Data Diri / Pelapor',
+                'docrt_form_nonik',
+                'docrt_form_nokk',
+                'docrt_form_nama',
+                'docrt_form_ttl',
+                'docrt_form_jk',
+                'docrt_form_kebangsaan',
+                'docrt_form_agama',
+                'docrt_form_sperkawinan',
+                'docrt_form_pekerjaan',
+                'docrt_form_pendidikan',
+                'docrt_form_alamat',
+                'title###docrt_get_group_title###Alamat',
+                'docrt_form_alamat_luar',
+                'docrt_form_desa_pindah',
+                'docrt_form_kecamatan_pindah',
+                'docrt_form_kabkota_pindah',
+                'docrt_form_provinsi_pindah',
+                'title###docrt_get_group_title###Keterangan',
+                'docrt_form_keperluan',
+                'docrt_form_tujuan',
+                'docrt_form_tgl',
+                'docrt_form_tgl_berlaku',
+                'docrt_form_ketRT',
+                'title###docrt_get_group_title###Keterangan Pindah',
+                'docrt_form_tgl_pindah',
+                'docrt_form_alasan_pindah',
+                'docrt_form_pengikut', //perlu alter (belum bisa otomatis we`ll take care of it)
 
+                'table###docrt_tbl_pindah'
+                // -no, nama, jk, tgl lahir, st perkawinan, pendidikan, noktp, keterangan(suami istri anak ortu keluarga lain)
+            ]
+        };
         if (type_surat == '')
             return docrt_merge_options(data,docrt_header_data());
         else

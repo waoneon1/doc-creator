@@ -3,7 +3,7 @@
 Plugin Name: Document Creator
 Plugin URI: -
 Description: Make Document From Template
-Version: 1.0.1
+Version: 1.1.0
 Author: Dharmawan Sukma Hardi
 Author URI: -
 License: GPLv2 or laterss
@@ -60,7 +60,7 @@ function docrt_dd($jenis = false){
 function docrt_no_surat($type,$meta,$postID) {
 
     $no = '35.73'.'.'.docrt_dd('kkec').'.'.docrt_dd('kkel');
-    // Surat Utama 13
+    // Surat Utama 16
 
     $data['sku']    = '563/'.$meta['docrt_sku_id'][0].'/'.$no.'/'.get_the_date('Y',$postID) ;
     $data['skdu']   = '563/'.$meta['docrt_skdu_id'][0].'/'.$no.'/'.get_the_date('Y',$postID) ;
@@ -68,13 +68,22 @@ function docrt_no_surat($type,$meta,$postID) {
     $data['skik']   = '435/'.$meta['docrt_skik_id'][0].'/'.$no.'/'.get_the_date('Y',$postID) ;
     $data['skck']   = '331/'.$meta['docrt_skck_id'][0].'/'.$no.'/'.get_the_date('Y',$postID) ;
     $data['skp']    = '475/'.$meta['docrt_skp_id'][0].'/'.$no.'/'.get_the_date('Y',$postID) ;
+    $data['skp_m']  = '475/'.$meta['docrt_skp_m_id'][0].'/'.$no.'/'.get_the_date('Y',$postID) ;
+
     $data['sktm']   = '581/'.$meta['docrt_sktm_id'][0].'/'.$no.'/'.get_the_date('Y',$postID) ;
     $data['skbpm']  = '474/'.$meta['docrt_skbpm_id'][0].'/'.$no.'/'.get_the_date('Y',$postID) ;
     $data['skel']   = '474.1/'.$meta['docrt_skel_id'][0].'/'.$no.'/'.'V/'.get_the_date('Y',$postID) ;
     $data['skem']   = '474.3/'.$meta['docrt_skem_id'][0].'/'.$no.'/'.'V/'.get_the_date('Y',$postID) ;
     $data['kk']     = $meta['docrt_kk_id'][0].'/'.get_the_date('Y',$postID) ;
+    $data['kk_p']   = $meta['docrt_kk_p_id'][0].'/'.get_the_date('Y',$postID) ;
+    $data['kk_t']   = $meta['docrt_kk_t_id'][0].'/'.get_the_date('Y',$postID) ;
     $data['ktp']    = $meta['docrt_ktp_id'][0].'/'.get_the_date('Y',$postID) ;
     $data['sk']     = '474/'.$meta['docrt_sk_id'][0].'/'.$no.'/'.get_the_date('Y',$postID) ;
+    $data['lg']     = $meta['docrt_lg_id'][0].'/'.get_the_date('Y',$postID) ;
+    $data['r_u']    = $meta['docrt_r_u_id'][0].'/'.get_the_date('Y',$postID) ;
+    $data['r_ho']   = $meta['docrt_r_ho_id'][0].'/'.get_the_date('Y',$postID) ;
+    $data['r_imb']  = $meta['docrt_r_imb_id'][0].'/'.get_the_date('Y',$postID) ;
+
 
     // option: bukan merupakan surat utama
     $data['skai']   = '331/'.$meta['docrt_skp_id'][0].'/'.$no.'/'.'V/'.get_the_date('Y',$postID) ;
@@ -179,24 +188,58 @@ add_action( 'wp_enqueue_scripts', 'docrt_load_scripts' );
  *****************************************************************************************/
 
 function docrt_tax_list() {
-    wp_insert_term( 'surat keterangan usaha',               'surat', $args = array('slug'=>'sku') );
-    wp_insert_term( 'surat keterangan domisili usaha ',     'surat', $args = array('slug'=>'skdu') );
-    wp_insert_term( 'surat keterangan domisili',            'surat', $args = array('slug'=>'skd') );
-    wp_insert_term( 'surat keterangan ijin keramaian',      'surat', $args = array('slug'=>'skik') );
-    wp_insert_term( 'surat keterangan catatan kepolisian',  'surat', $args = array('slug'=>'skck') );
+    $terms_surat = get_terms( array(
+        'taxonomy' => 'surat',
+        'hide_empty' => false,
+    ) );
+    $all_terms_empty = false;
+    if (!$terms_surat) $all_terms_empty = true;
 
-    wp_insert_term( 'surat keterangan pindah',              'surat', $args = array('slug'=>'skp') );
-    wp_insert_term( 'surat keterangan tidak mampu',         'surat', $args = array('slug'=>'sktm') );
-    wp_insert_term( 'surat keterangan balum pernah menikah','surat', $args = array('slug'=>'skbpm') );
-    wp_insert_term( 'surat kelahiran',                      'surat', $args = array('slug'=>'skel') );
-    wp_insert_term( 'surat kematian',                       'surat', $args = array('slug'=>'skem') );
+    foreach ($terms_surat as $key => $v) {
+        $terms_surat_array[$v->slug] = $v->name;
+    }
 
-    wp_insert_term( 'surat keterangan',                     'surat', $args = array('slug'=>'sk') );
-    wp_insert_term( 'kartu tanda penduduk',                 'surat', $args = array('slug'=>'ktp') );
-    wp_insert_term( 'kartu keluarga',                       'surat', $args = array('slug'=>'kk') );
+    $terms = docrt_get_terms_active();
+    foreach ($terms as $key => $value) {
+        if ( !array_key_exists($key, $terms_surat_array) || $all_terms_empty) {
+            wp_insert_term( $value, 'surat', $args = array('slug' => $key) );
+        }
+    }
 }
 
+function docrt_get_terms_active() {
+    $terms = array(
+        'sku'   => 'surat keterangan usaha',
+        'skdu'  => 'surat keterangan domisili usaha ',
+        'skd'   => 'surat keterangan domisili',
+        'skik'  => 'surat keterangan ijin keramaian',
+        'skck'  => 'surat keterangan catatan kepolisian',
 
+        'sktm'  => 'surat keterangan tidak mampu',
+        'skbpm' => 'surat keterangan balum pernah menikah',
+        'skel'  => 'surat kelahiran',
+        'skem'  => 'surat kematian',
+        'skp'   => 'surat keterangan pindah',
+        'skp_m' => 'surat keterangan pindah masuk',
+
+        'sk'    => 'surat keterangan',
+        'ktp'   => 'kartu tanda penduduk',
+
+        // KK
+        'kk'    => 'kartu keluarga',
+        'kk_p'  => 'KK perubahan',
+        'kk_t'  => 'KK tambah anggota keluarga',
+
+        // Rekomendasi
+        'r_u'   => 'recom umum',
+        'r_ho'  => 'recom HO',
+        'r_imb' => 'recom IMB',
+
+        // Legalisir
+        'lg'    => 'legalisir',
+    );
+    return $terms;
+}
 
 include_once __DIR__ . '/includes/types.php';
 include_once __DIR__ . '/includes/types-perangkat.php';

@@ -197,13 +197,13 @@ function docrt_form_nokk($meta, $type_surat) {
 
 function docrt_form_nonik($meta, $type_surat) {
 
-  $data = '<tr align="left" class="docrt_form_nonik_tr docrt_form">
+  $data = '<tr align="left" class="docrt_form_nonik_tr docrt_form api_msg_parent">
         <th><label class="diy-label" for="docrt_form_nonik">No NIK</label></th>
         <td> : </td>
         <td>
-        <span class="api_msg api_msg_nik"> - Mohon isi form No NIK - </span>
-        <input name="docrt_form_nonik" type="text" class="docrt_inputs" id="docrt_form_nonik" value="'.$meta['docrt_form_nonik'][0].'"/>
-        <button class="nik_api_button">Auto</button>
+          <span class="api_msg api_msg_nik">Mohon isi form No NIK</span>
+          <input name="docrt_form_nonik" type="text" class="docrt_inputs" id="docrt_form_nonik" value="'.$meta['docrt_form_nonik'][0].'"/>
+          <button class="nik_api_button">Auto</button>
         </td>
     </tr>';
   return $data;
@@ -256,7 +256,7 @@ function docrt_form_goldarah($meta, $type_surat) {
 function docrt_form_nama_mati($meta, $type_surat) {
 
   $data = '<tr align="left" class="docrt_form_nama_mati_tr docrt_form">
-        <th><label class="diy-label" for="docrt_form_nama_mati">Namas</label></th>
+        <th><label class="diy-label" for="docrt_form_nama_mati">Nama</label></th>
         <td> : </td>
         <td><input name="docrt_form_nama_mati" type="text" class="docrt_inputs" id="docrt_form_nama_mati" value="'.$meta['docrt_form_nama_mati'][0].'" /></td>
     </tr>';
@@ -267,16 +267,26 @@ function docrt_form_nama_mati($meta, $type_surat) {
 // Alamat ======================================
 
 function docrt_form_alamat($meta, $type_surat) {
-
+  $label_alter = 'Alamat';
   $data = '<tr align="left" class="docrt_form_alamat_tr docrt_form">
-        <th><label class="diy-label" for="docrt_form_alamat">Alamat</label></th>
+        <th><label class="diy-label" for="docrt_form_alamat">'.$label_alter.'</label></th>
         <td> : </td>
         <td><textarea rows="3" name="docrt_form_alamat" class="docrt_inputs" id="docrt_form_alamat">'.$meta['docrt_form_alamat'][0].'</textarea>
         </td>
     </tr>';
   return $data;
 }
-
+function docrt_form_alamat_luar($meta, $type_surat) {
+  $label_alter = 'Alamat';
+  if ($type_surat == 'skp_m') $label_alter = 'Alamat Asal';
+  $data = '<tr align="left" class="docrt_form_alamat_luar_tr docrt_form">
+        <th><label class="diy-label" for="docrt_form_alamat_luar">'.$label_alter.'</label></th>
+        <td> : </td>
+        <td><textarea rows="3" name="docrt_form_alamat_luar" class="docrt_inputs" id="docrt_form_alamat_luar">'.$meta['docrt_form_alamat_luar'][0].'</textarea>
+        </td>
+    </tr>';
+  return $data;
+}
 function docrt_form_rtrw($meta, $type_surat) {
 
   $data = '<tr align="left" class="docrt_form_rtrw_tr docrt_form">
@@ -474,6 +484,134 @@ function docrt_form_saksi($meta, $type_surat) {
   return $data;
 }
 
+function docrt_form_keterangan($meta, $type_surat) {
+  $label_alter = 'Keterangan';
+  if ($type_surat == 'ktp') $label_alter = 'Jenis KTP';
+  if ($type_surat == 'lg') $label_alter = 'Jenis Legalisir';
+  if ($type_surat == 'r_u') $label_alter = 'Jenis Rekomendasi';
+
+  $data = '<tr align="left" class="docrt_form_keterangan_tr docrt_form">
+        <th><label class="diy-label" for="docrt_form_keterangan">'.$label_alter.'</label></th>
+        <td> : </td>
+        <td><input name="docrt_form_keterangan" type="text" class="docrt_inputs" id="docrt_form_keterangan" value="'.$meta['docrt_form_keterangan'][0].'" /></td>
+    </tr>';
+  return $data;
+}
+
+function docrt_form_dokumen($meta, $type_surat) {
+  $label_alter = 'Nama Dokumen';
+  //if ($type_surat == 'ktp') $label_alter = 'Jenis KTP';
+
+  $data = '<tr align="left" class="docrt_form_dokumen_tr docrt_form">
+        <th><label class="diy-label" for="docrt_form_dokumen">'.$label_alter.'</label></th>
+        <td> : </td>
+        <td><input name="docrt_form_dokumen" type="text" class="docrt_inputs" id="docrt_form_dokumen" value="'.$meta['docrt_form_dokumen'][0].'" /></td>
+    </tr>';
+  return $data;
+}
+
+// IMB
+function docrt_form_no_imb($meta, $type_surat) {
+  $label_alter = 'Nomor IMB';
+
+  $data = '<tr align="left" class="docrt_form_no_imb_tr docrt_form">
+        <th><label class="diy-label" for="docrt_form_no_imb">'.$label_alter.'</label></th>
+        <td> : </td>
+        <td><input name="docrt_form_no_imb" type="text" class="docrt_inputs" id="docrt_form_no_imb" value="'.$meta['docrt_form_no_imb'][0].'" /></td>
+    </tr>';
+  return $data;
+}
+function docrt_form_tgl_imb($meta, $type_surat) {
+  $label_alter = 'Tanggal IMB';
+
+  $data = '<tr align="left" class="docrt_form_tgl_imb_tr docrt_form">
+    <th><label class="diy-label" for="docrt_form_tgl_imb">'.$label_alter.'</label></th>
+    <td> : </td>
+    <td><input name="docrt_form_tgl_imb" type="text" class="docrt_inputs docrt_datepicker" id="docrt_form_tgl_imb" value="'.$meta['docrt_form_tgl_imb'][0].'" readonly/></td>
+    </tr>';
+  return $data;
+}
+function docrt_form_fungsi_imb($meta, $type_surat) {
+  $label_alter = 'Fungsi dan Bentuk Bangunan';
+  if ($type_surat == 'r_imb') $label_alter = 'Fungsi dan Bentuk Bangunan (IMB)';
+
+  $data = '<tr align="left" class="docrt_form_fungsi_imb_tr docrt_form">
+        <th><label class="diy-label" for="docrt_form_fungsi_imb">'.$label_alter.'</label></th>
+        <td> : </td>
+        <td><input name="docrt_form_fungsi_imb" type="text" class="docrt_inputs" id="docrt_form_fungsi_imb" value="'.$meta['docrt_form_fungsi_imb'][0].'" /></td>
+    </tr>';
+  return $data;
+}
+function docrt_form_no_krk($meta, $type_surat) {
+  $label_alter = 'Nomor KRK';
+
+  $data = '<tr align="left" class="docrt_form_no_krk_tr docrt_form">
+        <th><label class="diy-label" for="docrt_form_no_krk">'.$label_alter.'</label></th>
+        <td> : </td>
+        <td><input name="docrt_form_no_krk" type="text" class="docrt_inputs" id="docrt_form_no_krk" value="'.$meta['docrt_form_no_krk'][0].'" /></td>
+    </tr>';
+  return $data;
+}
+function docrt_form_tgl_krk($meta, $type_surat) {
+  $label_alter = 'Tanggal KRK';
+
+  $data = '<tr align="left" class="docrt_form_tgl_krk_tr docrt_form">
+    <th><label class="diy-label" for="docrt_form_tgl_krk">'.$label_alter.'</label></th>
+    <td> : </td>
+    <td><input name="docrt_form_tgl_krk" type="text" class="docrt_inputs docrt_datepicker" id="docrt_form_tgl_krk" value="'.$meta['docrt_form_tgl_krk'][0].'" readonly/></td>
+    </tr>';
+  return $data;
+}
+function docrt_form_fungsi_krk($meta, $type_surat) {
+  $label_alter = 'Fungsi dan Bentuk Bangunan';
+  if ($type_surat == 'r_imb') $label_alter = 'Fungsi dan Bentuk Bangunan (KRK)';
+
+  $data = '<tr align="left" class="docrt_form_fungsi_krk_tr docrt_form">
+        <th><label class="diy-label" for="docrt_form_fungsi_krk">'.$label_alter.'</label></th>
+        <td> : </td>
+        <td><input name="docrt_form_fungsi_krk" type="text" class="docrt_inputs" id="docrt_form_fungsi_krk" value="'.$meta['docrt_form_fungsi_krk'][0].'" /></td>
+    </tr>';
+  return $data;
+}
+function docrt_form_jml_lantai($meta, $type_surat) {
+
+  $data = '<tr align="left" class="docrt_form_jml_lantai_tr docrt_form">
+      <th><label class="diy-label" for="docrt_form_jml_lantai">Jml Lantai</label></th>
+      <td> : </td>
+      <td><input name="docrt_form_jml_lantai" type="number" class="docrt_inputs" id="docrt_form_jml_lantai" value="'.$meta['docrt_form_jml_lantai'][0].'" min="0"/></td>
+  </tr>';
+  return $data;
+}
+function docrt_form_jml_unit($meta, $type_surat) {
+
+  $data = '<tr align="left" class="docrt_form_jml_unit_tr docrt_form">
+      <th><label class="diy-label" for="docrt_form_jml_unit">Jml Unit</label></th>
+      <td> : </td>
+      <td><input name="docrt_form_jml_unit" type="number" class="docrt_inputs" id="docrt_form_jml_unit" value="'.$meta['docrt_form_jml_unit'][0].'" min="0"/></td>
+  </tr>';
+  return $data;
+}
+function docrt_form_alamat_bangunan($meta, $type_surat) {
+
+  $data = '<tr align="left" class="docrt_form_alamat_bangunan_tr docrt_form">
+        <th><label class="diy-label" for="docrt_form_alamat_bangunan">Alamat Bangunan</label></th>
+        <td> : </td>
+        <td><textarea rows="3" name="docrt_form_alamat_bangunan" class="docrt_inputs" id="docrt_form_alamat_bangunan">'.$meta['docrt_form_alamat_bangunan'][0].'</textarea>
+        </td>
+    </tr>';
+  return $data;
+}
+function docrt_form_bkt($meta, $type_surat) {
+  $label_alter = 'Bukti Kepemilikan Tanah';
+
+  $data = '<tr align="left" class="docrt_form_bkt_tr docrt_form">
+        <th><label class="diy-label" for="docrt_form_bkt">'.$label_alter.'</label></th>
+        <td> : </td>
+        <td><input name="docrt_form_bkt" type="text" class="docrt_inputs" id="docrt_form_bkt" value="'.$meta['docrt_form_bkt'][0].'" /></td>
+    </tr>';
+  return $data;
+}
+
 // Usaha Lembaga Acara ===================================================================
 
 function docrt_form_nama_usaha($meta, $type_surat) {
@@ -511,9 +649,11 @@ function docrt_form_rtrw_usaha($meta, $type_surat) {
 }
 //ss
 function docrt_form_ket_usaha($meta, $type_surat) {
+  $label_alter = 'Usaha Bergerak dibidang';
+  if ($type_surat == 'r_ho') $label_alter = 'Jenis Usaha';
 
   $data = '<tr align="left" class="docrt_form_ket_usaha_tr docrt_form">
-    <th><label class="diy-label" for="docrt_form_ket_usaha">Usaha Bergerak dibidang</label></th>
+    <th><label class="diy-label" for="docrt_form_ket_usaha">'.$label_alter.'</label></th>
     <td> : </td>
     <td><input name="docrt_form_ket_usaha" type="text" class="docrt_inputs" id="docrt_form_ket_usaha" value="'.$meta['docrt_form_ket_usaha'][0].'"/></td>
   </tr>';
@@ -881,8 +1021,9 @@ function docrt_form_tlp_ayah($meta, $type_surat) {
 
 function docrt_tbl_pindah($meta, $type_surat) {
 
-  $data = '<table class="docrt_pemohon_box docrt_tbl_pindah d-hide">';
+  $data = '<table class="docrt_pemohon_box docrt_tbl_pindah d-hide api_msg_parent">';
       $data .= '<tbody>';
+      $data .= '<tr><th colspan="8"><span class="api_msg api_msg_nik"> - Mohon isi form No NIK - </span><th></tr>';
       $data .= '
       <tr align="center">
           <th></th>
@@ -907,14 +1048,17 @@ function docrt_tbl_pindah($meta, $type_surat) {
               </td>
               <td><input name="docrt_pengikut_lahir'.$i.'" type="text" id="docrt_pengikut_lahir'.$i.'" value="'.$meta['docrt_pengikut_lahir'.$i][0].'" class="pengikut_tgl docrt_datepicker" readonly/></td>
               <td><select class="pengikut_status" name="docrt_pengikut_status'.$i.'" type="text" id="docrt_pengikut_status'.$i.'" >
-                    <option value="Blm Kawin">Blm Kawin</option>
+                    <option value="Belum Kawin">Blm Kawin</option>
                     <option value="Kawin" '.(($meta['docrt_pengikut_status'.$i][0] == 'Kawin') ? 'selected' : '').'>Kawin</option>
                     <option value="Cerai Hidup" '.(($meta['docrt_pengikut_status'.$i][0] == 'Cerai Hidup') ? 'selected' : '').'>Cerai Hidup</option>
                     <option value="Cerai Mati" '.(($meta['docrt_pengikut_status'.$i][0] == 'Cerai Mati') ? 'selected' : '').'>Cerai Mati</option>
                   </select>
               </td>
               <td><input name="docrt_pengikut_pendidikan'.$i.'" type="text" id="docrt_pengikut_pendidikan'.$i.'" value="'.$meta['docrt_pengikut_pendidikan'.$i][0].'" class="pengikut_pend"/></td>
-              <td><input name="docrt_pengikut_nik'.$i.'" type="text" id="docrt_pengikut_nik'.$i.'" value="'.$meta['docrt_pengikut_nik'.$i][0].'" class="pengikut_nik"/></td>
+              <td class="pengikut_nik_td">
+                <input name="docrt_pengikut_nik'.$i.'" type="text" id="docrt_pengikut_nik'.$i.'" value="'.$meta['docrt_pengikut_nik'.$i][0].'" class="pengikut_nik"/>
+                <button class="nik_api_button_pengikut" data-nikid="'.$i.'">Auto</button>
+              </td>
               <td><input name="docrt_pengikut_keterangan'.$i.'" type="text" id="docrt_pengikut_keterangan'.$i.'" value="'.$meta['docrt_pengikut_keterangan'.$i][0].'" class="pengikut_ket"/></td>
           </tr>';
       }
@@ -934,7 +1078,7 @@ function docrt_tbl_pindah($meta, $type_surat) {
 
 
 
-//  Aint no form ================================================================================================
+//  This is aint no form ================================================================================================
 
 function docrt_doc_title_nosurat($meta, $type_surat) {
   //$post_term = get_the_terms ($post_id,'surat' );

@@ -44,10 +44,20 @@ table.docrt_tbl {
 }
 .docrt_pemohon_box.docrt_tbl_pindah input, .docrt_pemohon_box.docrt_tbl_pindah select{
 	height: 25px;
-    font-size: 12px;
-    width: 100%;
-    padding: 0;
+  font-size: 12px;
+  width: 100%;
+  padding: 0;
 }
+.docrt_pemohon_box.docrt_tbl_pindah input {
+  padding: 0 5px;
+}
+.docrt_pemohon_box.docrt_tbl_pindah .pengikut_nik_td {
+  position: relative;
+}
+.docrt_pemohon_box.docrt_tbl_pindah .pengikut_nik_td input{
+  padding-right: 30px;
+}
+
 .docrt_pemohon_box .docrt_side_input {
     width: 100px;
     padding: 7px;
@@ -95,7 +105,7 @@ tr.strip td {
 	width: 50px;
 }*/
 .docrt_pemohon_box.docrt_tbl_pindah input.pengikut_tgl {
-	width: 120px;
+	width: 80px;
 }
 .docrt_pemohon_box.docrt_tbl_pindah input.pengikut_nama {
 	width: 190px;
@@ -134,7 +144,7 @@ label[for=suratdiv-hide],
   color: white;
   background: #f45246;
   font-size: 12px;
-  padding: 0px 6px 2px;
+  padding: 0px 60px 2px;
   /* border-radius: 5px; */
   margin: 1px;
   display: none;
@@ -149,7 +159,17 @@ label[for=suratdiv-hide],
   position: relative;
   left: -52px;
 }
-
+.nik_api_button_pengikut {
+    background: #64ca92;
+    color: white;
+    font-size: 9px;
+    cursor: pointer;
+    border: 0px solid #000;
+    padding: 3px;
+    position: absolute;
+    right: 3px;
+    top: 5px;
+}
 
 /* RUBAH ICON ADMIN MENU */
 li#menu-posts-docrt-document .wp-menu-image::before,
@@ -178,7 +198,7 @@ li#menu-posts-docrt-perangkat .wp-menu-image::before {
   padding: 0;
 }
 
-#data_dasar_tabs input[type=radio], #data_dasar_tabs input[type=checkbox] {
+.surat_box input[type=radio], .surat_box input[type=checkbox] {
   border: 2px solid #E91E63;
   background: #fff;
   color: #885454;
@@ -200,22 +220,22 @@ li#menu-posts-docrt-perangkat .wp-menu-image::before {
   -webkit-transition: .05s border-color ease-in-out;
   transition: .05s border-color ease-in-out;
 }
-#data_dasar_tabs input[type=checkbox]:checked {
+.surat_box input[type=checkbox]:checked {
     border: 2px solid #0085ba!important;
 }
-#data_dasar_tabs input[type=checkbox]:before {
+.surat_box input[type=checkbox]:before {
 content: "\f158";
     margin: -11px 0 0 -12px;
     color: #E91E63;
     font: 400 54px/1 dashicons;
 }
-#data_dasar_tabs input[type=checkbox]:checked:before {
+.surat_box input[type=checkbox]:checked:before {
   content: "\f147";
   margin: -13px 0 0 -17px;
   color: #0085ba;
   font: 400 60px/1 dashicons;
 }
-#data_dasar_tabs input[type=radio]:before, #data_dasar_tabs input[type=checkbox]:before {
+.surat_box input[type=radio]:before, #data_dasar_tabs input[type=checkbox]:before {
   float: left;
   display: inline-block;
   vertical-align: middle;
