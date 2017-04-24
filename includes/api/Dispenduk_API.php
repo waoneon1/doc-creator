@@ -35,8 +35,8 @@ class Dispenduk_API
           'docrt_form_sperkawinan' => $this->filter($ktp->KTP->STAT_KWN,'sperkawinan'),
           'docrt_form_agama' => $this->filter($ktp->KTP->AGAMA,'agama'),
           'docrt_form_pekerjaan' => $this->filter($ktp->KTP->JENIS_PKRJN,'pekerjaan'),
-          'docrt_form_provinsi' => $ktp->KTP->NO_PROP,
-          'docrt_form_kota' => $ktp->KTP->NO_KAB,
+          'docrt_form_provinsi' => $this->filter($ktp->KTP->NO_PROP, 'prop'),
+          'docrt_form_kota' => $this->filter($ktp->KTP->NO_KAB, 'kab'),
           'docrt_form_kecamatan' => $this->filter($ktp->KTP->NO_KEC, 'kecamatan'),
           'docrt_form_kelurahan' => $this->filter($ktp->KTP->NO_KEL, 'kelurahan'),
         );
@@ -156,6 +156,28 @@ class Dispenduk_API
         case 'kelurahan':
            $param = array(
               '1008' => 'Sawojajar',
+            );
+            if ( array_key_exists($data, $param)) {
+              $return = $param[$data];
+            } else {
+              $return = $data;
+            }
+            break;
+
+        case 'prop':
+            $param = array(
+              '35' => 'Jawa Timur',
+            );
+            if ( array_key_exists($data, $param)) {
+              $return = $param[$data];
+            } else {
+              $return = $data;
+            }
+            break;
+
+        case 'kab':
+            $param = array(
+              '73' => 'Kota Malang',
             );
             if ( array_key_exists($data, $param)) {
               $return = $param[$data];
