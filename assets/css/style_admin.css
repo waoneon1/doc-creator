@@ -244,3 +244,9 @@ content: "\f158";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+/*HIDE PUBLISH ON form RW*/
+
+.post-type-docrt-formrw #submitdiv {
+  display: none;
+}

@@ -1,5 +1,5 @@
 jQuery(document).ready(function($) {
-console.log('form.js');
+console.log(cpt_type);
     if (cpt_type == 'create_document') {
         tes_docrt_form_selected();
     }
@@ -8,11 +8,15 @@ console.log('form.js');
     docrt_kusus_skp();
     //docrt_kusus_skel();
     datepicker_init();
-
+    
     $(".docrt_type_surat_box input:radio").click(function() {
         // docrt_form_selected();
         tes_docrt_form_selected();
     });
+
+
+    
+
 
     // tambah form pengikut khusus skp
     $(document).on("change", "#docrt_form_pengikut", function (e) { //vpc-options
@@ -80,19 +84,24 @@ console.log('form.js');
     }
 
     function tes_docrt_form_selected() {
+
         var form_class = '';
         var tr_tag = $(".docrt_pemohon_box .docrt_form");
         var type_surat = $(".docrt_type_surat_box input[type='radio']:checked").data('typesurat');
         var param = docrt_form_data(type_surat);
 
+        // frontend input
+        $('#docrt_formrw_type').val(type_surat);
+
         $('.docrt-master-form').html('');
         var data = {
             'data': param,
             'post_id': post_id,
-            'type_surat': type_surat
+            'type_surat': type_surat,
+            'cpt_type': cpt_type
         };
         //console.log(ajax_params);
-        //console.log(ajax_url);
+        //console.log(data);
         $.ajax({
             data: data,
             type: 'POST',

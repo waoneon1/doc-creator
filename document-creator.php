@@ -153,6 +153,7 @@ add_action('init', 'docrt_include_admin');
 function docrt_load_scripts_admin() {
     global $pagenow;
 
+    wp_enqueue_style( 'style-admin-docrt', docrt_plugin_url() . '/assets/css/style-admin-docrt.css' );
     wp_enqueue_style( 'style-default', docrt_plugin_url() . '/assets/css/style_admin.css' );
     wp_enqueue_style( 'jqui-css', docrt_plugin_url() . '/assets/css/jquery-ui.css' );
     wp_enqueue_script( 'jqui-js', docrt_plugin_url() . '/assets/js/jquery-ui.js', array('jquery'), '' );
@@ -166,6 +167,11 @@ function docrt_load_scripts_admin() {
         wp_enqueue_media();
         wp_enqueue_script( 'edit-js', docrt_plugin_url() . '/assets/js/docrt-edit.js' , array('jquery'), '' );
     }
+
+    // send ajax url
+    wp_localize_script('main-js', 'ajax_params', array(
+        'front_end' => false
+    ));
 }
 add_action('admin_enqueue_scripts', 'docrt_load_scripts_admin');
 
@@ -173,11 +179,17 @@ add_action('admin_enqueue_scripts', 'docrt_load_scripts_admin');
 function docrt_load_scripts(){
     wp_enqueue_media();
     wp_enqueue_style( 'style-default', docrt_plugin_url() . '/assets/css/style.css' );
-    //wp_localize_script( 'main-js', 'ajax_params',   array( 'ajax_url' => docrt_plugin_url().'/ajax'.'/'));
+    wp_enqueue_style( 'jqui-css', docrt_plugin_url() . '/assets/css/jquery-ui.css' );
+    wp_enqueue_script( 'jqui-js', docrt_plugin_url() . '/assets/js/jquery-ui.js', array('jquery'), '' );
+
+    if (is_page_template('docrt-template-home.php')) {
+        wp_enqueue_script( 'form-js', docrt_plugin_url() . '/assets/js/docrt-form.js' , array('jquery'), '' );
+        wp_enqueue_script( 'frontend-form-js', docrt_plugin_url() . '/assets/js/docrt-frontend-user.js' , array('jquery'), '' );
+    }
+
     // send ajax url
     wp_localize_script('main-js', 'ajax_params', array(
-        'empty_img_url' => docrt_plugin_url() . '/assets/img/rectangle.png',
-        'ajax_url' => docrt_plugin_url() . '/ajax' . '/'
+        'front_end' => true
     ));
 }
 add_action( 'wp_enqueue_scripts', 'docrt_load_scripts' );
@@ -241,5 +253,37 @@ function docrt_get_terms_active() {
     return $terms;
 }
 
+include_once __DIR__ . '/includes/form.php';
 include_once __DIR__ . '/includes/types.php';
 include_once __DIR__ . '/includes/types-perangkat.php';
+
+// ===========================================================
+// FRONT END =================================================
+// ===========================================================
+// Admin style
+include_once __DIR__ . '/frontend/function-style-login.php';
+
+//Front End Function, User Front End
+include_once __DIR__ . '/frontend/function-frontend-user.php';
+
+//Front End Function, User Front End
+include_once __DIR__ . '/frontend/function-frontend-rw.php';
+
+//Form RW POST TYPE
+include_once __DIR__ . '/frontend/function-type-formrw.php';
+
+// ===========================================================
+// ===========================================================
+
+add_filter( 'login_redirect', 'docrt_redirect_to_home', 10, 3 );
+function docrt_redirect_to_home( $redirect_to, $request, $user ) {
+
+    if( $user->roles[0] == 'author' ) {
+        //If user author, redirect to home
+        return get_home_url();
+    } else {
+        //If user ID is not 6, leave WordPress handle the redirection as usual
+        return $redirect_to;
+    }
+
+}
